@@ -8,7 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 
-const MARQUEE = ["אקריליק עבה ועמיד", "שקוף, אז החדר נראה גדול יותר", "4 צבעים למדף הקשת", "מתאים לסלון, לחדר שינה ולחדר ילדים", "מנגבים במטלית וזהו"]
+const MARQUEE = ["משלוח חינם עד הבית", "אקריליק עבה ועמיד", "החזרה תוך 14 יום", "4 צבעים למדף הקשת", "הרכבה קלה", "שירות לקוחות בוואטסאפ"]
 
 const WHY = [
   { n: "01", title: "שקוף = מרווח", text: "רהיט שלא חוסם את האור ולא מעמיס על החדר. גם בדירה קטנה." },
