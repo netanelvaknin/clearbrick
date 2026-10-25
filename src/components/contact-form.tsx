@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Controller, useForm } from "react-hook-form"
+import { sendGTMEvent } from "@next/third-parties/google"
 import { CheckIcon } from "lucide-react"
 import { track } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
@@ -30,6 +31,7 @@ export function ContactForm() {
     setFailed(false)
     const res = await track({ event: "contact", ...values, page: location.pathname, attribution: getAttribution() })
     if (!res.ok) return setFailed(true)
+    sendGTMEvent({ event: "generate_lead", lead_type: "contact" })
     reset()
     setSent(true)
   }

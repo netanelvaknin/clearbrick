@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
+import { sendGTMEvent } from "@next/third-parties/google"
 import { CheckIcon, ShoppingBagIcon, ZapIcon } from "lucide-react"
 import { track, type FunnelEvent } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
@@ -26,6 +27,8 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
 
   function start(event: FunnelEvent) {
     track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
+    // GA4-standard names so GTM tags (Meta/TikTok pixels) can trigger on them
+    sendGTMEvent({ event: event === "add_to_cart" ? "add_to_cart" : "begin_checkout", product: ctx.product, color: ctx.color, value: ctx.price, currency: "ILS" })
     setSent(false)
     setOpen(true)
   }
@@ -34,6 +37,7 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
     setFailed(false)
     const res = await track({ event: "notify_me", email, ...ctx, page: location.pathname, attribution: getAttribution() })
     if (!res.ok) return setFailed(true)
+    sendGTMEvent({ event: "generate_lead", lead_type: "waitlist", product: ctx.product })
     setSent(true)
   }
 
