@@ -223,7 +223,7 @@ export default function Home() {
       {/* FAQ */}
       <section className="bg-card py-20 md:py-28">
         <div className="container-site grid gap-12 md:grid-cols-[1fr_1.4fr]">
-          <SectionHeading eyebrow="שאלות" title="יש שאלות? יש תשובות." />
+          <SectionHeading eyebrow="שאלות" title="יש שאלות?" />
           <Accordion className="border-t border-border">
             {FAQ.map((f) => (
               <AccordionItem key={f.q} value={f.q} className="border-b border-border">
