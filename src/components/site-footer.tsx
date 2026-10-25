@@ -31,7 +31,12 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border">
-        <p className="container-site py-6 text-sm text-muted-foreground">© 2026 clearbrick. כל הזכויות שמורות.</p>
+        <div className="container-site flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-muted-foreground">
+          <p>© 2026 clearbrick. כל הזכויות שמורות.</p>
+          <Link href="/terms" className="hover:text-foreground">
+            תנאי שימוש ופרטיות
+          </Link>
+        </div>
       </div>
     </footer>
   )

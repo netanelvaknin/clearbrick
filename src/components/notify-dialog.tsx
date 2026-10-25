@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { CheckIcon, ShoppingBagIcon, ZapIcon } from "lucide-react"
 import { track, type FunnelEvent } from "@/app/actions"
@@ -93,6 +94,12 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
                 <Button type="submit" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? "שולחים..." : "עדכנו אותי"}
                 </Button>
+                <p className="text-center text-sm text-muted-foreground">
+                  בהרשמה אתם מסכימים ל
+                  <Link href="/terms#privacy" className="underline underline-offset-4" onClick={() => setOpen(false)}>
+                    תנאי השימוש והפרטיות
+                  </Link>
+                </p>
               </form>
             </>
           )}

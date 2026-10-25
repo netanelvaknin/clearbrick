@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Controller, useForm } from "react-hook-form"
 import { CheckIcon } from "lucide-react"
 import { track } from "@/app/actions"
@@ -86,9 +87,17 @@ export function ContactForm() {
         )}
       />
       {failed && <FieldError message="משהו השתבש בשליחה. נסו שוב בעוד רגע." />}
-      <Button type="submit" size="lg" disabled={isSubmitting} className="w-full md:w-fit">
-        {isSubmitting ? "שולחים..." : "שליחה"}
-      </Button>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center">
+        <Button type="submit" size="lg" disabled={isSubmitting} className="w-full md:w-fit">
+          {isSubmitting ? "שולחים..." : "שליחה"}
+        </Button>
+        <p className="text-sm text-muted-foreground">
+          בשליחה אתם מסכימים ל
+          <Link href="/terms#privacy" className="underline underline-offset-4">
+            תנאי השימוש והפרטיות
+          </Link>
+        </p>
+      </div>
     </form>
   )
 }

@@ -1,8 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpLeftIcon, SparklesIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpLeftIcon, SparklesIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
@@ -30,8 +31,90 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="container-site grid items-center gap-10 pt-10 pb-16 md:grid-cols-[1.1fr_1fr] md:pt-16 md:pb-24">
-        <div className="flex flex-col gap-8">
+      {/* Mobile: full-screen photo card with oversized type and glass controls. Desktop: split layout with arch image. */}
+      <section className="container-site pt-3 pb-10 md:grid md:grid-cols-[1.1fr_1fr] md:items-center md:gap-10 md:pt-16 md:pb-24">
+        <div className="relative h-[calc(100svh-6rem)] min-h-[34rem] overflow-hidden rounded-[2rem] md:order-last md:mx-auto md:h-auto md:min-h-0 md:w-full md:max-w-lg md:overflow-visible md:rounded-none">
+          <div className="absolute inset-0 overflow-hidden bg-card md:relative md:aspect-[3/4] md:rounded-t-full md:rounded-b-[2rem]">
+            <Image
+              src={arch.images[0].src}
+              alt={arch.images[0].alt}
+              fill
+              priority
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover motion-safe:animate-hero-zoom md:motion-safe:animate-none"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/15 to-black/25 md:hidden" />
+          </div>
+
+          {/* Mobile overlay */}
+          <div className="relative z-10 flex h-full flex-col justify-between p-5 text-white md:hidden">
+            <div className="flex items-start justify-between gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-sm font-semibold whitespace-nowrap backdrop-blur-md">
+                <SparklesIcon className="size-4" /> קולקציה חדשה
+              </span>
+              <Link
+                href="/products/arch-bookshelf"
+                aria-label="4 צבעים למדף הקשת"
+                className="flex items-center gap-2 rounded-full border border-white/25 bg-white/15 py-1.5 ps-1.5 pe-3 text-sm font-semibold whitespace-nowrap backdrop-blur-md"
+              >
+                <span className="flex -space-x-2 rtl:space-x-reverse">
+                  {arch.colors.map((c) => (
+                    <span key={c.id} className="size-6 rounded-full border-2 border-white/80" style={{ background: c.swatch }} />
+                  ))}
+                </span>
+                <span className="max-[380px]:hidden">4 צבעים</span>
+              </Link>
+            </div>
+
+            <div className="flex flex-col gap-5">
+              <Link
+                href="/products/arch-bookshelf"
+                className="motion-safe:animate-rise w-fit rounded-full border border-white/25 bg-white/15 px-4 py-2 text-base font-semibold backdrop-blur-md"
+              >
+                {arch.name} · {formatPrice(arch.price)}
+              </Link>
+              <h1 className="motion-safe:animate-rise text-[19vw] leading-[0.82] font-black tracking-[-0.05em] [animation-delay:80ms]">
+                שקוף.
+                <br />
+                נקי.
+                <br />
+                <span className="text-white/70">שלך.</span>
+              </h1>
+              <p className="motion-safe:animate-rise max-w-xs text-lg leading-snug text-white/85 [animation-delay:160ms]">
+                רהיטי אקריליק שנותנים לחדר לנשום.
+              </p>
+              <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
+                <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ size: "lg" }), "flex-1 bg-white text-black hover:bg-white/90")}>
+                  לקולקציה <ArrowUpLeftIcon />
+                </Link>
+                <Link
+                  href="#collection"
+                  aria-label="גללו לקולקציה"
+                  className="grid size-16 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md"
+                >
+                  <ArrowDownIcon className="size-6 motion-safe:animate-bounce" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop floating card */}
+          <Link
+            href={`/products/${bedside.slug}`}
+            className="absolute -bottom-6 -start-10 hidden items-center gap-4 rounded-3xl border border-border bg-card/95 p-3 pe-6 shadow-xl backdrop-blur transition-transform hover:-translate-y-1 md:flex"
+          >
+            <span className="relative size-20 overflow-hidden rounded-2xl">
+              <Image src={bedside.images[0].src} alt="" fill sizes="80px" className="object-cover" />
+            </span>
+            <span className="flex flex-col">
+              <span className="text-sm text-muted-foreground">חדש בחנות</span>
+              <span className="text-lg font-bold">{bedside.name}</span>
+              <span className="font-black">{formatPrice(bedside.price)}</span>
+            </span>
+          </Link>
+        </div>
+
+        <div className="hidden flex-col gap-8 md:flex">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-eyebrow">
             <SparklesIcon className="size-4" /> קולקציית אקריליק חדשה
           </span>
@@ -54,25 +137,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-
-        <div className="relative mx-auto w-full max-w-lg">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-t-full rounded-b-[2rem] bg-card">
-            <Image src={arch.images[0].src} alt={arch.images[0].alt} fill priority sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
-          </div>
-          <Link
-            href={`/products/${bedside.slug}`}
-            className="absolute -bottom-6 start-0 flex items-center gap-4 rounded-3xl border border-border bg-card/95 p-3 pe-6 shadow-xl backdrop-blur transition-transform hover:-translate-y-1 md:-start-10"
-          >
-            <span className="relative size-20 overflow-hidden rounded-2xl">
-              <Image src={bedside.images[0].src} alt="" fill sizes="80px" className="object-cover" />
-            </span>
-            <span className="flex flex-col">
-              <span className="text-sm text-muted-foreground">חדש בחנות</span>
-              <span className="text-lg font-bold">{bedside.name}</span>
-              <span className="font-black">{formatPrice(bedside.price)}</span>
-            </span>
-          </Link>
-        </div>
       </section>
 
       {/* Marquee */}
@@ -87,7 +151,7 @@ export default function Home() {
       </div>
 
       {/* Collection */}
-      <section id="collection" className="container-site flex flex-col gap-12 py-20 md:py-28">
+      <section id="collection" className="container-site flex scroll-mt-20 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="הקולקציה" title="שני רהיטים. אינסוף סטייל." />
         <div className="grid gap-10 md:grid-cols-2 md:gap-8">
           {products.map((p, i) => (

@@ -3,6 +3,7 @@ import { Heebo } from "next/font/google"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { AttributionCapture } from "@/components/attribution-capture"
+import { SmoothScroll } from "@/components/smooth-scroll"
 import "./globals.css"
 
 const heebo = Heebo({ subsets: ["hebrew", "latin"], weight: ["400", "500", "600", "700", "800", "900"] })
@@ -18,10 +19,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="he" dir="rtl" className={`${heebo.className} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <AttributionCapture />
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <SmoothScroll>
+          <AttributionCapture />
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </SmoothScroll>
       </body>
     </html>
   )
