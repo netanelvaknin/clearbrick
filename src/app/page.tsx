@@ -151,7 +151,7 @@ export default function Home() {
       </div>
 
       {/* Collection */}
-      <section id="collection" className="container-site flex scroll-mt-20 flex-col gap-12 py-20 md:py-28">
+      <section id="collection" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="הקולקציה" title="שני רהיטים. אינסוף סטייל." />
         <div className="grid gap-10 md:grid-cols-2 md:gap-8">
           {products.map((p, i) => (
@@ -196,7 +196,7 @@ export default function Home() {
       </section>
 
       {/* Why acrylic */}
-      <section id="why" className="container-site flex scroll-mt-24 flex-col gap-12 py-20 md:py-28">
+      <section id="why" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="למה אקריליק" title="קל לאהוב. קשה לשבור." />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {WHY.map((w) => (
