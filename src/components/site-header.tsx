@@ -18,9 +18,9 @@ export function SiteHeader() {
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-9 text-lg font-semibold md:flex">
+        <nav className="hidden items-center divide-x divide-border text-lg font-semibold md:flex">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="transition-opacity hover:opacity-60">
+            <Link key={n.href} href={n.href} className="px-6 leading-5 transition-opacity hover:opacity-60">
               {n.label}
             </Link>
           ))}
@@ -46,9 +46,9 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-sm bg-background p-8">
               <SheetTitle className="sr-only">תפריט</SheetTitle>
-              <nav className="mt-12 flex flex-col gap-6">
+              <nav className="mt-12 flex flex-col divide-y divide-border border-y border-border">
                 {NAV.map((n) => (
-                  <Link key={n.href} href={n.href} className="text-display-sm">
+                  <Link key={n.href} href={n.href} className="py-5 text-display-sm">
                     {n.label}
                   </Link>
                 ))}
