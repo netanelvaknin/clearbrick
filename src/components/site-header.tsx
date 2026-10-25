@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { MenuIcon, ShoppingBagIcon } from "lucide-react"
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Logo } from "@/components/logo"
 
 const NAV = [
@@ -48,9 +48,9 @@ export function SiteHeader() {
               <SheetTitle className="sr-only">תפריט</SheetTitle>
               <nav className="mt-12 flex flex-col divide-y divide-border border-y border-border">
                 {NAV.map((n) => (
-                  <Link key={n.href} href={n.href} className="py-5 text-display-sm">
+                  <SheetClose key={n.href} nativeButton={false} render={<Link href={n.href} />} className="py-5 text-display-sm">
                     {n.label}
-                  </Link>
+                  </SheetClose>
                 ))}
               </nav>
             </SheetContent>
