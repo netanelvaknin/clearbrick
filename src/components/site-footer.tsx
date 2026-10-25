@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { LockIcon } from "lucide-react"
 import { Logo } from "@/components/logo"
 
 export function SiteFooter() {
@@ -33,6 +34,9 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="container-site flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-muted-foreground">
           <p>© 2026 clearbrick. כל הזכויות שמורות.</p>
+          <p className="flex items-center gap-2">
+            <LockIcon className="size-4" /> אתר מאובטח · תשלום מוצפן SSL
+          </p>
           <Link href="/terms" className="hover:text-foreground">
             תנאי שימוש ופרטיות
           </Link>

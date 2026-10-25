@@ -7,6 +7,7 @@ import type { Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 import { Price } from "@/components/price"
 import { BuyButtons } from "@/components/notify-dialog"
+import { SecureNote, TrustBadges } from "@/components/trust-badges"
 
 export function ProductView({ product, initialColor }: { product: Product; initialColor?: string }) {
   const start = product.colors.find((c) => c.id === initialColor) ?? product.colors[0]
@@ -99,6 +100,10 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           ctx={{ product: product.name, color: color.name, price: product.price }}
           className="grid gap-3"
         />
+        <div className="-mt-4 flex flex-col gap-4">
+          <SecureNote />
+          <TrustBadges />
+        </div>
 
         <ul className="grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
           {product.features.map((f) => (
