@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-border bg-card">
       <div className="container-site grid gap-12 py-16 md:grid-cols-[2fr_1fr_1fr]">
         <div className="flex flex-col gap-5">
-          <Logo />
+          <Logo className="self-start" />
           <p className="max-w-sm text-lg text-muted-foreground">
             רהיטי אקריליק שקופים לבית שאוהב אור. עיצוב נקי, צבע רק איפה שצריך.
           </p>
