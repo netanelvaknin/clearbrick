@@ -237,9 +237,11 @@ export default function Home() {
 
       {/* CTA */}
       <section className="container-site py-20 md:py-28">
-        <div className="flex flex-col items-start gap-8 rounded-[2.5rem] bg-foreground p-10 text-background md:flex-row md:items-end md:justify-between md:p-16">
+        <div className="relative isolate flex min-h-96 flex-col items-start justify-end gap-8 overflow-hidden rounded-[2.5rem] bg-card p-10 md:flex-row md:items-end md:justify-between md:p-16">
+          <Image src="/cta-light.jpg" alt="" fill sizes="(min-width: 1280px) 1280px, 100vw" className="-z-10 object-cover object-[30%_45%]" />
+          <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-t from-card/90 via-card/50 to-transparent md:bg-linear-to-l md:from-card/80 md:via-card/30" />
           <h2 className="text-display-lg max-w-3xl text-balance">החדר שלכם מחכה לקצת שקיפות.</h2>
-          <Link href="/products/arch-bookshelf" className={buttonVariants({ size: "lg", variant: "secondary" })}>
+          <Link href="/products/arch-bookshelf" className={buttonVariants({ size: "lg" })}>
             לחנות <ArrowUpLeftIcon />
           </Link>
         </div>
