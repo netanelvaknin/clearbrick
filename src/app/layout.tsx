@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { AttributionCapture } from "@/components/attribution-capture"
 import { SmoothScroll } from "@/components/smooth-scroll"
+import { WhatsAppButton } from "@/components/whatsapp-button"
 import "./globals.css"
 
 const GTM_ID = "GTM-MCQ9SFVR"
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </SmoothScroll>
+        <WhatsAppButton />
         <Analytics />
       </body>
     </html>
