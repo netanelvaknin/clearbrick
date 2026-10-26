@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowUpLeftIcon, MenuIcon, RotateCcwIcon, ShoppingBagIcon, SparklesIcon, TruckIcon } from "lucide-react"
+import { ArrowUpLeftIcon, MenuIcon, MessageCircleIcon, PercentIcon, ShoppingBagIcon, TruckIcon } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { buttonVariants } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
@@ -15,8 +15,8 @@ const NAV = [
 
 const PERKS = [
   { icon: TruckIcon, text: "משלוח חינם עד הבית" },
-  { icon: RotateCcwIcon, text: "החזרה תוך 14 יום" },
-  { icon: SparklesIcon, text: "מחיר השקה על כל הקולקציה" },
+  { icon: MessageCircleIcon, text: "שירות לקוחות בוואטסאפ" },
+  { icon: PercentIcon, text: "עד 30% הנחה על כל הקולקציה" },
 ]
 
 export function SiteHeader() {
@@ -24,9 +24,17 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40">
       {/* Announcement bar */}
       <div className="bg-foreground text-background">
-        <ul className="container-site flex h-9 items-center justify-center gap-8 text-sm font-medium">
+        {/* Mobile: one perk at a time, sliding up (animate-perk cycles 3 perks × 3s). Desktop: all in a row. */}
+        <ul className="container-site relative flex h-9 items-center justify-center gap-8 overflow-hidden text-sm font-medium">
           {PERKS.map(({ icon: Icon, text }, i) => (
-            <li key={text} className={cn("flex items-center gap-2", i > 0 && "hidden md:flex")}>
+            <li
+              key={text}
+              style={{ animationDelay: `${-((PERKS.length - i) % PERKS.length) * 3}s` }}
+              className={cn(
+                "absolute inset-0 flex animate-perk items-center justify-center gap-2 opacity-0 motion-reduce:animate-none md:static md:animate-none md:opacity-100",
+                i === 0 && "motion-reduce:opacity-100"
+              )}
+            >
               <Icon className="size-4 opacity-70" />
               {text}
             </li>

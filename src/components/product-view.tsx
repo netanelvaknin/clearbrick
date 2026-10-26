@@ -7,7 +7,7 @@ import type { Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 import { Price } from "@/components/price"
 import { BuyButtons } from "@/components/notify-dialog"
-import { SecureNote, TrustBadges } from "@/components/trust-badges"
+import { PaymentMethods, TrustBadges } from "@/components/trust-badges"
 import { useProductEngagement } from "@/lib/pixel"
 
 export function ProductView({ product, initialColor }: { product: Product; initialColor?: string }) {
@@ -106,8 +106,8 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           ctx={{ product: product.name, color: color.name, price: product.price }}
           className="grid gap-3"
         />
-        <div className="-mt-4 flex flex-col gap-4">
-          <SecureNote />
+        <div className="-mt-4 flex flex-col gap-6">
+          <PaymentMethods />
           <TrustBadges />
         </div>
 

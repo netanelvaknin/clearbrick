@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowDownIcon, ArrowUpLeftIcon, HeartHandshakeIcon, LockIcon, MessageCircleIcon, PackageCheckIcon, RotateCcwIcon, SparklesIcon, TruckIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpLeftIcon, LockIcon, MessageCircleIcon, PackageIcon, RotateCcwIcon, SparklesIcon, TruckIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -8,7 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 
-const MARQUEE = ["משלוח חינם עד הבית", "אקריליק עבה ועמיד", "החזרה תוך 14 יום", "4 צבעים למדף הקשת", "הרכבה קלה", "שירות לקוחות בוואטסאפ"]
+const MARQUEE = ["משלוח חינם עד הבית", "אקריליק עבה ועמיד", "הרכבה קלה", "שירות לקוחות בוואטסאפ"]
 
 const WHY = [
   { n: "01", title: "שקוף = מרווח", text: "רהיט שלא חוסם את האור ולא מעמיס על החדר. גם בדירה קטנה." },
@@ -18,9 +18,9 @@ const WHY = [
 ]
 
 const VALUES = [
-  { icon: HeartHandshakeIcon, title: "יחס אישי", text: "אנחנו לא מחסן ענק. כל הזמנה עוברת אצלנו." },
+  { icon: PackageIcon, title: "נארז בקפדנות", text: "כל רהיט נבדק ונארז ביד, עם שכבות הגנה בכל פינה, כדי שיגיע אליכם מושלם ובלי שריטה." },
   { icon: MessageCircleIcon, title: "מדברים איתכם", text: "שאלה על מידה, צבע או משלוח? כתבו לנו בוואטסאפ ותקבלו תשובה מבן אדם." },
-  { icon: PackageCheckIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
+  { icon: RotateCcwIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
 ]
 
 const STEPS = [
@@ -157,7 +157,7 @@ export default function Home() {
       {/* Marquee */}
       <div className="overflow-hidden border-y border-border bg-foreground py-5 text-background" aria-hidden>
         <div className="animate-marquee flex w-max gap-12 whitespace-nowrap text-2xl font-bold">
-          {[...MARQUEE, ...MARQUEE].map((m, i) => (
+          {[...MARQUEE, ...MARQUEE, ...MARQUEE, ...MARQUEE].map((m, i) => (
             <span key={i} className="flex items-center gap-12">
               {m} <span className="opacity-40">✦</span>
             </span>
@@ -228,7 +228,7 @@ export default function Home() {
       <section id="about" className="bg-card py-20 md:py-28 scroll-mt-28">
         <div className="container-site grid items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:order-last">
-            <Image src="/about-studio.jpg" alt="שולחן העבודה שלנו: סקיצות של מדף הקשת ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+            <Image src="/about-plans.jpg" alt="שולחן העבודה שלנו: שרטוטים של מדף הקשת ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           </div>
           <div className="flex flex-col gap-10">
             <SectionHeading eyebrow="הסיפור שלנו" title="התחלנו מחדר שהיה צריך יותר אור.">

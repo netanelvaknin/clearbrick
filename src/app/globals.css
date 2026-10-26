@@ -192,3 +192,12 @@
 @utility animate-rise {
   animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+@keyframes perk {
+  0% { opacity: 0; transform: translateY(100%); }
+  4%, 29% { opacity: 1; transform: none; }
+  33.33%, 100% { opacity: 0; transform: translateY(-100%); }
+}
+@utility animate-perk {
+  animation: perk 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}

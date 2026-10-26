@@ -9,7 +9,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-5">
           <Logo className="self-start" />
           <p className="max-w-sm text-lg text-muted-foreground">
-            רהיטי אקריליק שקופים לבית שאוהב אור. עיצוב נקי, צבע רק איפה שצריך.
+            רהיטי אקריליק שקופים לבית שאוהב אור.
           </p>
         </div>
         <div className="flex flex-col gap-4">
