@@ -77,7 +77,7 @@ const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
         </p>
         <p>
           לפי חוק הגנת הפרטיות, התשמ״א-1981, אתם רשאים לבקש לעיין במידע שנשמר עליכם, לתקן אותו או למחוק אותו. פנו אלינו
-          במייל <a href="mailto:hello@clearbrick.co.il">hello@clearbrick.co.il</a>.
+          במייל <a href="mailto:clearbrickisrael@gmail.com">clearbrickisrael@gmail.com</a>.
         </p>
       </>
     ),
@@ -127,7 +127,7 @@ const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
     title: "יצירת קשר",
     body: (
       <p>
-        שאלות על התנאים או על הפרטיות? כתבו לנו ל-<a href="mailto:hello@clearbrick.co.il">hello@clearbrick.co.il</a> או דרך{" "}
+        שאלות על התנאים או על הפרטיות? כתבו לנו ל-<a href="mailto:clearbrickisrael@gmail.com">clearbrickisrael@gmail.com</a> או דרך{" "}
         <Link href="/contact">טופס יצירת הקשר</Link>.
       </p>
     ),

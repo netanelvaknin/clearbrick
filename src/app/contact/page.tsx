@@ -17,11 +17,11 @@ export default function ContactPage() {
           שאלה על מידות? מתלבטים בין צבעים? כתבו לנו, אנחנו עונים מהר ובלי בוטים.
         </p>
         <div className="flex flex-col gap-4">
-          <a href="mailto:hello@clearbrick.co.il" className="flex items-center gap-4 rounded-3xl border border-border bg-card p-5 transition hover:border-foreground">
+          <a href="mailto:clearbrickisrael@gmail.com" className="flex items-center gap-4 rounded-3xl border border-border bg-card p-5 transition hover:border-foreground">
             <span className="grid size-12 place-items-center rounded-full bg-muted"><MailIcon className="size-5" /></span>
             <span className="flex flex-col">
               <span className="text-sm text-muted-foreground">מייל</span>
-              <span dir="ltr" className="text-lg font-bold">hello@clearbrick.co.il</span>
+              <span dir="ltr" className="text-lg font-bold">clearbrickisrael@gmail.com</span>
             </span>
           </a>
           <div className="flex items-center gap-4 rounded-3xl border border-border bg-card p-5">
