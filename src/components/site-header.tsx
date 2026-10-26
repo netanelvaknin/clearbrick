@@ -9,6 +9,7 @@ const NAV = [
   { href: "/products/arch-bookshelf", label: "מדף הקשת" },
   { href: "/products/bedside-table", label: "שידת הלילה", badge: "חדש" },
   { href: "/#why", label: "למה אקריליק" },
+  { href: "/#about", label: "עלינו" },
   { href: "/contact", label: "צרו קשר" },
 ]
 

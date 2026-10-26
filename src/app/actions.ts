@@ -15,6 +15,7 @@ export type TrackPayload = {
   phone?: string
   message?: string
   marketingOptIn?: boolean
+  offer?: string
   page?: string
   attribution?: Record<string, string>
 }

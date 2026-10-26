@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowDownIcon, ArrowUpLeftIcon, SparklesIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpLeftIcon, HeartHandshakeIcon, LockIcon, MessageCircleIcon, PackageCheckIcon, RotateCcwIcon, SparklesIcon, TruckIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -17,10 +17,25 @@ const WHY = [
   { n: "04", title: "אפס תחזוקה", text: "מטלית לחה וזהו. בלי שמנים, בלי ליטושים, בלי כאב ראש." },
 ]
 
+const VALUES = [
+  { icon: HeartHandshakeIcon, title: "יחס אישי", text: "אנחנו לא מחסן ענק. כל הזמנה עוברת אצלנו." },
+  { icon: MessageCircleIcon, title: "מדברים איתכם", text: "שאלה על מידה, צבע או משלוח? כתבו לנו בוואטסאפ ותקבלו תשובה מבן אדם." },
+  { icon: PackageCheckIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
+]
+
+const STEPS = [
+  { icon: LockIcon, title: "מזמינים באתר", text: "בוחרים רהיט וצבע, ומשלמים בתשלום מאובטח ומוצפן." },
+  { icon: TruckIcon, title: "מקבלים עד הבית", text: "משלוח חינם עד הדלת, ארוז היטב ומוכן להרכבה קלה." },
+  { icon: RotateCcwIcon, title: "14 יום להתאהב", text: "לא מתאים לחדר? כתבו לנו ונסדר החזרה בלי כאב ראש." },
+]
+
 const FAQ = [
   { q: "אקריליק זה כמו פלסטיק?", a: "אקריליק הוא חומר שקוף כמו זכוכית, אבל קל וחזק ממנה בהרבה ולא מתנפץ. בגלל זה הוא מושלם לרהיטים, גם בבית עם ילדים." },
   { q: "איך מנקים?", a: "מטלית מיקרופייבר רכה ומעט מים או סבון עדין. לא מומלץ להשתמש בחומרים שוחקים או באלכוהול." },
   { q: "כמה משקל המדפים מחזיקים?", a: "כל קומה במדף הקשת מחזיקה בנוחות ספרים, עציצים ופריטי נוי. פשוט פזרו את המשקל לאורך המדף." },
+  { q: "המשלוח באמת חינם?", a: "כן. משלוח עד הבית בחינם לכל הזמנה, בלי מינימום ובלי אותיות קטנות." },
+  { q: "ואם זה לא מתאים לי?", a: "יש לכם 14 יום מרגע שהרהיט הגיע. לא התאהבתם? שלחו לנו הודעה ונסדר החזרה." },
+  { q: "התשלום באתר מאובטח?", a: "כן. כל פרטי התשלום עוברים בחיבור מוצפן SSL ואנחנו לא שומרים את פרטי הכרטיס שלכם." },
   { q: "יש עוד צבעים בדרך?", a: "כן! אנחנו עובדים על גוונים חדשים. השאירו מייל בדף המוצר ותהיו הראשונים לשמוע." },
 ]
 
@@ -209,15 +224,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About */}
+      <section id="about" className="bg-card py-20 md:py-28 scroll-mt-28">
+        <div className="container-site grid items-center gap-12 md:grid-cols-2 md:gap-16">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:order-last">
+            <Image src="/about-studio.jpg" alt="שולחן העבודה שלנו: סקיצות של מדף הקשת ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+          </div>
+          <div className="flex flex-col gap-10">
+            <SectionHeading eyebrow="הסיפור שלנו" title="התחלנו מחדר שהיה צריך יותר אור.">
+              clearbrick התחיל מדירה קטנה ששום רהיט לא התאים לה. כל מדף העמיס, כל שידה חסמה את האור. אז עיצבנו רהיטים שעושים את העבודה בלי לתפוס מקום בעין: שקופים, נקיים, עם צבע רק איפה שבא לכם.
+            </SectionHeading>
+            <ul className="flex flex-col gap-6">
+              {VALUES.map(({ icon: Icon, title, text }) => (
+                <li key={title} className="flex gap-4">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-full bg-background">
+                    <Icon className="size-5" />
+                  </span>
+                  <span className="flex flex-col gap-1">
+                    <span className="text-xl font-bold">{title}</span>
+                    <span className="text-lg leading-relaxed text-muted-foreground">{text}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* Lifestyle bento */}
-      <section className="container-site flex flex-col gap-12 pb-20 md:pb-28">
+      <section className="container-site flex flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
-        <div className="grid gap-4 md:grid-cols-3 md:grid-rows-2">
-          <Tile src={bedside.images[0].src} alt={bedside.images[0].alt} label="שידת הלילה ליד הספה" href="/products/bedside-table" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
+        <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
+          <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על מדף הקשת הוורוד בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
           <Tile src={arch.images[2].src} alt={arch.images[2].alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
-          <Tile src={arch.images[3].src} alt={arch.images[3].alt} label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
+          <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים במדף הקשת הכחול" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
           <Tile src={bedside.images[2].src} alt={bedside.images[2].alt} label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
         </div>
+      </section>
+
+      {/* How it works */}
+      <section className="container-site flex flex-col gap-12 pb-20 md:pb-28">
+        <SectionHeading eyebrow="איך זה עובד" title="שלושה צעדים ורהיט חדש בבית." />
+        <ol className="grid gap-4 md:grid-cols-3">
+          {STEPS.map(({ icon: Icon, title, text }, i) => (
+            <li key={title} className="flex flex-col gap-6 rounded-[2rem] border border-border p-8">
+              <div className="flex items-center justify-between">
+                <span className="grid size-14 place-items-center rounded-full bg-foreground text-background">
+                  <Icon className="size-6" />
+                </span>
+                <span className="text-5xl font-black text-muted-foreground/30">{i + 1}</span>
+              </div>
+              <h3 className="text-2xl font-extrabold">{title}</h3>
+              <p className="text-lg leading-relaxed text-muted-foreground">{text}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       {/* FAQ */}

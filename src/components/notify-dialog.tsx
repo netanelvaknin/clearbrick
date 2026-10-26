@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { CheckIcon, ShoppingBagIcon, ZapIcon } from "lucide-react"
+import { CheckIcon, ShoppingBagIcon, TicketPercentIcon, ZapIcon } from "lucide-react"
 import { track, type FunnelEvent } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
 import { Button } from "@/components/ui/button"
@@ -35,7 +35,7 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
 
   async function onSubmit({ email }: { email: string }) {
     setFailed(false)
-    const res = await track({ event: "notify_me", email, ...ctx, page: location.pathname, attribution: getAttribution() })
+    const res = await track({ event: "notify_me", email, offer: "10%", ...ctx, page: location.pathname, attribution: getAttribution() })
     if (!res.ok) return setFailed(true)
     sendGTMEvent({ event: "generate_lead", lead_type: "waitlist", product: ctx.product })
     setSent(true)
@@ -59,9 +59,9 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
               <span className="grid size-16 place-items-center rounded-full bg-primary text-primary-foreground">
                 <CheckIcon className="size-8" />
               </span>
-              <DialogTitle className="text-display-sm font-extrabold">רשמנו אתכם!</DialogTitle>
+              <DialogTitle className="text-display-sm font-extrabold">הקופון שמור לכם!</DialogTitle>
               <DialogDescription className="text-lg">
-                נשלח לכם מייל ברגע שה{ctx.product} חוזר למלאי, וזה יקרה ממש בקרוב.
+                ברגע שהמוצר חוזר למלאי נשלח לכם למייל קופון של 10% הנחה.
               </DialogDescription>
               <Button className="w-full" onClick={() => setOpen(false)}>
                 סגירה
@@ -73,8 +73,15 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
                 <span className="text-eyebrow w-fit rounded-full bg-muted px-3 py-1">אזל מהמלאי</span>
                 <DialogTitle className="text-display-sm font-extrabold">אופס, נחטף מהר מדי</DialogTitle>
                 <DialogDescription className="text-lg leading-relaxed">
-                  ה{ctx.product} אזל כרגע מהמלאי. השאירו מייל ונעדכן אתכם ראשונים כשהוא חוזר, ממש בקרוב.
+                  המוצר הזה אזל כרגע מהמלאי. השאירו מייל ונשלח לכם קופון הנחה ברגע שהוא חוזר.
                 </DialogDescription>
+              </div>
+              <div className="flex items-center gap-4 rounded-2xl border-2 border-dashed border-foreground/20 bg-muted p-4">
+                <TicketPercentIcon className="size-10 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-2xl font-black">10% הנחה</span>
+                  <span className="text-muted-foreground">על ההזמנה, למי שנרשם עכשיו</span>
+                </div>
               </div>
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
                 <div className="flex flex-col gap-2">
@@ -88,7 +95,7 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
                     className="text-start"
                     aria-invalid={!!errors.email}
                     {...register("email", {
-                      required: "צריך מייל כדי שנוכל לעדכן",
+                      required: "צריך מייל כדי שנוכל לשלוח את הקופון",
                       pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "המייל לא נראה תקין" },
                     })}
                   />
@@ -96,7 +103,7 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
                 </div>
                 {failed && <FieldError message="משהו השתבש. נסו שוב בעוד רגע." />}
                 <Button type="submit" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? "שולחים..." : "עדכנו אותי"}
+                  {isSubmitting ? "שולחים..." : "שלחו לי את הקופון"}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
                   בהרשמה אתם מסכימים ל
