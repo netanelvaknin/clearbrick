@@ -8,11 +8,13 @@ import { cn } from "@/lib/utils"
 import { Price } from "@/components/price"
 import { BuyButtons } from "@/components/notify-dialog"
 import { SecureNote, TrustBadges } from "@/components/trust-badges"
+import { useProductEngagement } from "@/lib/pixel"
 
 export function ProductView({ product, initialColor }: { product: Product; initialColor?: string }) {
   const start = product.colors.find((c) => c.id === initialColor) ?? product.colors[0]
   const [color, setColor] = useState(start)
   const [active, setActive] = useState(start.image)
+  const interact = useProductEngagement(product)
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
@@ -35,7 +37,10 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           {product.images.map((img, i) => (
             <button
               key={img.src}
-              onClick={() => setActive(i)}
+              onClick={() => {
+                setActive(i)
+                interact("gallery", String(i + 1))
+              }}
               aria-label={`תמונה ${i + 1}`}
               aria-current={i === active}
               className={cn(
@@ -82,6 +87,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
                   onChange={() => {
                     setColor(c)
                     setActive(c.image)
+                    interact("color", c.name)
                   }}
                   className="peer sr-only"
                 />
