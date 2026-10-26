@@ -258,7 +258,7 @@ export default function Home() {
           <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על מדף הקשת הוורוד בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
           <Tile src={arch.images[2].src} alt={arch.images[2].alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
           <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים במדף הקשת הכחול" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
-          <Tile src={bedside.images[2].src} alt={bedside.images[2].alt} label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
+          <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
         </div>
       </section>
 
