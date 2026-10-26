@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { track } from "@/app/actions"
@@ -12,10 +11,6 @@ const PHONE = "972524835373"
 
 export function WhatsAppButton() {
   const pathname = usePathname()
-  // Rendered on every page, so it also saves the landing UTMs before the visitor navigates away from the ad URL.
-  useEffect(() => {
-    getAttribution()
-  }, [])
   const product = pathname.startsWith("/products/") ? getProduct(pathname.split("/")[2]) : undefined
   const text = product ? `היי, יש לי שאלה על ${product.name} 🙂` : "היי, אשמח לשמוע עוד על הרהיטים של clearbrick 🙂"
   const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`

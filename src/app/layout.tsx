@@ -10,6 +10,8 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import "./globals.css"
 
 const GTM_ID = "GTM-MCQ9SFVR"
+// Tags (Meta pixel, Clarity) load only on the live site, so local and preview visits never reach Meta.
+const IS_PROD = process.env.VERCEL_ENV === "production"
 
 const heebo = Heebo({ subsets: ["hebrew", "latin"], weight: ["400", "500", "600", "700", "800", "900"] })
 
@@ -23,16 +25,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="he" dir="rtl" className={`${heebo.className} h-full antialiased`}>
-      <GoogleTagManager gtmId={GTM_ID} />
+      {IS_PROD && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="flex min-h-full flex-col">
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        {IS_PROD && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <SmoothScroll>
           <AttributionCapture />
           <SiteHeader />

@@ -27,6 +27,12 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   if (!EVENTS.includes(payload.event)) return { ok: false }
   if (payload.email !== undefined && !EMAIL.test(payload.email)) return { ok: false }
 
+  // Only the live site writes to the Sheet; local and preview runs just log.
+  if (process.env.VERCEL_ENV !== "production") {
+    console.info("[track] skipped outside production:", payload.event)
+    return { ok: true }
+  }
+
   const url = process.env.MAKE_WEBHOOK_URL
   if (!url) {
     console.warn("[track] MAKE_WEBHOOK_URL is not set, event dropped:", payload.event)
