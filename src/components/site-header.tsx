@@ -82,7 +82,10 @@ export function SiteHeader() {
               </SheetTrigger>
               <SheetContent side="right" className="w-full max-w-sm bg-background p-8">
                 <SheetTitle className="sr-only">תפריט</SheetTitle>
-                <nav className="mt-12 flex flex-col divide-y divide-border border-y border-border">
+                <SheetClose nativeButton={false} render={<Link href="/" aria-label="קלירבריק, לדף הבית" />} className="w-fit">
+                  <Logo />
+                </SheetClose>
+                <nav className="mt-10 flex flex-col divide-y divide-border border-y border-border">
                   {NAV.map((n) => (
                     <SheetClose
                       key={n.href}
