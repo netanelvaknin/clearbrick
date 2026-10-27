@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Heebo } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GoogleTagManager } from "@next/third-parties/google"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </SmoothScroll>
         <WhatsAppButton />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
