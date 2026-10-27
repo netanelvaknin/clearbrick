@@ -16,10 +16,17 @@ const IS_PROD = process.env.VERCEL_ENV === "production"
 const heebo = Heebo({ subsets: ["hebrew", "latin"], weight: ["400", "500", "600", "700", "800", "900"] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://clearbrick.co.il"),
+  metadataBase: new URL("https://www.clearbrick.co.il"),
   title: { default: "clearbrick | רהיטי אקריליק שקופים", template: "%s | clearbrick" },
   description: "מדפים ושידות אקריליק בעיצוב נקי ומודרני. שקוף, צבעוני, שלכם.",
-  openGraph: { locale: "he_IL", siteName: "clearbrick", images: ["/products/hero-arch-pink.jpg"] },
+  openGraph: {
+    type: "website",
+    locale: "he_IL",
+    siteName: "clearbrick",
+    url: "/",
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "מדף הקשת ושידת הלילה של clearbrick בסלון מואר" }],
+  },
+  twitter: { card: "summary_large_image" },
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

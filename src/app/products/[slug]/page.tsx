@@ -15,10 +15,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/products/[slug]">): Promise<Metadata> {
   const product = getProduct((await params).slug)
   if (!product) return {}
+  // openGraph here replaces the layout's, so repeat siteName/locale. Share images are 1200×630 for WhatsApp/Instagram/Facebook previews.
+  const title = `${product.name} · ₪${product.price}`
   return {
     title: product.name,
     description: product.tagline,
-    openGraph: { images: [product.images[0].src] },
+    openGraph: {
+      type: "website",
+      locale: "he_IL",
+      siteName: "clearbrick",
+      url: `/products/${product.slug}`,
+      title,
+      description: product.tagline,
+      images: [{ url: `/og/${product.slug}.jpg`, width: 1200, height: 630, alt: product.images[0].alt }],
+    },
+    twitter: { card: "summary_large_image", title, description: product.tagline },
   }
 }
 
