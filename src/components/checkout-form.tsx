@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { LockIcon } from "lucide-react"
 import { track } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
 import { getProduct, products } from "@/lib/products"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,7 +21,14 @@ import { PaymentMethods } from "@/components/trust-badges"
 // field / submits), we log it as proof of real buying intent, lock the rest and show the out-of-stock dialog.
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+// Cache Components keeps page state across navigations, so a returning buyer would land on the old,
+// locked checkout. Keying on bfcacheId starts fresh on every buy click but still restores on browser back.
 export function CheckoutForm() {
+  const { bfcacheId } = useRouter()
+  return <Checkout key={bfcacheId} />
+}
+
+function Checkout() {
   const params = useSearchParams()
   const product = getProduct(params.get("product") ?? "") ?? products[0]
   const color = product.colors.find((c) => c.id === params.get("color")) ?? product.colors[0]
@@ -42,21 +50,23 @@ export function CheckoutForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Logged once; later calls just reopen the dialog.
+  // Logged once; later calls just reopen the dialog (with a newly typed email, if any).
   function reveal(typed?: string) {
+    const valid = typed && EMAIL.test(typed) ? typed : undefined
+    if (valid) setEmail(valid)
     if (!logged.current) {
       logged.current = true
-      const valid = typed && EMAIL.test(typed) ? typed : undefined
       track({ event: "checkout_details", ...ctx, email: valid, page: location.pathname, attribution: getAttribution() })
       pixel("track", "AddPaymentInfo", { content_name: product.name, value: product.price, currency: "ILS" })
       sendGTMEvent({ event: "add_shipping_info", product: product.name, color: color.name, value: product.price, currency: "ILS" })
-      setEmail(valid)
       setLocked(true)
     }
     setOpen(true)
   }
 
-  const later = { disabled: locked, onFocus: () => reveal() }
+  // Read-only, not disabled: a disabled field can't be tapped, so it could never reopen the dialog.
+  const lockedClass = locked ? "opacity-50" : undefined
+  const later = { readOnly: locked, onFocus: () => reveal(), className: lockedClass }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
@@ -79,7 +89,6 @@ export function CheckoutForm() {
               autoComplete="email"
               placeholder="you@example.com"
               className="text-start"
-              disabled={locked}
               onBlur={(e) => EMAIL.test(e.target.value.trim()) && reveal(e.target.value.trim())}
             />
           </div>
@@ -89,7 +98,7 @@ export function CheckoutForm() {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-phone">טלפון</Label>
-            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="tel" placeholder="050-0000000" className="text-start" {...later} />
+            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="tel" placeholder="050-0000000" {...later} className={cn("text-start", lockedClass)} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-city">עיר</Label>
