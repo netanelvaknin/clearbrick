@@ -41,6 +41,9 @@ const FAQ = [
 
 export default function Home() {
   const shelf = getProduct("arch-bookshelf")!
+  const imageOf = (color: string) => shelf.images[shelf.colors.find((c) => c.id === color)!.image]
+  const heroImage = imageOf("pink")
+  const smokeImage = imageOf("smoke")
   const bedside = getProduct("bedside-table")!
 
   return (
@@ -51,8 +54,8 @@ export default function Home() {
         <div className="relative h-[calc(100svh-6rem)] min-h-[34rem] overflow-hidden rounded-[2rem] md:order-last md:mx-auto md:h-auto md:min-h-0 md:w-full md:max-w-lg md:overflow-visible md:rounded-none">
           <div className="absolute inset-0 overflow-hidden bg-card md:relative md:aspect-[3/4] md:rounded-[2.5rem]">
             <Image
-              src={shelf.images[0].src}
-              alt={shelf.images[0].alt}
+              src={heroImage.src}
+              alt={heroImage.alt}
               fill
               priority
               sizes="(min-width: 768px) 45vw, 100vw"
@@ -256,7 +259,7 @@ export default function Home() {
         <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
           <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על ספריית לונה הוורודה בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
-          <Tile src={shelf.images[2].src} alt={shelf.images[2].alt} label="שקוף בפינת העבודה" href="/products/arch-bookshelf?color=clear" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
+          <Tile src={smokeImage.src} alt={smokeImage.alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
           <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים בספריית לונה הכחולה" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
           <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
         </div>
