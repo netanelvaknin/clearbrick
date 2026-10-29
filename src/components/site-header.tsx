@@ -1,8 +1,9 @@
 import Link from "next/link"
-import { ArrowUpLeftIcon, MenuIcon, MessageCircleIcon, PercentIcon, ShoppingBagIcon, TruckIcon } from "lucide-react"
+import { ArrowUpLeftIcon, MenuIcon, MessageCircleIcon, PercentIcon, TruckIcon } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { buttonVariants } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
+import { CartButton } from "@/components/cart"
 import { cn } from "@/lib/utils"
 
 const NAV = [
@@ -63,16 +64,7 @@ export function SiteHeader() {
             <Link href="/#collection" className={cn(buttonVariants({ size: "sm" }), "hidden md:inline-flex")}>
               לקולקציה <ArrowUpLeftIcon />
             </Link>
-            <Link
-              href="/products/arch-bookshelf"
-              aria-label="סל קניות"
-              className="relative grid size-11 place-items-center rounded-full transition-colors hover:bg-muted"
-            >
-              <ShoppingBagIcon className="size-5" />
-              <span className="absolute -top-0.5 -end-0.5 grid size-5 place-items-center rounded-full bg-foreground text-xs font-bold text-background">
-                0
-              </span>
-            </Link>
+            <CartButton />
             <Sheet>
               <SheetTrigger
                 aria-label="תפריט"

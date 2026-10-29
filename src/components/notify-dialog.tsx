@@ -8,6 +8,7 @@ import { sendGTMEvent } from "@next/third-parties/google"
 import { CheckIcon, ShoppingBagIcon, TicketPercentIcon, ZapIcon } from "lucide-react"
 import { track, type FunnelEvent } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
+import { useCart } from "@/components/cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,15 +17,17 @@ import { FieldError } from "@/components/field-error"
 
 export type Ctx = { product: string; color?: string; price?: number }
 
-// Both buttons log intent, then send the visitor to the checkout page; the out-of-stock dialog opens there.
+// Add to cart opens the cart drawer; quick buy skips it and goes straight to checkout.
 export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: string; colorId: string; className?: string }) {
   const router = useRouter()
+  const cart = useCart()
 
   function start(event: FunnelEvent) {
     track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
     // GA4-standard names so GTM tags (Meta/TikTok pixels) can trigger on them
     sendGTMEvent({ event: event === "add_to_cart" ? "add_to_cart" : "begin_checkout", product: ctx.product, color: ctx.color, value: ctx.price, currency: "ILS" })
-    router.push(`/checkout?product=${slug}&color=${colorId}`)
+    if (event === "add_to_cart") cart.add({ slug, colorId })
+    else router.push(`/checkout?product=${slug}&color=${colorId}`)
   }
 
   return (

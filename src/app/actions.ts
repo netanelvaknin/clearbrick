@@ -2,7 +2,10 @@
 
 import { headers } from "next/headers"
 
-const EVENTS = ["add_to_cart", "checkout_initiated", "checkout_view", "checkout_details", "dialog_closed", "notify_me", "contact", "whatsapp"] as const
+const EVENTS = [
+  "add_to_cart", "cart_open", "cart_close", "cart_remove", "cart_checkout",
+  "checkout_initiated", "checkout_view", "checkout_details", "dialog_closed", "notify_me", "contact", "whatsapp",
+] as const
 export type FunnelEvent = (typeof EVENTS)[number]
 
 export type TrackPayload = {
@@ -16,6 +19,7 @@ export type TrackPayload = {
   message?: string
   marketingOptIn?: boolean
   offer?: string
+  source?: string
   page?: string
   attribution?: Record<string, string>
 }
