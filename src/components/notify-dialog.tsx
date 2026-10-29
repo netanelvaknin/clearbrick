@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { sendGTMEvent } from "@next/third-parties/google"
 import { CheckIcon, ShoppingBagIcon, TicketPercentIcon, ZapIcon } from "lucide-react"
@@ -13,25 +14,39 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { FieldError } from "@/components/field-error"
 
-type Ctx = { product: string; color?: string; price?: number }
+export type Ctx = { product: string; color?: string; price?: number }
 
-export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string }) {
-  const [open, setOpen] = useState(false)
+// Both buttons log intent, then send the visitor to the checkout page; the out-of-stock dialog opens there.
+export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: string; colorId: string; className?: string }) {
+  const router = useRouter()
+
+  function start(event: FunnelEvent) {
+    track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
+    // GA4-standard names so GTM tags (Meta/TikTok pixels) can trigger on them
+    sendGTMEvent({ event: event === "add_to_cart" ? "add_to_cart" : "begin_checkout", product: ctx.product, color: ctx.color, value: ctx.price, currency: "ILS" })
+    router.push(`/checkout?product=${slug}&color=${colorId}`)
+  }
+
+  return (
+    <div className={className}>
+      <Button size="lg" className="w-full" onClick={() => start("add_to_cart")}>
+        <ShoppingBagIcon /> הוספה לסל
+      </Button>
+      <Button size="lg" variant="outline" className="w-full" onClick={() => start("checkout_initiated")}>
+        <ZapIcon /> לקנייה מהירה
+      </Button>
+    </div>
+  )
+}
+
+export function OutOfStockDialog({ ctx, defaultEmail, open, onOpenChange }: { ctx: Ctx; defaultEmail?: string; open: boolean; onOpenChange: (open: boolean) => void }) {
   const [sent, setSent] = useState(false)
   const [failed, setFailed] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<{ email: string }>()
-
-  function start(event: FunnelEvent) {
-    track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
-    // GA4-standard names so GTM tags (Meta/TikTok pixels) can trigger on them
-    sendGTMEvent({ event: event === "add_to_cart" ? "add_to_cart" : "begin_checkout", product: ctx.product, color: ctx.color, value: ctx.price, currency: "ILS" })
-    setSent(false)
-    setOpen(true)
-  }
+  } = useForm<{ email: string }>({ defaultValues: { email: defaultEmail ?? "" } })
 
   async function onSubmit({ email }: { email: string }) {
     setFailed(false)
@@ -41,17 +56,14 @@ export function BuyButtons({ ctx, className }: { ctx: Ctx; className?: string })
     setSent(true)
   }
 
+  // Closing without leaving an email is its own funnel signal.
+  function setOpen(next: boolean) {
+    if (!next && !sent) track({ event: "dialog_closed", ...ctx, page: location.pathname, attribution: getAttribution() })
+    onOpenChange(next)
+  }
+
   return (
     <>
-      <div className={className}>
-        <Button size="lg" className="w-full" onClick={() => start("add_to_cart")}>
-          <ShoppingBagIcon /> הוספה לסל
-        </Button>
-        <Button size="lg" variant="outline" className="w-full" onClick={() => start("checkout_initiated")}>
-          <ZapIcon /> לקנייה מהירה
-        </Button>
-      </div>
-
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="gap-6 rounded-3xl p-8 sm:max-w-lg">
           {sent ? (

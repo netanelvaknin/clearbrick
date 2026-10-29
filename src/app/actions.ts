@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers"
 
-const EVENTS = ["add_to_cart", "checkout_initiated", "notify_me", "contact", "whatsapp"] as const
+const EVENTS = ["add_to_cart", "checkout_initiated", "checkout_view", "checkout_details", "dialog_closed", "notify_me", "contact", "whatsapp"] as const
 export type FunnelEvent = (typeof EVENTS)[number]
 
 export type TrackPayload = {

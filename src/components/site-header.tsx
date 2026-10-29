@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo"
 import { cn } from "@/lib/utils"
 
 const NAV = [
-  { href: "/products/arch-bookshelf", label: "מדף הקשת" },
+  { href: "/products/arch-bookshelf", label: "ספריית לונה" },
   { href: "/products/bedside-table", label: "שידת הלילה", badge: "חדש" },
   { href: "/#why", label: "למה אקריליק" },
   { href: "/#about", label: "עלינו" },

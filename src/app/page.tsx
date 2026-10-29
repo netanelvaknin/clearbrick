@@ -32,7 +32,7 @@ const STEPS = [
 const FAQ = [
   { q: "אקריליק זה כמו פלסטיק?", a: "אקריליק הוא חומר שקוף כמו זכוכית, אבל קל וחזק ממנה בהרבה ולא מתנפץ. בגלל זה הוא מושלם לרהיטים, גם בבית עם ילדים." },
   { q: "איך מנקים?", a: "מטלית מיקרופייבר רכה ומעט מים או סבון עדין. לא מומלץ להשתמש בחומרים שוחקים או באלכוהול." },
-  { q: "כמה משקל המדפים מחזיקים?", a: "כל קומה במדף הקשת מחזיקה בנוחות ספרים, עציצים ופריטי נוי. פשוט פזרו את המשקל לאורך המדף." },
+  { q: "כמה משקל המדפים מחזיקים?", a: "כל קומה בספריית לונה מחזיקה בנוחות ספרים, עציצים ופריטי נוי. פשוט פזרו את המשקל לאורך המדף." },
   { q: "המשלוח באמת חינם?", a: "כן. משלוח עד הבית בחינם לכל הזמנה, בלי מינימום ובלי אותיות קטנות." },
   { q: "ואם זה לא מתאים לי?", a: "יש לכם 14 יום מרגע שהרהיט הגיע. לא התאהבתם? שלחו לנו הודעה ונסדר החזרה." },
   { q: "התשלום באתר מאובטח?", a: "כן. כל פרטי התשלום עוברים בחיבור מוצפן SSL ואנחנו לא שומרים את פרטי הכרטיס שלכם." },
@@ -40,19 +40,19 @@ const FAQ = [
 ]
 
 export default function Home() {
-  const arch = getProduct("arch-bookshelf")!
+  const shelf = getProduct("arch-bookshelf")!
   const bedside = getProduct("bedside-table")!
 
   return (
     <>
       {/* Hero */}
-      {/* Mobile: full-screen photo card with oversized type and glass controls. Desktop: split layout with arch image. */}
+      {/* Mobile: full-screen photo card with oversized type and glass controls. Desktop: split layout with shelf image. */}
       <section className="container-site pt-3 pb-10 md:grid md:grid-cols-[1.1fr_1fr] md:items-center md:gap-10 md:pt-16 md:pb-24">
         <div className="relative h-[calc(100svh-6rem)] min-h-[34rem] overflow-hidden rounded-[2rem] md:order-last md:mx-auto md:h-auto md:min-h-0 md:w-full md:max-w-lg md:overflow-visible md:rounded-none">
-          <div className="absolute inset-0 overflow-hidden bg-card md:relative md:aspect-[3/4] md:rounded-t-full md:rounded-b-[2rem]">
+          <div className="absolute inset-0 overflow-hidden bg-card md:relative md:aspect-[3/4] md:rounded-[2.5rem]">
             <Image
-              src={arch.images[0].src}
-              alt={arch.images[0].alt}
+              src={shelf.images[0].src}
+              alt={shelf.images[0].alt}
               fill
               priority
               sizes="(min-width: 768px) 45vw, 100vw"
@@ -69,11 +69,11 @@ export default function Home() {
               </span>
               <Link
                 href="/products/arch-bookshelf"
-                aria-label="4 צבעים למדף הקשת"
+                aria-label="4 צבעים לספריית לונה"
                 className="flex items-center gap-2 rounded-full border border-white/25 bg-white/15 py-1.5 ps-1.5 pe-3 text-sm font-semibold whitespace-nowrap backdrop-blur-md"
               >
                 <span className="flex -space-x-2 rtl:space-x-reverse">
-                  {arch.colors.map((c) => (
+                  {shelf.colors.map((c) => (
                     <span key={c.id} className="size-6 rounded-full border-2 border-white/80" style={{ background: c.swatch }} />
                   ))}
                 </span>
@@ -86,7 +86,7 @@ export default function Home() {
                 href="/products/arch-bookshelf"
                 className="motion-safe:animate-rise w-fit rounded-full border border-white/25 bg-white/15 px-4 py-2 text-base font-semibold backdrop-blur-md"
               >
-                {arch.name} · {formatPrice(arch.price)}
+                {shelf.name} · {formatPrice(shelf.price)}
               </Link>
               <h1 className="motion-safe:animate-rise text-[19vw] leading-[0.82] font-black tracking-[-0.05em] [animation-delay:80ms]">
                 שקוף.
@@ -179,17 +179,17 @@ export default function Home() {
       <section className="bg-card py-20 md:py-28">
         <div className="container-site grid items-end gap-12 md:grid-cols-2">
           <SectionHeading eyebrow="הצבעים" title={<>הצבע? הוא של הרהיט.<br />כל השאר שקוף.</>}>
-            מדף הקשת מגיע בארבעה גוונים. בחרו את זה שמתאים לחדר, או לכם.
+            ספריית לונה מגיעה בארבעה גוונים. בחרו את זה שמתאים לחדר, או לכם.
           </SectionHeading>
           <div className="flex items-end justify-start gap-3 md:justify-end md:gap-4">
-            {arch.colors.map((c, i) => (
+            {shelf.colors.map((c, i) => (
               <Link
                 key={c.id}
                 href={`/products/arch-bookshelf?color=${c.id}`}
                 className="group flex flex-col items-center gap-3"
               >
                 <span
-                  className="block w-16 rounded-t-full border border-foreground/10 transition-transform group-hover:-translate-y-2 md:w-24"
+                  className="block w-16 rounded-md border border-foreground/10 transition-transform group-hover:-translate-y-2 md:w-24"
                   style={{ background: c.swatch, height: `${9 + i * 1.5}rem`, opacity: c.id === "clear" ? 1 : 0.85 }}
                 />
                 <span className="text-base font-semibold">{c.name}</span>
@@ -202,7 +202,7 @@ export default function Home() {
       {/* Duo editorial */}
       <section className="container-site pt-20 md:pt-28">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] sm:aspect-[16/9]">
-          <Image src="/products/duo-living.jpg" alt="מדף הקשת הוורוד ושידת הלילה בגוון ענבר בסלון מואר" fill sizes="100vw" className="object-cover" />
+          <Image src="/products/duo-living.jpg" alt="ספריית לונה הוורודה ושידת הלילה בגוון ענבר בסלון מואר" fill sizes="100vw" className="object-cover" />
           <div className="absolute inset-x-4 bottom-4 flex flex-col gap-3 rounded-3xl bg-background/90 p-6 backdrop-blur md:inset-x-auto md:start-8 md:bottom-8 md:max-w-md md:p-8">
             <h2 className="text-display-sm">שני רהיטים, חדר אחד, הרבה אור.</h2>
             <p className="text-lg text-muted-foreground">שקופים מספיק כדי שהחדר ימשיך לנשום, צבעוניים מספיק כדי שישימו לב.</p>
@@ -228,7 +228,7 @@ export default function Home() {
       <section id="about" className="bg-card py-20 md:py-28 scroll-mt-28">
         <div className="container-site grid items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:order-last">
-            <Image src="/about-plans.jpg" alt="שולחן העבודה שלנו: שרטוטים של מדף הקשת ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+            <Image src="/about-plans.jpg" alt="שולחן העבודה שלנו: שרטוטים של ספריית לונה ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           </div>
           <div className="flex flex-col gap-10">
             <SectionHeading eyebrow="הסיפור שלנו" title="התחלנו מחדר שהיה צריך יותר אור.">
@@ -255,9 +255,9 @@ export default function Home() {
       <section className="container-site flex flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
-          <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על מדף הקשת הוורוד בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
-          <Tile src={arch.images[2].src} alt={arch.images[2].alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
-          <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים במדף הקשת הכחול" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
+          <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על ספריית לונה הוורודה בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
+          <Tile src={shelf.images[2].src} alt={shelf.images[2].alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
+          <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים בספריית לונה הכחולה" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
           <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
         </div>
       </section>

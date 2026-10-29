@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     locale: "he_IL",
     siteName: "clearbrick",
     url: "/",
-    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "מדף הקשת ושידת הלילה של clearbrick בסלון מואר" }],
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "ספריית לונה ושידת הלילה של clearbrick בסלון מואר" }],
   },
   twitter: { card: "summary_large_image" },
 }

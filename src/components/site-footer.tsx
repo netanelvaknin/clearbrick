@@ -15,7 +15,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-bold">חנות</h2>
           <Link href="/products/arch-bookshelf" className="text-lg text-muted-foreground hover:text-foreground">
-            מדף הקשת
+            ספריית לונה
           </Link>
           <Link href="/products/bedside-table" className="text-lg text-muted-foreground hover:text-foreground">
             שידת הלילה

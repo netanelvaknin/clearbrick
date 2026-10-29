@@ -104,6 +104,8 @@ export function ProductView({ product, initialColor }: { product: Product; initi
 
         <BuyButtons
           ctx={{ product: product.name, color: color.name, price: product.price }}
+          slug={product.slug}
+          colorId={color.id}
           className="grid gap-3"
         />
         <div className="-mt-4 flex flex-col gap-6">

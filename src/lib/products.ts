@@ -22,23 +22,24 @@ export type Product = {
 
 export const products: Product[] = [
   {
+    // Slug kept from the arch shelf so live ad links keep working.
     slug: "arch-bookshelf",
-    name: "מדף הקשת",
-    shortName: "מדף הקשת",
-    tagline: "ספרייה שקופה בקשת רכה, 4 קומות של סטייל.",
+    name: "ספריית לונה",
+    shortName: "ספריית לונה",
+    tagline: "ספרייה שקופה בקווים נקיים, 4 קומות של סטייל.",
     description:
-      "מדף אקריליק בצורת קשת שמחזיק את כל מה שאתם אוהבים, ספרים, צמחים, אוספים, ונותן לחדר להמשיך לנשום. מתאים לסלון, לחדר שינה או לחדר ילדים, ועומד יציב על הרצפה או צמוד לקיר.",
+      "ספריית אקריליק פתוחה עם גג שטוח וקווים נקיים, שמחזיקה את כל מה שאתם אוהבים, ספרים, צמחים, אוספים, ונותן לחדר להמשיך לנשום. מתאים לסלון, לחדר שינה או לחדר ילדים, ועומדת יציב על הרצפה או צמוד לקיר.",
     price: 890,
     compareAt: 1290,
     images: [
-      { src: "/products/hero-arch-pink.jpg", alt: "מדף הקשת בגוון ורוד בסלון מואר" },
-      { src: "/products/arch-clear-studio.jpg", alt: "מדף הקשת בגוון שקוף על רקע לבן" },
-      { src: "/products/arch-smoke-bedroom.jpg", alt: "מדף הקשת בגוון אפור מעושן בחדר שינה" },
-      { src: "/products/arch-blue-kids.jpg", alt: "מדף הקשת בגוון כחול בחדר ילדים" },
-      { src: "/products/arch-blue-dimensions.png", alt: "מידות מדף הקשת: גובה 120, רוחב 60, עומק 28 ס״מ" },
-      { src: "/products/arch-detail.png", alt: "תקריב על קשת האקריליק המעושן" },
+      { src: "/products/luna-living-pink.jpg", alt: "ספריית לונה בגוון ורוד בסלון באור שקיעה, עם ספרים, עציץ ואגרטלים" },
+      { src: "/products/luna-office-clear.jpg", alt: "ספריית לונה בגוון שקוף בפינת עבודה ליד שולחן עץ" },
+      { src: "/products/luna-bedroom-smoke.jpg", alt: "ספריית לונה בגוון אפור מעושן בחדר שינה ליד המיטה" },
+      { src: "/products/luna-kids-blue.jpg", alt: "ספריית לונה בגוון כחול בחדר ילדים, עם צעצועי עץ, ספרים ושטיח צבעוני" },
+      { src: "/products/luna-detail-pink.jpg", alt: "תקריב על שתי הקומות העליונות של ספריית לונה הוורודה" },
+      { src: "/products/luna-dining-clear.jpg", alt: "ספריית לונה בגוון שקוף בפינת אוכל עם כלים וספרי בישול" },
     ],
-    cardImage: { src: "/products/arch-clear-studio.jpg", alt: "מדף הקשת בגוון שקוף" },
+    cardImage: { src: "/products/luna-office-clear.jpg", alt: "ספריית לונה בגוון שקוף" },
     colors: [
       { id: "pink", name: "ורוד", swatch: "#e9b8cf", image: 0 },
       { id: "clear", name: "שקוף", swatch: "#eef1f2", image: 1 },
@@ -51,7 +52,7 @@ export const products: Product[] = [
       { label: "עומק", value: "28 ס״מ" },
       { label: "קומות", value: "4 × 30 ס״מ" },
     ],
-    features: ["אקריליק עבה ועמיד", "4 קומות אחסון", "עומד על הרצפה או צמוד לקיר", "מנגבים במטלית לחה וזהו"],
+    features: ["אקריליק עבה ועמיד", "4 קומות אחסון", "עומדת על הרצפה או צמוד לקיר", "מנגבים במטלית לחה וזהו"],
   },
   {
     slug: "bedside-table",
