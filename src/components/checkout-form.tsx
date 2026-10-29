@@ -65,8 +65,9 @@ function Checkout() {
   }
 
   // Read-only, not disabled: a disabled field can't be tapped, so it could never reopen the dialog.
+  // onClick, not onFocus: closing the dialog returns focus to the last field, which would reopen it at once.
   const lockedClass = locked ? "opacity-50" : undefined
-  const later = { readOnly: locked, onFocus: () => reveal(), className: lockedClass }
+  const later = { readOnly: locked, onClick: () => reveal(), className: lockedClass }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
