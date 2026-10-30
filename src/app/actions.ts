@@ -1,6 +1,6 @@
 "use server"
 
-import { headers } from "next/headers"
+import { cookies, headers } from "next/headers"
 
 const EVENTS = [
   "add_to_cart", "cart_open", "cart_close", "cart_remove", "cart_checkout",
@@ -47,6 +47,7 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   const body = {
     ...payload,
     message: payload.message?.slice(0, 2000),
+    userId: (await cookies()).get("cb_uid")?.value, // sticky visitor ID set by src/proxy.ts
     timestamp: new Date().toISOString(),
     userAgent: h.get("user-agent") ?? undefined,
     referer: h.get("referer") ?? undefined,
