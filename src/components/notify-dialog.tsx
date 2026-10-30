@@ -18,17 +18,22 @@ import { FieldError } from "@/components/field-error"
 export type Ctx = { product: string; color?: string; price?: number }
 
 // Add to cart opens the cart drawer; quick buy skips it and goes straight to checkout.
-export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: string; colorId: string; className?: string }) {
+// `source` tells the buy box apart from the mobile sticky bar in Make.
+export function useBuy({ ctx, slug, colorId }: { ctx: Ctx; slug: string; colorId: string }) {
   const router = useRouter()
   const cart = useCart()
 
-  function start(event: FunnelEvent) {
-    track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
+  return (event: FunnelEvent, source?: string) => {
+    track({ event, ...ctx, source, page: location.pathname, attribution: getAttribution() })
     // GA4-standard names so GTM tags (Meta/TikTok pixels) can trigger on them
     sendGTMEvent({ event: event === "add_to_cart" ? "add_to_cart" : "begin_checkout", product: ctx.product, color: ctx.color, value: ctx.price, currency: "ILS" })
     if (event === "add_to_cart") cart.add({ slug, colorId })
     else router.push(`/checkout?product=${slug}&color=${colorId}`)
   }
+}
+
+export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: string; colorId: string; className?: string }) {
+  const start = useBuy({ ctx, slug, colorId })
 
   return (
     <div className={className}>

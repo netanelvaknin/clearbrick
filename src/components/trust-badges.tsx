@@ -1,6 +1,7 @@
-import { MessageCircleIcon, RotateCcwIcon, ShieldCheckIcon, TruckIcon } from "lucide-react"
+import { DropletsIcon, GemIcon, MessageCircleIcon, RotateCcwIcon, ShieldCheckIcon, TruckIcon } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { SectionHeading } from "@/components/section-heading"
 
 const BADGES = [
   { icon: ShieldCheckIcon, title: "קנייה בטוחה" },
@@ -21,6 +22,38 @@ export function TrustBadges({ className }: { className?: string }) {
         </li>
       ))}
     </ul>
+  )
+}
+
+// Longer version of the badges for the product page. Only promises the site already makes elsewhere.
+const REASONS = [
+  { icon: TruckIcon, title: "משלוח חינם עד הבית", text: "בלי עלויות נסתרות. המחיר שאתם רואים הוא המחיר שאתם משלמים." },
+  { icon: RotateCcwIcon, title: "החזרה תוך 14 יום", text: "לא מתאים לחלל? מחזירים תוך 14 יום מקבלת המוצר." },
+  { icon: ShieldCheckIcon, title: "תשלום מאובטח", text: "כרטיס אשראי, Apple Pay, Google Pay או bit." },
+  { icon: MessageCircleIcon, title: "שירות אישי בוואטסאפ", text: "שאלה על מידות, צבע או משלוח? כתבו לנו ונחזור אליכם מהר." },
+  { icon: GemIcon, title: "אקריליק, לא זכוכית", text: "שקוף כמו זכוכית, אבל קל יותר ועמיד הרבה יותר בפני שבירה." },
+  { icon: DropletsIcon, title: "ניקוי בשנייה", text: "מטלית לחה וזהו. בלי חומרים מיוחדים." },
+]
+
+export function TrustSection({ className }: { className?: string }) {
+  return (
+    <section className={cn("container-site flex flex-col gap-10 py-20", className)}>
+      <SectionHeading eyebrow="למה clearbrick" title="קונים בראש שקט." />
+      {/* Mobile: compact rows with the icon beside the text. Desktop: 3-column cards. */}
+      <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+        {REASONS.map(({ icon: Icon, title, text }) => (
+          <li key={title} className="flex gap-4 rounded-3xl border border-border bg-card p-5 sm:flex-col sm:gap-3 sm:rounded-[2rem] md:p-8">
+            <span className="grid size-12 shrink-0 place-items-center rounded-full bg-muted">
+              <Icon className="size-6" />
+            </span>
+            <span className="flex flex-col gap-1 sm:gap-3">
+              <span className="text-lg leading-tight font-bold md:text-xl">{title}</span>
+              <span className="text-base leading-relaxed text-muted-foreground md:text-lg">{text}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
 

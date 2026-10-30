@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { CheckIcon } from "lucide-react"
-import type { Product } from "@/lib/products"
+import { CheckIcon, ShoppingBagIcon } from "lucide-react"
+import { formatPrice, type Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { Price } from "@/components/price"
-import { BuyButtons } from "@/components/notify-dialog"
+import { BuyButtons, useBuy } from "@/components/notify-dialog"
 import { PaymentMethods, TrustBadges } from "@/components/trust-badges"
 import { useProductEngagement } from "@/lib/pixel"
 
@@ -15,6 +16,26 @@ export function ProductView({ product, initialColor }: { product: Product; initi
   const [color, setColor] = useState(start)
   const [active, setActive] = useState(start.image)
   const interact = useProductEngagement(product)
+  const ctx = { product: product.name, color: color.name, price: product.price }
+  const buy = useBuy({ ctx, slug: product.slug, colorId: color.id })
+
+  // Mobile sticky bar shows only while the real buy buttons are off screen.
+  const buttons = useRef<HTMLDivElement>(null)
+  const [sticky, setSticky] = useState(false)
+  useEffect(() => {
+    const el = buttons.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setSticky(!e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  // Lift the WhatsApp button above the bar while it's showing.
+  useEffect(() => {
+    document.documentElement.style.setProperty("--sticky-bar", sticky ? "5.5rem" : "0px")
+    return () => {
+      document.documentElement.style.removeProperty("--sticky-bar")
+    }
+  }, [sticky])
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
@@ -102,12 +123,9 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           </div>
         </fieldset>
 
-        <BuyButtons
-          ctx={{ product: product.name, color: color.name, price: product.price }}
-          slug={product.slug}
-          colorId={color.id}
-          className="grid gap-3"
-        />
+        <div ref={buttons}>
+          <BuyButtons ctx={ctx} slug={product.slug} colorId={color.id} className="grid gap-3" />
+        </div>
         <div className="-mt-4 flex flex-col gap-6">
           <PaymentMethods />
           <TrustBadges />
@@ -123,6 +141,26 @@ export function ProductView({ product, initialColor }: { product: Product; initi
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Mobile sticky buy bar */}
+      <div
+        inert={!sticky}
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-40 flex items-center gap-4 border-t border-border bg-card/95 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur transition-transform duration-300 lg:hidden",
+          sticky ? "translate-y-0" : "translate-y-full"
+        )}
+      >
+        <div className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-base font-bold">{product.shortName}</span>
+          <span className="flex items-baseline gap-2">
+            <span className="text-xl font-black">{formatPrice(product.price)}</span>
+            {product.compareAt && <span className="text-muted-foreground line-through">{formatPrice(product.compareAt)}</span>}
+          </span>
+        </div>
+        <Button size="lg" onClick={() => buy("add_to_cart", "sticky")}>
+          <ShoppingBagIcon /> הוספה לסל
+        </Button>
       </div>
     </div>
   )

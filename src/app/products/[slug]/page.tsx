@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ProductView } from "@/components/product-view"
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
+import { TrustSection } from "@/components/trust-badges"
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }))
@@ -72,6 +73,8 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
           </ul>
         </div>
       </div>
+
+      <TrustSection className="pb-0" />
 
       <section className="container-site grid gap-12 py-20 md:grid-cols-[1fr_1.4fr]">
         <SectionHeading eyebrow="על המוצר" title="כל מה שצריך לדעת." />

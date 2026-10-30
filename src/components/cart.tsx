@@ -4,18 +4,21 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { LockIcon, RotateCcwIcon, ShoppingBagIcon, Trash2Icon, TruckIcon } from "lucide-react"
-import { track, type FunnelEvent } from "@/app/actions"
+import { LockIcon, MinusIcon, PlusIcon, RotateCcwIcon, ShoppingBagIcon, Trash2Icon, TruckIcon } from "lucide-react"
+import { track, type FunnelEvent, type TrackPayload } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
-import { formatPrice, getProduct } from "@/lib/products"
+import { formatPrice, getProduct, type Product, type ProductColor } from "@/lib/products"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { PaymentMethods } from "@/components/trust-badges"
 
 type Item = { slug: string; colorId: string }
-type Cart = { item?: Item; add: (item: Item) => void; show: () => void }
+export type Line = Item & { qty: number }
+export type CartLine = { line: Line; product: Product; color: ProductColor }
+type Cart = { lines: Line[]; ready: boolean; add: (item: Item) => void; show: () => void }
 
 const KEY = "cb_cart"
+const MAX_QTY = 10
 const CartContext = createContext<Cart | null>(null)
 
 export function useCart() {
@@ -24,73 +27,114 @@ export function useCart() {
   return cart
 }
 
-// One-item cart for the demand test: adding replaces the item. Kept in sessionStorage so it survives page loads.
+// Lines joined with their product and color; unknown products (renamed slugs) are dropped.
+export function resolveLines(lines: Line[]): CartLine[] {
+  return lines.flatMap((line) => {
+    const product = getProduct(line.slug)
+    const color = product?.colors.find((c) => c.id === line.colorId) ?? product?.colors[0]
+    return product && color ? [{ line, product, color }] : []
+  })
+}
+
+export function cartTotals(items: CartLine[]) {
+  const count = items.reduce((n, i) => n + i.line.qty, 0)
+  const total = items.reduce((n, i) => n + i.product.price * i.line.qty, 0)
+  const original = items.reduce((n, i) => n + (i.product.compareAt ?? i.product.price) * i.line.qty, 0)
+  return { count, total, original, saved: original - total }
+}
+
+// One summary for events about the whole cart, e.g. "ספריית לונה (אפור מעושן) ×2 + שידת הלילה (ענבר)".
+export function cartSummary(items: CartLine[]) {
+  const { count, total } = cartTotals(items)
+  const product = items.map((i) => `${i.product.name} (${i.color.name})${i.line.qty > 1 ? ` ×${i.line.qty}` : ""}`).join(" + ")
+  return { product, price: total, quantity: count }
+}
+
+// Saved in sessionStorage so the cart survives page loads. Older one-item carts are migrated.
+function load(): Line[] {
+  const saved = JSON.parse(sessionStorage.getItem(KEY) ?? "[]") as Line[] | Item
+  return Array.isArray(saved) ? saved : [{ ...saved, qty: 1 }]
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const [item, setItem] = useState<Item>()
+  const [lines, setLines] = useState<Line[]>([])
+  const [ready, setReady] = useState(false)
   const [open, setOpen] = useState(false)
   const leaving = useRef(false) // true while heading to checkout, so that close isn't logged as abandonment
 
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem(KEY)
       // eslint-disable-next-line react-hooks/set-state-in-effect -- restoring client-only storage after hydration
-      if (saved) setItem(JSON.parse(saved))
+      setLines(load())
     } catch {}
+    setReady(true)
   }, [])
 
-  const product = item && getProduct(item.slug)
-  const color = product?.colors.find((c) => c.id === item?.colorId) ?? product?.colors[0]
-  const ctx = product ? { product: product.name, color: color?.name, price: product.price } : {}
-  const log = (event: FunnelEvent) => track({ event, ...ctx, page: location.pathname, attribution: getAttribution() })
+  const items = resolveLines(lines)
+  const totals = cartTotals(items)
 
-  function save(next?: Item) {
-    setItem(next)
+  function save(next: Line[]) {
+    setLines(next)
     try {
-      if (next) sessionStorage.setItem(KEY, JSON.stringify(next))
-      else sessionStorage.removeItem(KEY)
+      sessionStorage.setItem(KEY, JSON.stringify(next))
     } catch {}
   }
 
-  function openWith(source: "add" | "header", forItem?: Item) {
-    const p = forItem ? getProduct(forItem.slug) : product
-    const c = p?.colors.find((x) => x.id === forItem?.colorId) ?? color
-    track({ event: "cart_open", source, product: p?.name, color: c?.name, price: p?.price, page: location.pathname, attribution: getAttribution() })
-    sendGTMEvent({ event: "view_cart", source, product: p?.name, value: p?.price, currency: "ILS" })
+  const log = (event: FunnelEvent, extra: Partial<TrackPayload>) =>
+    track({ event, ...extra, page: location.pathname, attribution: getAttribution() })
+  const lineCtx = ({ product, color, line }: CartLine) => ({ product: product.name, color: color.name, price: product.price, quantity: line.qty })
+
+  function openWith(source: "add" | "header", ctx: Partial<TrackPayload>) {
+    log("cart_open", { ...ctx, source })
+    sendGTMEvent({ event: "view_cart", source, product: ctx.product, value: ctx.price, currency: "ILS" })
     leaving.current = false
     setOpen(true)
   }
 
   function onOpenChange(next: boolean) {
-    if (!next && !leaving.current) log("cart_close")
+    if (!next && !leaving.current) log("cart_close", cartSummary(items))
     setOpen(next)
   }
 
-  function remove() {
-    log("cart_remove")
-    sendGTMEvent({ event: "remove_from_cart", product: product?.name, value: product?.price, currency: "ILS" })
-    save(undefined)
+  const same = (a: Item, b: Item) => a.slug === b.slug && a.colorId === b.colorId
+
+  function setQty(item: CartLine, qty: number) {
+    const next = Math.min(MAX_QTY, Math.max(1, qty))
+    if (next === item.line.qty) return
+    log("cart_update", { ...lineCtx(item), quantity: next })
+    save(lines.map((l) => (same(l, item.line) ? { ...l, qty: next } : l)))
+  }
+
+  function remove(item: CartLine) {
+    log("cart_remove", lineCtx(item))
+    sendGTMEvent({ event: "remove_from_cart", product: item.product.name, value: item.product.price * item.line.qty, currency: "ILS" })
+    save(lines.filter((l) => !same(l, item.line)))
   }
 
   function checkout() {
-    if (!item || !product) return
-    log("cart_checkout")
-    sendGTMEvent({ event: "begin_checkout", product: product.name, color: color?.name, value: product.price, currency: "ILS" })
+    if (!items.length) return
+    const summary = cartSummary(items)
+    log("cart_checkout", summary)
+    sendGTMEvent({ event: "begin_checkout", product: summary.product, value: summary.price, quantity: summary.quantity, currency: "ILS" })
     leaving.current = true
     setOpen(false)
-    router.push(`/checkout?product=${item.slug}&color=${item.colorId}`)
+    router.push("/checkout")
   }
 
   const cart: Cart = {
-    item,
-    add: (next) => {
+    lines,
+    ready,
+    // Adding the same product and color again raises its quantity instead of adding a new line.
+    add: (item) => {
+      const existing = lines.find((l) => same(l, item))
+      const next = existing ? lines.map((l) => (l === existing ? { ...l, qty: Math.min(MAX_QTY, l.qty + 1) } : l)) : [...lines, { ...item, qty: 1 }]
       save(next)
-      openWith("add", next)
+      const added = resolveLines(next.filter((l) => same(l, item)))[0]
+      openWith("add", added ? lineCtx(added) : {})
     },
-    show: () => openWith("header"),
+    show: () => openWith("header", cartSummary(items)),
   }
-
-  const saved = product?.compareAt ? product.compareAt - product.price : 0
 
   return (
     <CartContext.Provider value={cart}>
@@ -99,7 +143,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         <SheetContent side="left" className="gap-0 overflow-x-hidden bg-background p-0 data-[side=left]:w-full data-[side=left]:sm:max-w-md">
           <div className="flex items-center gap-3 border-b border-border px-6 py-5">
             <ShoppingBagIcon className="size-5" />
-            <SheetTitle className="text-xl font-bold">הסל שלך {item ? "(1)" : ""}</SheetTitle>
+            <SheetTitle className="text-xl font-bold">הסל שלך {totals.count ? `(${totals.count})` : ""}</SheetTitle>
           </div>
 
           {/* Free shipping strip: already unlocked, so the bar is full */}
@@ -112,36 +156,52 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          {product && color ? (
+          {items.length ? (
             <>
               <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-6 py-6">
-                <div className="flex gap-4">
-                  <div className="relative size-28 shrink-0 overflow-hidden rounded-2xl bg-muted">
-                    <Image src={product.images[color.image].src} alt={product.images[color.image].alt} fill sizes="112px" className="object-cover" />
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1">
-                    <span className="text-lg font-bold">{product.name}</span>
-                    <span className="text-muted-foreground">צבע: {color.name}</span>
-                    <span className="mt-auto flex items-baseline gap-2">
-                      <span className="text-xl font-black">{formatPrice(product.price)}</span>
-                      {product.compareAt && <span className="text-muted-foreground line-through">{formatPrice(product.compareAt)}</span>}
-                    </span>
-                  </div>
-                  <button onClick={remove} aria-label="הסרה מהסל" className="grid size-9 shrink-0 place-items-center self-start rounded-full transition-colors hover:bg-muted">
-                    <Trash2Icon className="size-4" />
-                  </button>
-                </div>
+                <ul className="flex flex-col gap-5">
+                  {items.map((item) => {
+                    const { line, product, color } = item
+                    const img = product.images[color.image]
+                    return (
+                      <li key={`${line.slug}-${line.colorId}`} className="flex gap-4">
+                        <div className="relative size-24 shrink-0 overflow-hidden rounded-2xl bg-muted">
+                          <Image src={img.src} alt={img.alt} fill sizes="96px" className="object-cover" />
+                        </div>
+                        <div className="flex flex-1 flex-col gap-1">
+                          <span className="text-lg leading-tight font-bold">{product.name}</span>
+                          <span className="text-muted-foreground">צבע: {color.name}</span>
+                          <div className="mt-auto flex items-center justify-between gap-2">
+                            <div className="flex items-center rounded-full border border-border">
+                              <button onClick={() => setQty(item, line.qty + 1)} disabled={line.qty >= MAX_QTY} aria-label="הוספת יחידה" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
+                                <PlusIcon className="size-4" />
+                              </button>
+                              <span className="w-6 text-center font-bold" aria-live="polite">{line.qty}</span>
+                              <button onClick={() => setQty(item, line.qty - 1)} disabled={line.qty <= 1} aria-label="הורדת יחידה" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
+                                <MinusIcon className="size-4" />
+                              </button>
+                            </div>
+                            <span className="text-lg font-black">{formatPrice(product.price * line.qty)}</span>
+                          </div>
+                        </div>
+                        <button onClick={() => remove(item)} aria-label={`הסרת ${product.name} מהסל`} className="grid size-9 shrink-0 place-items-center self-start rounded-full transition-colors hover:bg-muted">
+                          <Trash2Icon className="size-4" />
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
 
                 <dl className="flex flex-col gap-3 border-t border-border pt-5 text-base">
-                  {product.compareAt && (
+                  {totals.saved > 0 && (
                     <>
                       <div className="flex justify-between">
                         <dt className="text-muted-foreground">מחיר מקורי</dt>
-                        <dd className="text-muted-foreground line-through">{formatPrice(product.compareAt)}</dd>
+                        <dd className="text-muted-foreground line-through">{formatPrice(totals.original)}</dd>
                       </div>
                       <div className="flex justify-between">
                         <dt>הנחת השקה</dt>
-                        <dd dir="ltr" className="font-bold">-{formatPrice(saved)}</dd>
+                        <dd dir="ltr" className="font-bold">-{formatPrice(totals.saved)}</dd>
                       </div>
                     </>
                   )}
@@ -151,9 +211,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="flex justify-between border-t border-border pt-3 text-xl">
                     <dt className="font-bold">סה״כ</dt>
-                    <dd className="font-black">{formatPrice(product.price)}</dd>
+                    <dd className="font-black">{formatPrice(totals.total)}</dd>
                   </div>
-                  {saved > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">חסכתם {formatPrice(saved)} בהזמנה הזו</p>}
+                  {totals.saved > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">חסכתם {formatPrice(totals.saved)} בהזמנה הזו</p>}
                 </dl>
               </div>
 
@@ -191,14 +251,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-// Header bag icon: shows the item count and opens the drawer.
+// Header bag icon: shows the number of units and opens the drawer.
 export function CartButton() {
-  const { item, show } = useCart()
+  const { lines, show } = useCart()
+  const count = lines.reduce((n, l) => n + l.qty, 0)
   return (
     <button onClick={show} aria-label="סל קניות" className="relative grid size-11 place-items-center rounded-full transition-colors hover:bg-muted">
       <ShoppingBagIcon className="size-5" />
       <span className="absolute -top-0.5 -end-0.5 grid size-5 place-items-center rounded-full bg-foreground text-xs font-bold text-background">
-        {item ? 1 : 0}
+        {count}
       </span>
     </button>
   )
