@@ -48,10 +48,10 @@ export const products: Product[] = [
       { id: "blue", name: "כחול", swatch: "#1f3fd1", image: 3 },
     ],
     specs: [
-      { label: "גובה", value: "120 ס״מ" },
+      { label: "גובה", value: "160 ס״מ" },
       { label: "רוחב", value: "60 ס״מ" },
-      { label: "עומק", value: "28 ס״מ" },
-      { label: "קומות", value: "4 × 30 ס״מ" },
+      { label: "עומק", value: "30 ס״מ" },
+      { label: "קומות", value: "4 × 40 ס״מ" },
     ],
     features: ["אקריליק עבה ועמיד", "4 קומות אחסון", "עומדת על הרצפה או צמוד לקיר", "מנגבים במטלית לחה וזהו"],
   },
