@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { LockIcon } from "lucide-react"
+import { LockIcon, MessageCircleIcon } from "lucide-react"
 import { track } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Price } from "@/components/price"
 import { OutOfStockDialog } from "@/components/notify-dialog"
 import { PaymentMethods } from "@/components/trust-badges"
+import { PHONE } from "@/components/whatsapp-button"
 
 // Fake-door checkout: email comes first. Once the visitor enters a valid email (or skips ahead to another
 // field / submits), we log it as proof of real buying intent, lock the rest and show the out-of-stock dialog.
@@ -100,6 +101,16 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         }}
         className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-6 md:p-10"
       >
+        {/* Progress: frames the email as step 1 of 3, so asking for it first doesn't feel odd */}
+        <ol className="flex items-center gap-2 text-sm font-bold">
+          {["פרטים", "משלוח", "תשלום"].map((step, i) => (
+            <li key={step} className={cn("flex items-center gap-2", i > 0 && "text-muted-foreground")}>
+              {i > 0 && <span className="h-px w-6 bg-border" />}
+              <span className={cn("grid size-6 place-items-center rounded-full text-xs", i === 0 ? "bg-foreground text-background" : "bg-muted")}>{i + 1}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
         <h2 className="text-2xl font-bold">פרטים למשלוח</h2>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2 sm:col-span-2">
@@ -114,6 +125,9 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
               className="text-start"
               onBlur={(e) => EMAIL.test(e.target.value.trim()) && reveal(e.target.value.trim())}
             />
+            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <LockIcon className="size-3.5" /> לא נחייב אתכם עכשיו · התשלום בשלב האחרון
+            </p>
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
             <Label htmlFor="co-name">שם מלא</Label>
@@ -140,6 +154,15 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
           <LockIcon /> להמשך לתשלום
         </Button>
         <PaymentMethods />
+        <a
+          href={`https://wa.me/${PHONE}?text=${encodeURIComponent("היי, יש לי שאלה לפני שאני מזמין/ה 🙂")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => track({ event: "whatsapp", ...ctx, source: "checkout", page: location.pathname, attribution: getAttribution() })}
+          className="flex items-center justify-center gap-2 rounded-2xl bg-muted px-4 py-3 text-base font-bold transition-colors hover:bg-muted/70"
+        >
+          <MessageCircleIcon className="size-5" /> שאלה לפני שמזמינים? דברו איתנו בוואטסאפ
+        </a>
       </form>
 
       <aside className="order-first flex flex-col gap-6 self-start lg:order-none rounded-[2rem] border border-border bg-card p-6 md:p-8 lg:sticky lg:top-32">

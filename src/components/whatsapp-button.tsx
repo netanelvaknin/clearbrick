@@ -7,7 +7,7 @@ import { getAttribution } from "@/lib/attribution"
 import { getProduct } from "@/lib/products"
 import { pixel } from "@/lib/pixel"
 
-const PHONE = "972524835373"
+export const PHONE = "972524835373"
 
 export function WhatsAppButton() {
   const pathname = usePathname()

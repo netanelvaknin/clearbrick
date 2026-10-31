@@ -92,8 +92,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setOpen(true)
   }
 
-  function onOpenChange(next: boolean) {
-    if (!next && !leaving.current) log("cart_close", cartSummary(items))
+  // `source` says how the cart was closed: the "continue shopping" button, the X, a tap outside, or Escape.
+  const CLOSE_SOURCE: Record<string, string> = { "close-press": "x", "outside-press": "outside", "escape-key": "escape" }
+  function onOpenChange(next: boolean, details?: { reason?: string } | string) {
+    const source = typeof details === "string" ? details : CLOSE_SOURCE[details?.reason ?? ""] ?? details?.reason
+    if (!next && !leaving.current) log("cart_close", { ...cartSummary(items), source })
     setOpen(next)
   }
 
@@ -221,7 +224,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 <Button size="lg" className="w-full" onClick={checkout}>
                   <LockIcon /> למעבר לתשלום
                 </Button>
-                <Button size="lg" variant="outline" className="w-full" onClick={() => onOpenChange(false)}>
+                <Button size="lg" variant="outline" className="w-full" onClick={() => onOpenChange(false, "continue")}>
                   להמשיך בקניות
                 </Button>
                 <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -237,7 +240,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  onOpenChange(false)
+                  onOpenChange(false, "collection")
                   router.push("/#collection")
                 }}
               >
