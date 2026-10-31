@@ -92,12 +92,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setOpen(true)
   }
 
-  // `source` says how the cart was closed: the "continue shopping" button, the X, a tap outside, or Escape.
-  const CLOSE_SOURCE: Record<string, string> = { "close-press": "x", "outside-press": "outside", "escape-key": "escape" }
-  function onOpenChange(next: boolean, details?: { reason?: string } | string) {
-    const source = typeof details === "string" ? details : CLOSE_SOURCE[details?.reason ?? ""] ?? details?.reason
-    if (!next && !leaving.current) log("cart_close", { ...cartSummary(items), source })
+  function onOpenChange(next: boolean) {
+    if (!next && !leaving.current) log("cart_close", cartSummary(items))
     setOpen(next)
+  }
+
+  // Its own event, so "continue shopping" isn't mixed up with closing the cart (X, outside, Escape).
+  function continueShopping() {
+    log("continue_shopping_click", cartSummary(items))
+    setOpen(false)
   }
 
   const same = (a: Item, b: Item) => a.slug === b.slug && a.colorId === b.colorId
@@ -224,7 +227,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 <Button size="lg" className="w-full" onClick={checkout}>
                   <LockIcon /> למעבר לתשלום
                 </Button>
-                <Button size="lg" variant="outline" className="w-full" onClick={() => onOpenChange(false, "continue")}>
+                <Button size="lg" variant="outline" className="w-full" onClick={continueShopping}>
                   להמשיך בקניות
                 </Button>
                 <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -240,7 +243,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  onOpenChange(false, "collection")
+                  onOpenChange(false)
                   router.push("/#collection")
                 }}
               >
