@@ -55,6 +55,10 @@ function EmptyCheckout() {
 
 function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   const totals = cartTotals(items)
+  // Only one coupon exists: CB2026, 10% off the order total.
+  const [coupon, setCoupon] = useState<string>()
+  const discount = coupon ? Math.round(totals.total * COUPON_OFF) : 0
+  const pay = totals.total - discount
   // One item keeps its own color in events; several items are summarized into one line.
   const ctx = items.length === 1 && items[0].line.qty === 1 ? { product: items[0].product.name, color: items[0].color.name, price: items[0].product.price } : cartSummary(items)
 
@@ -80,8 +84,8 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
     if (!logged.current) {
       logged.current = true
       track({ event: "checkout_details", ...ctx, email: valid, page: location.pathname, attribution: getAttribution() })
-      pixel("track", "AddPaymentInfo", { content_name: ctx.product, value: totals.total, num_items: totals.count, currency: "ILS" })
-      sendGTMEvent({ event: "add_shipping_info", product: ctx.product, value: totals.total, quantity: totals.count, currency: "ILS" })
+      pixel("track", "AddPaymentInfo", { content_name: ctx.product, value: pay, num_items: totals.count, currency: "ILS" })
+      sendGTMEvent({ event: "add_shipping_info", product: ctx.product, value: pay, quantity: totals.count, currency: "ILS" })
       setLocked(true)
     }
     setOpen(true)
@@ -190,16 +194,66 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
             <dt>משלוח</dt>
             <dd className="font-bold">חינם</dd>
           </div>
+          {coupon && (
+            <div className="flex justify-between">
+              <dt>קופון {coupon}</dt>
+              <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
+            </div>
+          )}
           <div className="flex items-center justify-between">
             <dt className="font-bold">סה״כ</dt>
             <dd>
-              <Price price={totals.total} compareAt={totals.saved > 0 ? totals.original : undefined} />
+              <Price price={pay} compareAt={pay < totals.original ? totals.original : undefined} />
             </dd>
           </div>
         </dl>
+        <CouponField
+          applied={coupon}
+          onApply={(code) => {
+            const valid = code === COUPON
+            track({ event: valid ? "coupon_applied" : "coupon_invalid", ...ctx, offer: code, page: location.pathname, attribution: getAttribution() })
+            if (valid) setCoupon(code)
+            return valid
+          }}
+          onRemove={() => setCoupon(undefined)}
+        />
       </aside>
 
       <OutOfStockDialog key={email} ctx={ctx} defaultEmail={email} open={open} onOpenChange={setOpen} />
     </div>
+  )
+}
+
+const COUPON = "CB2026"
+const COUPON_OFF = 0.1
+
+function CouponField({ applied, onApply, onRemove }: { applied?: string; onApply: (code: string) => boolean; onRemove: () => void }) {
+  const [code, setCode] = useState("")
+  const [error, setError] = useState(false)
+
+  if (applied)
+    return (
+      <p className="flex items-center justify-between rounded-2xl bg-muted px-4 py-3 text-base">
+        <span className="font-bold">✓ קופון {applied} הופעל · 10% הנחה</span>
+        <button type="button" onClick={onRemove} className="text-muted-foreground underline">הסרה</button>
+      </p>
+    )
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        const clean = code.trim().toUpperCase()
+        if (clean) setError(!onApply(clean))
+      }}
+      className="flex flex-col gap-2"
+    >
+      <Label htmlFor="co-coupon" className="sr-only">קוד קופון</Label>
+      <div className="flex gap-2">
+        <Input id="co-coupon" value={code} onChange={(e) => (setCode(e.target.value), setError(false))} autoComplete="off" placeholder="קוד קופון" aria-invalid={error} />
+        <Button type="submit" variant="outline" size="lg" className="shrink-0">החלה</Button>
+      </div>
+      {error && <p className="text-sm text-destructive">הקוד לא תקין</p>}
+    </form>
   )
 }

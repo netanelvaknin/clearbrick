@@ -4,7 +4,7 @@ import { cookies, headers } from "next/headers"
 
 const EVENTS = [
   "add_to_cart", "cart_open", "cart_close", "cart_update", "cart_remove", "cart_checkout", "continue_shopping_click",
-  "checkout_initiated", "checkout_view", "checkout_details", "dialog_closed", "notify_me", "contact", "whatsapp",
+  "checkout_initiated", "checkout_view", "checkout_details", "coupon_applied", "coupon_invalid", "dialog_closed", "notify_me", "contact", "whatsapp",
 ] as const
 export type FunnelEvent = (typeof EVENTS)[number]
 
