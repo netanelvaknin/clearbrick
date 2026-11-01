@@ -32,6 +32,10 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   if (!EVENTS.includes(payload.event)) return { ok: false }
   if (payload.email !== undefined && !EMAIL.test(payload.email)) return { ok: false }
 
+  // Friends and our own visits (marked with ?internal=1, see components/tags.tsx) never reach the Sheet.
+  const jar = await cookies()
+  if (jar.get("cb_internal")?.value === "1") return { ok: true }
+
   // Only the live site writes to the Sheet; local and preview runs just log.
   if (process.env.VERCEL_ENV !== "production") {
     console.info("[track] skipped outside production:", payload.event)
@@ -48,7 +52,7 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   const body = {
     ...payload,
     message: payload.message?.slice(0, 2000),
-    userId: (await cookies()).get("cb_uid")?.value, // sticky visitor ID set by src/proxy.ts
+    userId: jar.get("cb_uid")?.value, // sticky visitor ID set by src/proxy.ts
     timestamp: new Date().toISOString(),
     userAgent: h.get("user-agent") ?? undefined,
     referer: h.get("referer") ?? undefined,

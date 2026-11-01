@@ -2,13 +2,13 @@ import type { Metadata } from "next"
 import { Heebo } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { GoogleTagManager } from "@next/third-parties/google"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { AttributionCapture } from "@/components/attribution-capture"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { CartProvider } from "@/components/cart"
+import { Tags } from "@/components/tags"
 import "./globals.css"
 
 const GTM_ID = "GTM-MCQ9SFVR"
@@ -34,7 +34,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="he" dir="rtl" className={`${heebo.className} h-full antialiased`}>
-      {IS_PROD && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="flex min-h-full flex-col">
         {IS_PROD && (
           <noscript>
@@ -54,6 +53,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <SiteFooter />
           </SmoothScroll>
         </CartProvider>
+        {/* GTM (Meta pixel, Clarity) loads client-side so friends marked with ?internal=1 can be skipped */}
+        {IS_PROD && <Tags />}
         <WhatsAppButton />
         <Analytics />
         <SpeedInsights />
