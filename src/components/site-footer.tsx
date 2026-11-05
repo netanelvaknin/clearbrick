@@ -20,6 +20,9 @@ export function SiteFooter() {
           <Link href="/products/bedside-table" className="text-lg text-muted-foreground hover:text-foreground">
             שידת הלילה
           </Link>
+          <Link href="/products/acrylic-desk" className="text-lg text-muted-foreground hover:text-foreground">
+            שולחן אור
+          </Link>
         </div>
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-bold">דברו איתנו</h2>

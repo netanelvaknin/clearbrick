@@ -76,7 +76,7 @@ export const products: Product[] = [
       { id: "amber", name: "ענבר", swatch: "#d9822b", image: 0 },
       { id: "pink", name: "ורוד", swatch: "#e9b8cf", image: 1 },
       { id: "clear", name: "שקוף", swatch: "#eef1f2", image: 2 },
-      { id: "smoke", name: "אפור מעושן", swatch: "#6f6a64", image: 3 },
+      { id: "smoke", name: "אפור מעושן", swatch: "#6f6a64", image: 2 },
       { id: "blue", name: "כחול", swatch: "#1f3fd1", image: 4 },
     ],
     specs: [
@@ -86,6 +86,33 @@ export const products: Product[] = [
       { label: "אחסון", value: "מתלה מגזינים" },
     ],
     features: ["4 גלגלים, זזה בקלות", "מתלה מגזינים מובנה", "2 משטחים לאחסון", "שקופה, אז החדר נראה גדול יותר"],
+  },
+  {
+    slug: "acrylic-desk",
+    name: "שולחן אור",
+    shortName: "שולחן אור",
+    tagline: "שולחן עבודה שקוף שכמעט נעלם בחדר.",
+    description:
+      "שולחן עבודה מאקריליק בעובי 8 מ״מ, בשקוף או באפור מעושן, עם מדף נוסף מתחת למשטח ללפטופ, מחברות ומגזינים. רואים דרכו, אז גם חדר קטן נשאר פתוח ומואר. מושלם לפינת לפטופ בסלון, לפינת איפור בחדר השינה או לשיעורי בית בחדר הילדים.",
+    price: 1190,
+    compareAt: 1590,
+    images: [
+      { src: "/products/desk-studio-clear-v3.jpg", alt: "שולחן אור מאקריליק שקוף על רקע בהיר, עם לפטופ סגור וספל על המשטח ומחברות על המדף" },
+      { src: "/products/desk-dims-v3.jpg", alt: "מידות שולחן אור: רוחב 100 ס״מ, עומק 50 ס״מ, גובה 75 ס״מ, אקריליק בעובי 8 מ״מ" },
+      { src: "/products/desk-studio-smoke-v3.jpg", alt: "שולחן אור בגוון אפור מעושן על רקע בהיר, עם לפטופ סגור וספל על המשטח ומחברות על המדף" },
+    ],
+    cardImage: { src: "/products/desk-card-v3.jpg", alt: "שולחן אור מאקריליק שקוף על רקע בהיר" },
+    colors: [
+      { id: "clear", name: "שקוף", swatch: "#eef1f2", image: 0 },
+      { id: "smoke", name: "אפור מעושן", swatch: "#6f6a64", image: 2 },
+    ],
+    specs: [
+      { label: "רוחב", value: "100 ס״מ" },
+      { label: "עומק", value: "50 ס״מ" },
+      { label: "גובה", value: "75 ס״מ" },
+      { label: "עובי", value: "8 מ״מ" },
+    ],
+    features: ["אקריליק בעובי 8 מ״מ, שקוף או מעושן", "מדף ללפטופ ולמחברות מתחת למשטח", "משטח עבודה ברוחב 100 ס״מ", "מנגבים במטלית לחה וזהו"],
   },
 ]
 

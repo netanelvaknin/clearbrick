@@ -170,8 +170,8 @@ export default function Home() {
 
       {/* Collection */}
       <section id="collection" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="הקולקציה" title="שני רהיטים. אינסוף סטייל." />
-        <div className="grid gap-10 md:grid-cols-2 md:gap-8">
+        <SectionHeading eyebrow="הקולקציה" title="שלושה רהיטים. אינסוף סטייל." />
+        <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} priority={i === 0} />
           ))}
