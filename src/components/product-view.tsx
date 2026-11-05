@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
-import { CheckIcon, ShoppingBagIcon } from "lucide-react"
+import { CheckIcon, ShoppingBagIcon, ZoomInIcon } from "lucide-react"
+import { GalleryLightbox } from "@/components/gallery-lightbox"
 import { formatPrice, type Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -16,6 +17,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
   const start = product.colors.find((c) => c.id === initialColor) ?? product.colors[0]
   const [color, setColor] = useState(start)
   const [active, setActive] = useState(start.image)
+  const [zoom, setZoom] = useState(false)
   const interact = useProductEngagement(product)
   const [viewport, embla] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: start.image })
   // Swipe → update thumbnails/dots; log one gallery interaction per user swipe.
@@ -86,6 +88,17 @@ export function ProductView({ product, initialColor }: { product: Product; initi
               ))}
             </div>
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              setZoom(true)
+              interact("gallery", "zoom")
+            }}
+            aria-label="הגדלת התמונה"
+            className="absolute top-4 end-4 flex size-11 items-center justify-center rounded-full bg-background/85 text-foreground shadow-md backdrop-blur lg:hidden"
+          >
+            <ZoomInIcon className="size-5" />
+          </button>
           {product.images.length > 1 && (
             <div className="pointer-events-none absolute inset-x-0 bottom-[9%] flex justify-center gap-1.5">
               {product.images.map((img, i) => (
@@ -117,6 +130,8 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           ))}
         </div>
       </div>
+
+      <GalleryLightbox images={product.images} open={zoom} index={active} onOpenChange={setZoom} onIndexChange={setActive} />
 
       {/* Buy box */}
       <div className="flex flex-col gap-8 rounded-[2rem] border border-border bg-card p-6 md:p-10">
