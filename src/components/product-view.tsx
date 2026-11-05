@@ -87,7 +87,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
             </div>
           </div>
           {product.images.length > 1 && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center gap-1.5">
+            <div className="pointer-events-none absolute inset-x-0 bottom-[9%] flex justify-center gap-1.5">
               {product.images.map((img, i) => (
                 <span
                   key={img.src}
