@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import useEmblaCarousel from "embla-carousel-react"
 import { CheckIcon, ShoppingBagIcon } from "lucide-react"
 import { formatPrice, type Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
@@ -16,6 +17,31 @@ export function ProductView({ product, initialColor }: { product: Product; initi
   const [color, setColor] = useState(start)
   const [active, setActive] = useState(start.image)
   const interact = useProductEngagement(product)
+  const [viewport, embla] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: start.image })
+  // Swipe → update thumbnails/dots; log one gallery interaction per user swipe.
+  useEffect(() => {
+    if (!embla) return
+    let from = -1
+    const onSelect = () => setActive(embla.selectedScrollSnap())
+    const onDown = () => (from = embla.selectedScrollSnap())
+    const onSettle = () => {
+      const i = embla.selectedScrollSnap()
+      if (from !== -1 && i !== from) interact("gallery", String(i + 1))
+      from = -1
+    }
+    embla.on("select", onSelect)
+    embla.on("pointerDown", onDown)
+    embla.on("settle", onSettle)
+    return () => {
+      embla.off("select", onSelect)
+      embla.off("pointerDown", onDown)
+      embla.off("settle", onSettle)
+    }
+  }, [embla, interact])
+  // Thumbnail / color picks → slide there.
+  useEffect(() => {
+    if (embla && embla.selectedScrollSnap() !== active) embla.scrollTo(active)
+  }, [embla, active])
   const ctx = { product: product.name, color: color.name, price: product.price }
   const buy = useBuy({ ctx, slug: product.slug, colorId: color.id })
 
@@ -41,18 +67,35 @@ export function ProductView({ product, initialColor }: { product: Product; initi
     <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
       {/* Gallery */}
       <div className="flex flex-col gap-4 lg:sticky lg:top-32 lg:self-start">
-        <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-card">
-          {product.images.map((img, i) => (
-            <Image
-              key={img.src}
-              src={img.src}
-              alt={img.alt}
-              fill
-              priority={i === start.image}
-              sizes="(min-width: 1024px) 55vw, 100vw"
-              className={cn("object-cover transition-opacity duration-500", i === active ? "opacity-100" : "opacity-0")}
-            />
-          ))}
+        {/* Swipeable, endless loop (last ↔ first) */}
+        <div className="relative">
+          <div ref={viewport} dir="rtl" className="overflow-hidden rounded-[2rem] bg-card">
+            <div className="flex touch-pan-y">
+              {product.images.map((img, i) => (
+                <div key={img.src} className="relative aspect-square min-w-0 shrink-0 grow-0 basis-full">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    priority={i === start.image}
+                    sizes="(min-width: 1024px) 55vw, 100vw"
+                    className="object-cover"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          {product.images.length > 1 && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center gap-1.5">
+              {product.images.map((img, i) => (
+                <span
+                  key={img.src}
+                  className={cn("h-1.5 rounded-full bg-foreground transition-all", i === active ? "w-5 opacity-80" : "w-1.5 opacity-25")}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-4 gap-3 sm:grid-cols-6">
           {product.images.map((img, i) => (
