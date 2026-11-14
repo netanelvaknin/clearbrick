@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
 import { CheckIcon, ShoppingBagIcon, ZoomInIcon } from "lucide-react"
@@ -16,15 +16,27 @@ import { useProductEngagement } from "@/lib/pixel"
 export function ProductView({ product, initialColor }: { product: Product; initialColor?: string }) {
   const start = product.colors.find((c) => c.id === initialColor) ?? product.colors[0]
   const [color, setColor] = useState(start)
+  // Every color has its own same-angle shot in the gallery. Picking a color jumps there instantly (so only the
+  // color seems to change); swiping or tapping onto a color shot selects that color.
+  const slides = product.images
   const [active, setActive] = useState(start.image)
   const [zoom, setZoom] = useState(false)
   const interact = useProductEngagement(product)
   const [viewport, embla] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: start.image })
+  const jump = useRef(false)
+  const show = useCallback(
+    (i: number) => {
+      setActive(i)
+      const c = product.colors.find((c) => c.image === i)
+      if (c) setColor(c)
+    },
+    [product.colors]
+  )
   // Swipe → update thumbnails/dots; log one gallery interaction per user swipe.
   useEffect(() => {
     if (!embla) return
     let from = -1
-    const onSelect = () => setActive(embla.selectedScrollSnap())
+    const onSelect = () => show(embla.selectedScrollSnap())
     const onDown = () => (from = embla.selectedScrollSnap())
     const onSettle = () => {
       const i = embla.selectedScrollSnap()
@@ -39,10 +51,11 @@ export function ProductView({ product, initialColor }: { product: Product; initi
       embla.off("pointerDown", onDown)
       embla.off("settle", onSettle)
     }
-  }, [embla, interact])
+  }, [embla, interact, show])
   // Thumbnail / color picks → slide there.
   useEffect(() => {
-    if (embla && embla.selectedScrollSnap() !== active) embla.scrollTo(active)
+    if (embla && embla.selectedScrollSnap() !== active) embla.scrollTo(active, jump.current)
+    jump.current = false
   }, [embla, active])
   const ctx = { product: product.name, color: color.name, price: product.price }
   const buy = useBuy({ ctx, slug: product.slug, colorId: color.id })
@@ -73,17 +86,9 @@ export function ProductView({ product, initialColor }: { product: Product; initi
         <div className="relative">
           <div ref={viewport} dir="rtl" className="overflow-hidden rounded-[2rem] bg-card">
             <div className="flex touch-pan-y">
-              {product.images.map((img, i) => (
+              {slides.map((img, i) => (
                 <div key={img.src} className="relative aspect-square min-w-0 shrink-0 grow-0 basis-full">
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    priority={i === start.image}
-                    sizes="(min-width: 1024px) 55vw, 100vw"
-                    className="object-cover"
-                    draggable={false}
-                  />
+                  <Image src={img.src} alt={img.alt} fill priority={i === start.image} sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" draggable={false} />
                 </div>
               ))}
             </div>
@@ -99,9 +104,9 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           >
             <ZoomInIcon className="size-5" />
           </button>
-          {product.images.length > 1 && (
+          {slides.length > 1 && (
             <div className="pointer-events-none absolute inset-x-0 bottom-[9%] flex justify-center gap-1.5">
-              {product.images.map((img, i) => (
+              {slides.map((img, i) => (
                 <span
                   key={img.src}
                   className={cn("h-1.5 rounded-full bg-foreground transition-all", i === active ? "w-5 opacity-80" : "w-1.5 opacity-25")}
@@ -111,11 +116,11 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           )}
         </div>
         <div className="grid grid-cols-4 gap-3 sm:grid-cols-6">
-          {product.images.map((img, i) => (
+          {slides.map((img, i) => (
             <button
               key={img.src}
               onClick={() => {
-                setActive(i)
+                show(i)
                 interact("gallery", String(i + 1))
               }}
               aria-label={`תמונה ${i + 1}`}
@@ -131,7 +136,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
         </div>
       </div>
 
-      <GalleryLightbox images={product.images} open={zoom} index={active} onOpenChange={setZoom} onIndexChange={setActive} />
+      <GalleryLightbox images={slides} open={zoom} index={active} onOpenChange={setZoom} onIndexChange={show} />
 
       {/* Buy box */}
       <div className="flex flex-col gap-8 rounded-[2rem] border border-border bg-card p-6 md:p-10">
@@ -149,6 +154,14 @@ export function ProductView({ product, initialColor }: { product: Product; initi
             <Price price={product.price} compareAt={product.compareAt} large />
           </div>
           <p className="text-xl leading-relaxed text-muted-foreground">{product.tagline}</p>
+          {/* Sizes right under the tagline: the first thing people check on furniture. */}
+          <ul aria-label="מידות" className="flex flex-wrap gap-2">
+            {product.specs.map((s) => (
+              <li key={s.label} className="rounded-full border border-border bg-background px-4 py-1.5 text-base">
+                <span className="text-muted-foreground">{s.label}</span> <span className="font-bold">{s.value}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <fieldset className="flex flex-col gap-4">
@@ -165,6 +178,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
                   checked={c.id === color.id}
                   onChange={() => {
                     setColor(c)
+                    jump.current = true
                     setActive(c.image)
                     interact("color", c.name)
                   }}

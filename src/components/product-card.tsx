@@ -16,10 +16,10 @@ export function ProductCard({ product, priority }: { product: Product; priority?
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <span className="absolute top-5 start-5 rounded-full bg-background/90 px-4 py-2 text-sm font-bold backdrop-blur">
+        <span className="absolute top-5 start-5 rounded-full border border-white/60 bg-white/40 px-4 py-2 text-sm font-bold shadow-[inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-md">
           {product.colors.length > 1 ? `${product.colors.length} צבעים` : product.colors[0].name}
         </span>
-        <span className="absolute bottom-5 end-5 grid size-14 place-items-center rounded-full bg-foreground text-background transition-transform group-hover:-translate-y-1">
+        <span className="absolute bottom-5 end-5 grid size-14 place-items-center rounded-full border border-white/25 bg-foreground/70 text-background shadow-[inset_0_1px_0_rgb(255_255_255/0.3)] backdrop-blur-md transition-transform group-hover:-translate-y-1">
           <ArrowUpLeftIcon className="size-6" />
         </span>
       </div>

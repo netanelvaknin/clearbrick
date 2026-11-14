@@ -29,8 +29,8 @@ export function SiteFooter() {
           <Link href="/contact" className="text-lg text-muted-foreground hover:text-foreground">
             צרו קשר
           </Link>
-          <a href="mailto:clearbrickisrael@gmail.com" dir="ltr" className="w-fit text-lg text-muted-foreground hover:text-foreground">
-            clearbrickisrael@gmail.com
+          <a href="mailto:info@clearbrick.co.il" dir="ltr" className="w-fit text-lg text-muted-foreground hover:text-foreground">
+            info@clearbrick.co.il
           </a>
         </div>
       </div>

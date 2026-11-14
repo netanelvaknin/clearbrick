@@ -111,7 +111,6 @@ export function OutOfStockDialog({ ctx, defaultEmail, open, onOpenChange }: { ct
                     type="email"
                     dir="ltr"
                     autoComplete="email"
-                    placeholder="you@example.com"
                     className="text-start"
                     aria-invalid={!!errors.email}
                     {...register("email", {

@@ -7,9 +7,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
+        // "Clear brick" glass: translucent fill + blur + a light top edge. Dark tint keeps contrast for the main CTA.
+        default:
+          "border-white/15 bg-primary/85 bg-linear-to-b from-white/20 to-white/0 text-primary-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.25),0_10px_30px_-12px_rgb(0_0_0/0.45)] backdrop-blur-md hover:bg-primary/75",
         outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border-white/70 bg-white/45 bg-linear-to-b from-white/50 to-white/0 text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.9),0_10px_30px_-14px_rgb(0_0_0/0.3)] ring-1 ring-foreground/10 backdrop-blur-md hover:bg-white/65 aria-expanded:bg-white/65",
+        // Same as the mobile hero chip; for use over photos.
+        glass: "border-white/25 bg-white/15 text-white backdrop-blur-md hover:bg-white/25",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:

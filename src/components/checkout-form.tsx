@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { LockIcon, MessageCircleIcon } from "lucide-react"
+import { ChevronLeftIcon, LockIcon } from "lucide-react"
 import { track } from "@/app/actions"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Price } from "@/components/price"
 import { OutOfStockDialog } from "@/components/notify-dialog"
 import { PaymentMethods } from "@/components/trust-badges"
-import { PHONE } from "@/components/whatsapp-button"
+import { PHONE, WhatsAppGlyph } from "@/components/whatsapp-button"
 
 // Fake-door checkout: email comes first. Once the visitor enters a valid email (or skips ahead to another
 // field / submits), we log it as proof of real buying intent, lock the rest and show the out-of-stock dialog.
@@ -105,16 +105,6 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         }}
         className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-6 md:p-10"
       >
-        {/* Progress: frames the email as step 1 of 3, so asking for it first doesn't feel odd */}
-        <ol className="flex items-center gap-2 text-sm font-bold">
-          {["פרטים", "משלוח", "תשלום"].map((step, i) => (
-            <li key={step} className={cn("flex items-center gap-2", i > 0 && "text-muted-foreground")}>
-              {i > 0 && <span className="h-px w-6 bg-border" />}
-              <span className={cn("grid size-6 place-items-center rounded-full text-xs", i === 0 ? "bg-foreground text-background" : "bg-muted")}>{i + 1}</span>
-              {step}
-            </li>
-          ))}
-        </ol>
         <h2 className="text-2xl font-bold">פרטים למשלוח</h2>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2 sm:col-span-2">
@@ -125,33 +115,36 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
               type="email"
               dir="ltr"
               autoComplete="email"
-              placeholder="you@example.com"
               className="text-start"
               onBlur={(e) => EMAIL.test(e.target.value.trim()) && reveal(e.target.value.trim())}
             />
-            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <LockIcon className="size-3.5" /> לא נחייב אתכם עכשיו · התשלום בשלב האחרון
-            </p>
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
             <Label htmlFor="co-name">שם מלא</Label>
-            <Input id="co-name" name="name" autoComplete="name" {...later} />
+            <Input id="co-name" name="name" autoComplete="shipping name" {...later} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-phone">טלפון</Label>
-            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="tel" placeholder="050-0000000" {...later} className={cn("text-start", lockedClass)} />
+            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="shipping tel" {...later} className={cn("text-start", lockedClass)} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-city">עיר</Label>
-            <Input id="co-city" name="city" autoComplete="address-level2" {...later} />
+            <Input id="co-city" name="city" autoComplete="shipping address-level2" {...later} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-street">רחוב ומספר בית</Label>
-            <Input id="co-street" name="street" autoComplete="address-line1" {...later} />
+            <Input id="co-street" name="street" autoComplete="shipping address-line1" {...later} />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-apt">דירה / קומה</Label>
-            <Input id="co-apt" name="apt" autoComplete="address-line2" {...later} />
+            <Input id="co-apt" name="apt" autoComplete="shipping address-line2" {...later} />
+          </div>
+          {/* Optional: Israeli couriers deliver by street address, and most people don't know their 7-digit mikud. Autofill fills it when saved. */}
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="co-zip">
+              מיקוד <span className="font-normal text-muted-foreground">(לא חובה)</span>
+            </Label>
+            <Input id="co-zip" name="zip" inputMode="numeric" dir="ltr" maxLength={7} autoComplete="shipping postal-code" {...later} className={cn("text-start", lockedClass)} />
           </div>
         </div>
         <Button type="submit" size="lg">
@@ -163,9 +156,16 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track({ event: "whatsapp", ...ctx, source: "checkout", page: location.pathname, attribution: getAttribution() })}
-          className="flex items-center justify-center gap-2 rounded-2xl bg-muted px-4 py-3 text-base font-bold transition-colors hover:bg-muted/70"
+          className="group flex items-center gap-3 rounded-full border border-[#25D366]/40 bg-[#25D366]/12 bg-linear-to-b from-white/60 to-white/0 p-2 pe-5 text-base font-bold shadow-[inset_0_1px_0_rgb(255_255_255/0.8),0_10px_24px_-14px_rgb(18_140_75/0.6)] backdrop-blur-md transition hover:border-[#25D366]/70 hover:bg-[#25D366]/20 active:scale-[0.98]"
         >
-          <MessageCircleIcon className="size-5" /> שאלה לפני שמזמינים? דברו איתנו בוואטסאפ
+          <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#25D366] text-white shadow-sm">
+            <WhatsAppGlyph className="size-6" />
+          </span>
+          <span className="flex flex-1 flex-col leading-tight">
+            שאלה לפני שמזמינים?
+            <span className="text-sm font-semibold text-[#128C4B]">דברו איתנו בוואטסאפ</span>
+          </span>
+          <ChevronLeftIcon className="size-5 text-[#128C4B] transition-transform group-hover:-translate-x-1" />
         </a>
       </form>
 

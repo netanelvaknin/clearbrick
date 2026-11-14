@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { getProduct, products } from "@/lib/products"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ProductView } from "@/components/product-view"
+import { LaunchCountdown } from "@/components/launch-countdown"
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 import { TrustSection } from "@/components/trust-badges"
@@ -50,7 +51,9 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
   return (
     <>
       <div className="bg-dots">
-        <div className="container-site flex flex-col gap-8 py-8 md:py-12">
+        <div className="container-site flex flex-col gap-6 pt-4 pb-8 md:gap-8 md:py-10">
+          <LaunchCountdown product={product} />
+
           <nav aria-label="פירורי לחם" className="flex items-center gap-2 text-base text-muted-foreground">
             <Link href="/" className="hover:text-foreground">ראשי</Link>
             <span>/</span>
@@ -63,18 +66,8 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
             <ProductViewWithColor product={product} searchParams={searchParams} />
           </Suspense>
 
-          {/* Spec chips */}
-          <ul className="flex flex-wrap justify-center gap-3">
-            {product.specs.map((s) => (
-              <li key={s.label} className="rounded-2xl border border-border bg-card px-5 py-3 text-lg">
-                <span className="text-muted-foreground">{s.label}</span> <span className="font-bold">{s.value}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
-
-      <TrustSection className="pb-0" />
 
       <section className="container-site grid gap-12 py-20 md:grid-cols-[1fr_1.4fr]">
         <SectionHeading eyebrow="על המוצר" title="כל מה שצריך לדעת." />
@@ -110,6 +103,8 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
           </AccordionItem>
         </Accordion>
       </section>
+
+      <TrustSection className="pt-0" />
 
       <section className="container-site flex flex-col gap-12 pb-20 md:pb-28">
         <SectionHeading eyebrow="עוד מהקולקציה" title="משלים את הלוק." />

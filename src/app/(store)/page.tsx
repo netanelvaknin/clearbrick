@@ -1,32 +1,27 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowDownIcon, ArrowUpLeftIcon, LockIcon, MessageCircleIcon, PackageIcon, RotateCcwIcon, SparklesIcon, TruckIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpLeftIcon, HeartHandshakeIcon, MessageCircleIcon, PackageIcon, SparklesIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
+import { ColorStudio } from "@/components/color-studio"
 
 const MARQUEE = ["משלוח חינם עד הבית", "אקריליק עבה ועמיד", "הרכבה קלה", "שירות לקוחות בוואטסאפ"]
 
 const WHY = [
-  { n: "01", title: "שקוף = מרווח", text: "רהיט שלא חוסם את האור ולא מעמיס על החדר. גם בדירה קטנה." },
-  { n: "02", title: "עמיד באמת", text: "אקריליק עבה שמחזיק ספרים, צמחים ואת כל מה שתשימו עליו." },
-  { n: "03", title: "צבע רק איפה שצריך", text: "ורוד, כחול, ענבר או שקוף לגמרי. הרהיט הוא נקודת הצבע של החדר." },
-  { n: "04", title: "אפס תחזוקה", text: "מטלית לחה וזהו. בלי שמנים, בלי ליטושים, בלי כאב ראש." },
+  { n: "01", title: "שקוף = מרווח", text: "רהיט שלא חוסם את האור ולא מעמיס על החדר. גם בדירה קטנה.", img: "/products/luna-bedroom-clear.jpg", alt: "ספריית לונה בגוון שקוף בפינת חדר השינה" },
+  { n: "02", title: "עמיד באמת", text: "אקריליק עבה שמחזיק ספרים, צמחים ואת כל מה שתשימו עליו.", img: "/why/strong-wide.jpg", alt: "ידיים מניחות ערימת ספרי אמנות כבדים על מדף אקריליק בגוון אפור מעושן" },
+  { n: "03", title: "צבע רק איפה שצריך", text: "ורוד, כחול, ענבר או שקוף לגמרי. הרהיט הוא נקודת הצבע של החדר.", img: "/why/color.jpg", alt: "ספריית לונה הוורודה בסלון בהיר ונקי" },
+  { n: "04", title: "אפס תחזוקה", text: "מטלית לחה וזהו. בלי שמנים, בלי ליטושים, בלי כאב ראש.", img: "/why/care.jpg", alt: "יד מנגבת במטלית את שידת הלילה בגוון ענבר" },
 ]
 
 const VALUES = [
   { icon: PackageIcon, title: "נארז בקפדנות", text: "כל רהיט נבדק ונארז ביד, עם שכבות הגנה בכל פינה, כדי שיגיע אליכם מושלם ובלי שריטה." },
   { icon: MessageCircleIcon, title: "מדברים איתכם", text: "שאלה על מידה, צבע או משלוח? כתבו לנו בוואטסאפ ותקבלו תשובה מבן אדם." },
-  { icon: RotateCcwIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
-]
-
-const STEPS = [
-  { icon: LockIcon, title: "מזמינים באתר", text: "בוחרים רהיט וצבע, ומשלמים בתשלום מאובטח ומוצפן." },
-  { icon: TruckIcon, title: "מקבלים עד הבית", text: "משלוח חינם עד הדלת, ארוז היטב ומוכן להרכבה קלה." },
-  { icon: RotateCcwIcon, title: "14 יום להתאהב", text: "לא מתאים לחדר? כתבו לנו ונסדר החזרה בלי כאב ראש." },
+  { icon: HeartHandshakeIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
 ]
 
 const FAQ = [
@@ -43,7 +38,7 @@ export default function Home() {
   const shelf = getProduct("arch-bookshelf")!
   const imageOf = (color: string) => shelf.images[shelf.colors.find((c) => c.id === color)!.image]
   const heroImage = imageOf("pink")
-  const smokeImage = imageOf("smoke")
+  const smokeImage = shelf.images.find((i) => i.src.includes("bedroom-smoke"))!
   const bedside = getProduct("bedside-table")!
 
   return (
@@ -102,7 +97,7 @@ export default function Home() {
                 רהיטי אקריליק שנותנים לחדר לנשום.
               </p>
               <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
-                <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ size: "lg" }), "flex-1 bg-white text-black hover:bg-white/90")}>
+                <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ variant: "glass", size: "lg" }), "flex-1 bg-white/25")}>
                   לקולקציה <ArrowUpLeftIcon />
                 </Link>
                 <Link
@@ -178,53 +173,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Colors statement */}
-      <section className="bg-card py-20 md:py-28">
-        <div className="container-site grid items-end gap-12 md:grid-cols-2">
-          <SectionHeading eyebrow="הצבעים" title={<>הצבע? הוא של הרהיט.<br />כל השאר שקוף.</>}>
-            ספריית לונה מגיעה בארבעה גוונים. בחרו את זה שמתאים לחדר, או לכם.
-          </SectionHeading>
-          <div className="flex items-end justify-start gap-3 md:justify-end md:gap-4">
-            {shelf.colors.map((c, i) => (
-              <Link
-                key={c.id}
-                href={`/products/arch-bookshelf?color=${c.id}`}
-                className="group flex flex-col items-center gap-3"
-              >
-                <span
-                  className="block w-16 rounded-md border border-foreground/10 transition-transform group-hover:-translate-y-2 md:w-24"
-                  style={{ background: c.swatch, height: `${9 + i * 1.5}rem`, opacity: c.id === "clear" ? 1 : 0.85 }}
-                />
-                <span className="text-base font-semibold">{c.name}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Duo editorial */}
-      <section className="container-site pt-20 md:pt-28">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] sm:aspect-[16/9]">
-          <Image src="/products/duo-living.jpg" alt="ספריית לונה הוורודה ושידת הלילה בגוון ענבר בסלון מואר" fill sizes="100vw" className="object-cover" />
-          <div className="absolute inset-x-4 bottom-4 flex flex-col gap-3 rounded-3xl bg-background/90 p-6 backdrop-blur md:inset-x-auto md:start-8 md:bottom-8 md:max-w-md md:p-8">
-            <h2 className="text-display-sm">שני רהיטים, חדר אחד, הרבה אור.</h2>
-            <p className="text-lg text-muted-foreground">שקופים מספיק כדי שהחדר ימשיך לנשום, צבעוניים מספיק כדי שישימו לב.</p>
-          </div>
-        </div>
+      {/* Colors: tap a glass chip, the shelf changes color in place */}
+      <section className="container-site pt-4 md:pt-8">
+        <ColorStudio product={shelf} />
       </section>
 
       {/* Why acrylic */}
       <section id="why" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="למה אקריליק" title="קל לאהוב. קשה לשבור." />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Mobile: swipeable gallery (native scroll-snap, peeking next card). Desktop: 4-up grid. */}
+        <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
           {WHY.map((w) => (
-            <div key={w.n} className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-8">
-              <span className="text-5xl font-black text-muted-foreground/40">{w.n}</span>
+            <li key={w.n} className="relative isolate flex aspect-[3/4] w-[78%] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-[2rem] bg-card p-6 text-white sm:w-auto">
+              <Image src={w.img} alt={w.alt} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 80vw" className="-z-10 scale-105 object-cover blur-[1.5px]" />
+              {/* Light blur + tint: the photo sets the mood, the text carries the card. */}
+              <div aria-hidden className="absolute inset-0 -z-10 bg-black/15 bg-linear-to-t from-black/65 via-black/15 to-transparent" />
+              <span className="absolute top-5 start-5 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-sm font-bold backdrop-blur-md">{w.n}</span>
               <h3 className="text-2xl font-extrabold">{w.title}</h3>
-              <p className="text-lg leading-relaxed text-muted-foreground">{w.text}</p>
-            </div>
+              <p className="mt-2 text-lg leading-snug text-white/85">{w.text}</p>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* About */}
@@ -258,30 +227,11 @@ export default function Home() {
       <section className="container-site flex flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
-          <Tile src="/lifestyle-pink-close.jpg" alt="אישה מסדרת עציץ על ספריית לונה הוורודה בסלון" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
+          <Tile src="/products/luna-detail-pink.jpg" alt="תקריב על שתי הקומות העליונות של ספריית לונה הוורודה" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
           <Tile src={smokeImage.src} alt={smokeImage.alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
-          <Tile src="/lifestyle-blue-close.jpg" alt="הורה וילד מסדרים ספרים בספריית לונה הכחולה" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
-          <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="ענבר לפני השינה" href="/products/bedside-table" className="aspect-square" />
+          <Tile src="/lifestyle-blue-kidsroom.jpg" alt="ספריית לונה הכחולה בחדר ילדים, עם ספרי ילדים, בובת ארנב, קוביות עץ וסל קש" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
+          <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="שידת הלילה ליד המיטה" href="/products/bedside-table" className="aspect-square" />
         </div>
-      </section>
-
-      {/* How it works */}
-      <section className="container-site flex flex-col gap-12 pb-20 md:pb-28">
-        <SectionHeading eyebrow="איך זה עובד" title="שלושה צעדים ורהיט חדש בבית." />
-        <ol className="grid gap-4 md:grid-cols-3">
-          {STEPS.map(({ icon: Icon, title, text }, i) => (
-            <li key={title} className="flex flex-col gap-6 rounded-[2rem] border border-border p-8">
-              <div className="flex items-center justify-between">
-                <span className="grid size-14 place-items-center rounded-full bg-foreground text-background">
-                  <Icon className="size-6" />
-                </span>
-                <span className="text-5xl font-black text-muted-foreground/30">{i + 1}</span>
-              </div>
-              <h3 className="text-2xl font-extrabold">{title}</h3>
-              <p className="text-lg leading-relaxed text-muted-foreground">{text}</p>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* FAQ */}
@@ -318,7 +268,8 @@ function Tile({ src, alt, label, href, className }: { src: string; alt: string; 
   return (
     <Link href={href} className={`group relative overflow-hidden rounded-[2rem] bg-card ${className}`}>
       <Image src={src} alt={alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-      <span className="absolute bottom-4 start-4 rounded-full bg-background/90 px-4 py-2 text-base font-bold backdrop-blur">{label}</span>
+      <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/45 to-transparent to-45%" />
+      <span className="absolute bottom-4 start-4 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-base font-bold text-white backdrop-blur-md">{label}</span>
     </Link>
   )
 }

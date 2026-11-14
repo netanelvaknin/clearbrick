@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { cn } from "@/lib/utils"
+import { useVisualViewport } from "@/lib/use-visual-viewport"
 
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react"
@@ -47,13 +48,16 @@ function DialogContent({
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
 }) {
+  // Keyboard-safe sizing for every dialog (see use-visual-viewport).
+  useVisualViewport()
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 start-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          // Centered in the *visible* area (above the mobile keyboard) and capped to it; content scrolls instead of squashing.
+          "fixed top-[calc(var(--vv-top,0px)+var(--vv-height,100dvh)/2)] start-1/2 z-50 grid max-h-[calc(var(--vv-height,100dvh)-1.5rem)] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto overscroll-contain rounded-xl transition-[top,max-height] duration-150 bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
