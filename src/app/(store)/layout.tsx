@@ -9,7 +9,7 @@ import { SmoothScroll } from "@/components/smooth-scroll"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { CartProvider } from "@/components/cart"
 import { Tags } from "@/components/tags"
-import "./globals.css"
+import "../globals.css"
 
 const GTM_ID = "GTM-MCQ9SFVR"
 // Tags (Meta pixel, Clarity) load only on the live site, so local and preview visits never reach Meta.
