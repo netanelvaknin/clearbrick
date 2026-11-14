@@ -1,7 +1,6 @@
 "use server"
 
 import { cookies, headers } from "next/headers"
-import { track as vercelTrack } from "@vercel/analytics/server"
 
 const EVENTS = [
   "add_to_cart", "cart_open", "cart_close", "cart_update", "cart_remove", "cart_checkout", "continue_shopping_click",
@@ -29,6 +28,7 @@ export type TrackPayload = {
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 // Forwards a funnel event to the Make.com webhook. The URL never leaves the server.
+// The Vercel Analytics custom event is sent from the browser (lib/track.ts), not here.
 export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   if (!EVENTS.includes(payload.event)) return { ok: false }
   if (payload.email !== undefined && !EMAIL.test(payload.email)) return { ok: false }
@@ -44,13 +44,6 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
   }
 
   const h = await headers()
-
-  // Vercel Web Analytics custom event. Pro allows 2 properties, and no personal data goes here.
-  const a = payload.attribution ?? {}
-  const traffic = a.utm_source ?? (a.fbclid ? "meta" : a.ttclid ? "tiktok" : "direct")
-  await vercelTrack(payload.event, { product: payload.product ?? null, traffic: traffic.slice(0, 255) }, { headers: h }).catch((err) =>
-    console.error("[track] vercel analytics failed", err),
-  )
 
   const url = process.env.MAKE_WEBHOOK_URL
   if (!url) {

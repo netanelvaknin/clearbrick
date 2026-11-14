@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { track } from "@/app/actions"
+import { track } from "@/lib/track"
 import { getAttribution } from "@/lib/attribution"
 import { getProduct } from "@/lib/products"
 import { pixel } from "@/lib/pixel"
