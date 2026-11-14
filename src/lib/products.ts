@@ -110,7 +110,7 @@ export const products: Product[] = [
       { src: "/products/desk-vibe-olive-zoom.jpg", alt: "מבט קרוב על משטח ומדף שולחן אור, עם לפטופ, ספל ומחברות, ועץ זית ברקע" },
       { src: "/products/desk-vibe-detail.jpg", alt: "פינת שולחן אור עם ספל ומחברת על המדף, וצמח פיקוס כינורי בסלסלה ברקע" },
     ],
-    cardImage: { src: "/products/desk-office-day.jpg", alt: "שולחן אור מאקריליק שקוף בפינת עבודה מוארת" },
+    cardImage: { src: "/products/desk-office-clean.jpg", alt: "שולחן אור מאקריליק שקוף בפינת עבודה מוארת" },
     colors: [
       { id: "clear", name: "שקוף", swatch: "#eef1f2", image: 0 },
     ],
