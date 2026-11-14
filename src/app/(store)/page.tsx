@@ -228,7 +228,7 @@ export default function Home() {
         <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
           <Tile src="/products/luna-detail-pink.jpg" alt="תקריב על שתי הקומות העליונות של ספריית לונה הוורודה" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
-          <Tile src={smokeImage.src} alt={smokeImage.alt} label="מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
+          <Tile src={smokeImage.src} alt={smokeImage.alt} label="אפור מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
           <Tile src="/lifestyle-blue-kidsroom.jpg" alt="ספריית לונה הכחולה בחדר ילדים, עם ספרי ילדים, בובת ארנב, קוביות עץ וסל קש" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
           <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="שידת הלילה ליד המיטה" href="/products/bedside-table" className="aspect-square" />
         </div>
