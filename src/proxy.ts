@@ -23,7 +23,7 @@ export function proxy(request: NextRequest) {
   return response
 }
 
-// Admin panel: admin.clearbrick.co.il/* serves /admin/*. Everything except the login page needs a valid session cookie
+// Admin panel: admin.clearbrickhome.com/* serves /admin/* (admin.clearbrick.co.il 308-redirects there in Vercel). Everything except the login page needs a valid session cookie
 // (set by the login form, see src/app/admin/login/actions.ts); without one you're sent to the login page.
 async function admin(request: NextRequest, adminHost: boolean) {
   const { pathname } = request.nextUrl

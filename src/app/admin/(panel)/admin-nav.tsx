@@ -62,7 +62,7 @@ function Items({ onNavigate }: { onNavigate?: () => void }) {
         ))}
       </nav>
       <div className="mt-auto flex flex-col gap-1 border-t border-background/15 pt-4">
-        <a href="https://www.clearbrick.co.il" target="_blank" rel="noreferrer" className={item}>
+        <a href="https://www.clearbrickhome.com" target="_blank" rel="noreferrer" className={item}>
           <ArrowUpLeftIcon className="size-4" /> לאתר
         </a>
         <form action={logout}>
