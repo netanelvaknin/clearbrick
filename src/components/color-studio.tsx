@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpLeftIcon } from "lucide-react"
+import { ArrowUpRightIcon } from "lucide-react"
 import type { Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -35,16 +35,16 @@ export function ColorStudio({ product }: { product: Product }) {
 
       <div className="absolute inset-0 flex flex-col justify-between gap-6 p-5 md:p-10">
         <div className="flex max-w-xl flex-col gap-3">
-          <span className="text-eyebrow w-fit rounded-full border border-white/25 bg-white/15 px-3 py-1 backdrop-blur-md">הצבעים</span>
+          <span className="text-eyebrow w-fit rounded-full border border-white/25 bg-white/15 px-3 py-1 backdrop-blur-md">The colors</span>
           <h2 className="text-display-md text-balance drop-shadow-sm">
-            הצבע? הוא של הרהיט.
+            The color? That’s the furniture.
             <br />
-            כל השאר שקוף.
+            Everything else is clear.
           </h2>
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div role="radiogroup" aria-label="צבע ספריית לונה" className="flex flex-wrap gap-2">
+          <div role="radiogroup" aria-label="Luna Bookshelf color" className="flex flex-wrap gap-2">
             {colors.map((c) => {
               const on = c.id === color.id
               return (
@@ -66,7 +66,7 @@ export function ColorStudio({ product }: { product: Product }) {
             })}
           </div>
           <Link href={`/products/${product.slug}?color=${color.id}`} className={cn(buttonVariants({ variant: "glass", size: "lg" }), "w-full md:w-auto")}>
-            {product.name} בגוון {color.name} <ArrowUpLeftIcon />
+            {product.name} in {color.name} <ArrowUpRightIcon />
           </Link>
         </div>
       </div>

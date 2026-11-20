@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: PageProps<"/products/[slug]">
   const product = getProduct((await params).slug)
   if (!product) return {}
   // openGraph here replaces the layout's, so repeat siteName/locale. Share images are 1200×630 for WhatsApp/Instagram/Facebook previews.
-  const title = `${product.name} · ₪${product.price}`
+  const title = `${product.name} · $${product.price}`
   return {
     title: product.name,
     description: product.tagline,
     openGraph: {
       type: "website",
-      locale: "he_IL",
+      locale: "en_US",
       siteName: "clearbrick",
       url: `/products/${product.slug}`,
       title,
@@ -54,10 +54,10 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
         <div className="container-site flex flex-col gap-6 pt-4 pb-8 md:gap-8 md:py-10">
           <LaunchCountdown product={product} />
 
-          <nav aria-label="פירורי לחם" className="flex items-center gap-2 text-base text-muted-foreground">
-            <Link href="/" className="hover:text-foreground">ראשי</Link>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-base text-muted-foreground">
+            <Link href="/" className="hover:text-foreground">Home</Link>
             <span>/</span>
-            <Link href="/#collection" className="hover:text-foreground">הקולקציה</Link>
+            <Link href="/#collection" className="hover:text-foreground">Collection</Link>
             <span>/</span>
             <span className="font-semibold text-foreground">{product.name}</span>
           </nav>
@@ -70,14 +70,14 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
       </div>
 
       <section className="container-site grid gap-12 py-20 md:grid-cols-[1fr_1.4fr]">
-        <SectionHeading eyebrow="על המוצר" title="כל מה שצריך לדעת." />
+        <SectionHeading eyebrow="About the product" title="Everything you need to know." />
         <Accordion defaultValue={["desc"]} className="border-t border-border">
           <AccordionItem value="desc" className="border-b border-border">
-            <AccordionTrigger className="text-xl">תיאור</AccordionTrigger>
+            <AccordionTrigger className="text-xl">Description</AccordionTrigger>
             <AccordionContent className="text-lg">{product.description}</AccordionContent>
           </AccordionItem>
           <AccordionItem value="specs" className="border-b border-border">
-            <AccordionTrigger className="text-xl">מפרט ומידות</AccordionTrigger>
+            <AccordionTrigger className="text-xl">Specs & dimensions</AccordionTrigger>
             <AccordionContent className="text-lg">
               <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
                 {product.specs.map((s) => (
@@ -90,15 +90,15 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="care" className="border-b border-border">
-            <AccordionTrigger className="text-xl">ניקוי ותחזוקה</AccordionTrigger>
+            <AccordionTrigger className="text-xl">Cleaning & care</AccordionTrigger>
             <AccordionContent className="text-lg">
-              מטלית מיקרופייבר רכה עם מעט מים או סבון עדין. לא להשתמש בחומרים שוחקים או באלכוהול כדי לשמור על השקיפות.
+              A soft microfiber cloth with a little water or mild soap. Avoid abrasive cleaners and alcohol to keep it crystal clear.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="questions" className="border-b border-border">
-            <AccordionTrigger className="text-xl">שאלות נוספות</AccordionTrigger>
+            <AccordionTrigger className="text-xl">More questions</AccordionTrigger>
             <AccordionContent className="text-lg">
-              יש לכם שאלה על המוצר? <Link href="/contact">כתבו לנו</Link> ונחזור אליכם מהר.
+              Have a question about this product? <Link href="/contact">Write to us</Link> and we’ll get back to you fast.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -107,7 +107,7 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
       <TrustSection className="pt-0" />
 
       <section className="container-site flex flex-col gap-12 pb-20 md:pb-28">
-        <SectionHeading eyebrow="עוד מהקולקציה" title="משלים את הלוק." />
+        <SectionHeading eyebrow="More from the collection" title="Complete the look." />
         <div className="grid gap-8 md:grid-cols-2">
           {others.map((p) => (
             <ProductCard key={p.slug} product={p} />

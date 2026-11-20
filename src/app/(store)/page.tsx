@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowDownIcon, ArrowUpLeftIcon, HeartHandshakeIcon, MessageCircleIcon, PackageIcon, SparklesIcon } from "lucide-react"
+import { ArrowDownIcon, ArrowUpRightIcon, HeartHandshakeIcon, MessageCircleIcon, PackageIcon, SparklesIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -9,29 +9,29 @@ import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 import { ColorStudio } from "@/components/color-studio"
 
-const MARQUEE = ["משלוח חינם עד הבית", "אקריליק עבה ועמיד", "הרכבה קלה", "שירות לקוחות בוואטסאפ"]
+const MARQUEE = ["Free shipping to your door", "Thick, durable acrylic", "Easy assembly", "Customer care on WhatsApp"]
 
 const WHY = [
-  { n: "01", title: "שקוף = מרווח", text: "רהיט שלא חוסם את האור ולא מעמיס על החדר. גם בדירה קטנה.", img: "/products/luna-bedroom-clear.jpg", alt: "ספריית לונה בגוון שקוף בפינת חדר השינה" },
-  { n: "02", title: "עמיד באמת", text: "אקריליק עבה שמחזיק ספרים, צמחים ואת כל מה שתשימו עליו.", img: "/why/strong-wide.jpg", alt: "ידיים מניחות ערימת ספרי אמנות כבדים על מדף אקריליק בגוון אפור מעושן" },
-  { n: "03", title: "צבע רק איפה שצריך", text: "ורוד, כחול, ענבר או שקוף לגמרי. הרהיט הוא נקודת הצבע של החדר.", img: "/why/color.jpg", alt: "ספריית לונה הוורודה בסלון בהיר ונקי" },
-  { n: "04", title: "אפס תחזוקה", text: "מטלית לחה וזהו. בלי שמנים, בלי ליטושים, בלי כאב ראש.", img: "/why/care.jpg", alt: "יד מנגבת במטלית את שידת הלילה בגוון ענבר" },
+  { n: "01", title: "Clear = spacious", text: "Furniture that doesn't block the light or crowd the room. Even in a small apartment.", img: "/products/luna-bedroom-clear.jpg", alt: "The Luna bookshelf in clear, in the corner of a bedroom" },
+  { n: "02", title: "Seriously sturdy", text: "Thick acrylic that holds books, plants and whatever else you put on it.", img: "/why/strong-wide.jpg", alt: "Hands placing a stack of heavy art books on a smoke grey acrylic shelf" },
+  { n: "03", title: "Color only where you want it", text: "Pink, blue, amber or fully clear. The furniture becomes the room's pop of color.", img: "/why/color.jpg", alt: "The pink Luna bookshelf in a bright, clean living room" },
+  { n: "04", title: "Zero upkeep", text: "A damp cloth and you're done. No oils, no polishing, no hassle.", img: "/why/care.jpg", alt: "A hand wiping the amber nightstand with a cloth" },
 ]
 
 const VALUES = [
-  { icon: PackageIcon, title: "נארז בקפדנות", text: "כל רהיט נבדק ונארז ביד, עם שכבות הגנה בכל פינה, כדי שיגיע אליכם מושלם ובלי שריטה." },
-  { icon: MessageCircleIcon, title: "מדברים איתכם", text: "שאלה על מידה, צבע או משלוח? כתבו לנו בוואטסאפ ותקבלו תשובה מבן אדם." },
-  { icon: HeartHandshakeIcon, title: "עומדים מאחורי כל רהיט", text: "14 יום להחזרה, כי אנחנו בטוחים במה שאנחנו שולחים." },
+  { icon: PackageIcon, title: "Packed with care", text: "Every piece is checked and packed by hand, with protection on every corner, so it arrives perfect and scratch-free." },
+  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Question about size, color or shipping? Message us on WhatsApp and a human will answer." },
+  { icon: HeartHandshakeIcon, title: "We stand behind every piece", text: "14-day returns, because we're confident in what we ship." },
 ]
 
 const FAQ = [
-  { q: "אקריליק זה כמו פלסטיק?", a: "אקריליק הוא חומר שקוף כמו זכוכית, אבל קל וחזק ממנה בהרבה ולא מתנפץ. בגלל זה הוא מושלם לרהיטים, גם בבית עם ילדים." },
-  { q: "איך מנקים?", a: "מטלית מיקרופייבר רכה ומעט מים או סבון עדין. לא מומלץ להשתמש בחומרים שוחקים או באלכוהול." },
-  { q: "כמה משקל המדפים מחזיקים?", a: "כל קומה בספריית לונה מחזיקה בנוחות ספרים, עציצים ופריטי נוי. פשוט פזרו את המשקל לאורך המדף." },
-  { q: "המשלוח באמת חינם?", a: "כן. משלוח עד הבית בחינם לכל הזמנה, בלי מינימום ובלי אותיות קטנות." },
-  { q: "ואם זה לא מתאים לי?", a: "יש לכם 14 יום מרגע שהרהיט הגיע. לא התאהבתם? שלחו לנו הודעה ונסדר החזרה." },
-  { q: "התשלום באתר מאובטח?", a: "כן. כל פרטי התשלום עוברים בחיבור מוצפן SSL ואנחנו לא שומרים את פרטי הכרטיס שלכם." },
-  { q: "יש עוד צבעים בדרך?", a: "כן! אנחנו עובדים על גוונים חדשים. השאירו מייל בדף המוצר ותהיו הראשונים לשמוע." },
+  { q: "Is acrylic just plastic?", a: "Acrylic is as clear as glass, but much lighter and stronger, and it doesn't shatter. That's what makes it perfect for furniture, even in a home with kids." },
+  { q: "How do I clean it?", a: "A soft microfiber cloth with a little water or mild soap. Avoid abrasive cleaners and alcohol." },
+  { q: "How much weight do the shelves hold?", a: "Each Luna shelf comfortably holds books, plants and decor. Just spread the weight along the shelf." },
+  { q: "Is shipping really free?", a: "Yes. Free shipping to your door on every order, no minimum and no fine print." },
+  { q: "What if it's not right for me?", a: "You have 14 days from delivery. Not in love? Send us a message and we'll arrange a return." },
+  { q: "Is checkout secure?", a: "Yes. All payment details go over an encrypted SSL connection, and we never store your card details." },
+  { q: "Are more colors coming?", a: "Yes! We're working on new shades. Leave your email on a product page and be the first to know." },
 ]
 
 export default function Home() {
@@ -63,19 +63,19 @@ export default function Home() {
           <div className="relative z-10 flex h-full flex-col justify-between p-5 text-white md:hidden">
             <div className="flex items-start justify-between gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-sm font-semibold whitespace-nowrap backdrop-blur-md">
-                <SparklesIcon className="size-4" /> קולקציה חדשה
+                <SparklesIcon className="size-4" /> New collection
               </span>
               <Link
                 href="/products/arch-bookshelf"
-                aria-label="4 צבעים לספריית לונה"
+                aria-label="The Luna bookshelf in 4 colors"
                 className="flex items-center gap-2 rounded-full border border-white/25 bg-white/15 py-1.5 ps-1.5 pe-3 text-sm font-semibold whitespace-nowrap backdrop-blur-md"
               >
-                <span className="flex -space-x-2 rtl:space-x-reverse">
+                <span className="flex -space-x-2">
                   {shelf.colors.map((c) => (
                     <span key={c.id} className="size-6 rounded-full border-2 border-white/80" style={{ background: c.swatch }} />
                   ))}
                 </span>
-                <span className="max-[380px]:hidden">4 צבעים</span>
+                <span className="max-[380px]:hidden">4 colors</span>
               </Link>
             </div>
 
@@ -87,22 +87,22 @@ export default function Home() {
                 {shelf.name} · {formatPrice(shelf.price)}
               </Link>
               <h1 className="motion-safe:animate-rise text-[19vw] leading-[0.82] font-black tracking-[-0.05em] [animation-delay:80ms]">
-                שקוף.
+                Clear.
                 <br />
-                נקי.
+                Clean.
                 <br />
-                <span className="text-white/70">שלך.</span>
+                <span className="text-white/70">Yours.</span>
               </h1>
               <p className="motion-safe:animate-rise max-w-xs text-lg leading-snug text-white/85 [animation-delay:160ms]">
-                רהיטי אקריליק שנותנים לחדר לנשום.
+                Acrylic furniture that lets your room breathe.
               </p>
               <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
                 <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ variant: "glass", size: "lg" }), "flex-1 bg-white/25")}>
-                  לקולקציה <ArrowUpLeftIcon />
+                  Shop the collection <ArrowUpRightIcon />
                 </Link>
                 <Link
                   href="#collection"
-                  aria-label="גללו לקולקציה"
+                  aria-label="Scroll to the collection"
                   className="grid size-16 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md"
                 >
                   <ArrowDownIcon className="size-6 motion-safe:animate-bounce" />
@@ -120,7 +120,7 @@ export default function Home() {
               <Image src={bedside.images[0].src} alt="" fill sizes="80px" className="object-cover" />
             </span>
             <span className="flex flex-col">
-              <span className="text-sm text-muted-foreground">חדש בחנות</span>
+              <span className="text-sm text-muted-foreground">New in store</span>
               <span className="text-lg font-bold">{bedside.name}</span>
               <span className="font-black">{formatPrice(bedside.price)}</span>
             </span>
@@ -129,24 +129,24 @@ export default function Home() {
 
         <div className="hidden flex-col gap-8 md:flex">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-eyebrow">
-            <SparklesIcon className="size-4" /> קולקציית אקריליק חדשה
+            <SparklesIcon className="size-4" /> New acrylic collection
           </span>
           <h1 className="text-display-xl">
-            שקוף.
+            Clear.
             <br />
-            נקי.
+            Clean.
             <br />
-            <span className="text-muted-foreground">שלך.</span>
+            <span className="text-muted-foreground">Yours.</span>
           </h1>
           <p className="max-w-md text-xl leading-relaxed text-muted-foreground">
-            רהיטי אקריליק שנותנים לחדר לנשום. עיצוב מינימליסטי, צבע רק איפה שבא לכם.
+            Acrylic furniture that lets your room breathe. Minimal design, with color only where you want it.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/products/arch-bookshelf" className={buttonVariants({ size: "lg" })}>
-              לקולקציה <ArrowUpLeftIcon />
+              Shop the collection <ArrowUpRightIcon />
             </Link>
             <Link href="#why" className={buttonVariants({ size: "lg", variant: "outline" })}>
-              למה אקריליק?
+              Why acrylic?
             </Link>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function Home() {
 
       {/* Collection */}
       <section id="collection" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="הקולקציה" title="שלושה רהיטים. אינסוף סטייל." />
+        <SectionHeading eyebrow="The collection" title="Three pieces. Endless style." />
         <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} priority={i === 0} />
@@ -180,7 +180,7 @@ export default function Home() {
 
       {/* Why acrylic */}
       <section id="why" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="למה אקריליק" title="קל לאהוב. קשה לשבור." />
+        <SectionHeading eyebrow="Why acrylic" title="Easy to love. Hard to break." />
         {/* Mobile: swipeable gallery (native scroll-snap, peeking next card). Desktop: 4-up grid. */}
         <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
           {WHY.map((w) => (
@@ -200,11 +200,11 @@ export default function Home() {
       <section id="about" className="bg-card py-20 md:py-28 scroll-mt-28">
         <div className="container-site grid items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:order-last">
-            <Image src="/about-plans.jpg" alt="שולחן העבודה שלנו: שרטוטים של ספריית לונה ודוגמאות אקריליק בצבעים" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+            <Image src="/about-plans.jpg" alt="Our worktable: sketches of the Luna bookshelf and colored acrylic samples" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
           </div>
           <div className="flex flex-col gap-10">
-            <SectionHeading eyebrow="הסיפור שלנו" title="התחלנו מחדר שהיה צריך יותר אור.">
-              clearbrick התחיל מדירה קטנה ששום רהיט לא התאים לה. כל מדף העמיס, כל שידה חסמה את האור. אז עיצבנו רהיטים שעושים את העבודה בלי לתפוס מקום בעין: שקופים, נקיים, עם צבע רק איפה שבא לכם.
+            <SectionHeading eyebrow="Our story" title="It started with a room that needed more light.">
+              clearbrick started in a small apartment where no furniture fit. Every shelf felt heavy, every nightstand blocked the light. So we designed furniture that does the job without taking up visual space: clear, clean, with color only where you want it.
             </SectionHeading>
             <ul className="flex flex-col gap-6">
               {VALUES.map(({ icon: Icon, title, text }) => (
@@ -225,19 +225,19 @@ export default function Home() {
 
       {/* Lifestyle bento */}
       <section className="container-site flex flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="אצלכם בבית" title="נראה טוב בכל פינה." />
+        <SectionHeading eyebrow="In your home" title="Looks good in every corner." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
-          <Tile src="/products/luna-detail-pink.jpg" alt="תקריב על שתי הקומות העליונות של ספריית לונה הוורודה" label="ורוד בסלון" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
-          <Tile src={smokeImage.src} alt={smokeImage.alt} label="אפור מעושן בחדר השינה" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
-          <Tile src="/lifestyle-blue-kidsroom.jpg" alt="ספריית לונה הכחולה בחדר ילדים, עם ספרי ילדים, בובת ארנב, קוביות עץ וסל קש" label="כחול בחדר הילדים" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
-          <Tile src="/products/bedside-detail.jpg" alt="יד מניחה כוס מים על שידת הלילה ליד המיטה" label="שידת הלילה ליד המיטה" href="/products/bedside-table" className="aspect-square" />
+          <Tile src="/products/luna-detail-pink.jpg" alt="Close-up of the top two shelves of the pink Luna bookshelf" label="Pink in the living room" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
+          <Tile src={smokeImage.src} alt={smokeImage.alt} label="Smoke grey in the bedroom" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
+          <Tile src="/lifestyle-blue-kidsroom.jpg" alt="The blue Luna bookshelf in a kids' room, with children's books, a stuffed bunny, wooden blocks and a straw basket" label="Blue in the kids' room" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
+          <Tile src="/products/bedside-detail.jpg" alt="A hand setting a glass of water on the nightstand by the bed" label="The Laila nightstand by the bed" href="/products/bedside-table" className="aspect-square" />
         </div>
       </section>
 
       {/* FAQ */}
       <section className="bg-card py-20 md:py-28">
         <div className="container-site grid gap-12 md:grid-cols-[1fr_1.4fr]">
-          <SectionHeading eyebrow="שאלות" title="יש שאלות?" />
+          <SectionHeading eyebrow="FAQ" title="Got questions?" />
           <Accordion className="border-t border-border">
             {FAQ.map((f) => (
               <AccordionItem key={f.q} value={f.q} className="border-b border-border">
@@ -253,10 +253,10 @@ export default function Home() {
       <section className="container-site py-20 md:py-28">
         <div className="relative isolate flex min-h-96 flex-col items-start justify-end gap-8 overflow-hidden rounded-[2.5rem] bg-card p-10 md:flex-row md:items-end md:justify-between md:p-16">
           <Image src="/cta-light.jpg" alt="" fill sizes="(min-width: 1280px) 1280px, 100vw" className="-z-10 object-cover object-[30%_45%]" />
-          <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-t from-card/90 via-card/50 to-transparent md:bg-linear-to-l md:from-card/80 md:via-card/30" />
-          <h2 className="text-display-lg max-w-3xl text-balance">החדר שלכם מחכה לקצת שקיפות.</h2>
+          <div aria-hidden className="absolute inset-0 -z-10 bg-linear-to-t from-card/90 via-card/50 to-transparent md:bg-linear-to-r md:from-card/80 md:via-card/30" />
+          <h2 className="text-display-lg max-w-3xl text-balance">Your room is ready for a little clarity.</h2>
           <Link href="/products/arch-bookshelf" className={buttonVariants({ size: "lg" })}>
-            לחנות <ArrowUpLeftIcon />
+            Shop now <ArrowUpRightIcon />
           </Link>
         </div>
       </section>

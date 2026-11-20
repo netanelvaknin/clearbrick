@@ -15,25 +15,25 @@ const GTM_ID = "GTM-MCQ9SFVR"
 // Tags (Meta pixel, Clarity) load only on the live site, so local and preview visits never reach Meta.
 const IS_PROD = process.env.VERCEL_ENV === "production"
 
-const heebo = Heebo({ subsets: ["hebrew", "latin"], weight: ["400", "500", "600", "700", "800", "900"] })
+const heebo = Heebo({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearbrick.co.il"),
-  title: { default: "clearbrick | רהיטי אקריליק שקופים", template: "%s | clearbrick" },
-  description: "מדפים ושידות אקריליק בעיצוב נקי ומודרני. שקוף, צבעוני, שלכם.",
+  title: { default: "clearbrick | Clear acrylic furniture", template: "%s | clearbrick" },
+  description: "Acrylic shelves, nightstands and desks with a clean, modern design. Clear, colorful, yours.",
   openGraph: {
     type: "website",
-    locale: "he_IL",
+    locale: "en_US",
     siteName: "clearbrick",
     url: "/",
-    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "ספריית לונה ושידת הלילה של clearbrick בסלון מואר" }],
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: "The clearbrick Luna Bookshelf and Laila Nightstand in a bright living room" }],
   },
   twitter: { card: "summary_large_image" },
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="he" dir="rtl" className={`${heebo.className} h-full antialiased`}>
+    <html lang="en" dir="ltr" className={`${heebo.className} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         {IS_PROD && (
           <noscript>

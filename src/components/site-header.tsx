@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowUpLeftIcon, MenuIcon, MessageCircleIcon, PercentIcon, TruckIcon } from "lucide-react"
+import { ArrowUpRightIcon, MenuIcon, MessageCircleIcon, PercentIcon, TruckIcon } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { buttonVariants } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
@@ -7,18 +7,18 @@ import { CartButton } from "@/components/cart"
 import { cn } from "@/lib/utils"
 
 const NAV = [
-  { href: "/products/arch-bookshelf", label: "ספריית לונה" },
-  { href: "/products/bedside-table", label: "שידת הלילה" },
-  { href: "/products/acrylic-desk", label: "שולחן אור", badge: "חדש" },
-  { href: "/#why", label: "למה אקריליק" },
-  { href: "/#about", label: "עלינו" },
-  { href: "/contact", label: "צרו קשר" },
+  { href: "/products/arch-bookshelf", label: "Luna Bookshelf" },
+  { href: "/products/bedside-table", label: "Laila Nightstand" },
+  { href: "/products/acrylic-desk", label: "Ora Desk", badge: "New" },
+  { href: "/#why", label: "Why acrylic" },
+  { href: "/#about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ]
 
 const PERKS = [
-  { icon: TruckIcon, text: "משלוח חינם עד הבית" },
-  { icon: MessageCircleIcon, text: "שירות לקוחות בוואטסאפ" },
-  { icon: PercentIcon, text: "עד 30% הנחה על כל הקולקציה" },
+  { icon: TruckIcon, text: "Free shipping to your door" },
+  { icon: MessageCircleIcon, text: "Customer care on WhatsApp" },
+  { icon: PercentIcon, text: "Up to 30% off the whole collection" },
 ]
 
 export function SiteHeader() {
@@ -46,7 +46,7 @@ export function SiteHeader() {
 
       <div className="border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="container-site flex h-16 items-center justify-between gap-6">
-          <Link href="/" aria-label="קלירבריק, לדף הבית">
+          <Link href="/" aria-label="clearbrick home">
             <Logo />
           </Link>
 
@@ -63,19 +63,19 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-2">
             <Link href="/#collection" className={cn(buttonVariants({ size: "sm" }), "hidden md:inline-flex")}>
-              לקולקציה <ArrowUpLeftIcon />
+              Shop <ArrowUpRightIcon />
             </Link>
             <CartButton />
             <Sheet>
               <SheetTrigger
-                aria-label="תפריט"
+                aria-label="Menu"
                 className="grid size-11 place-items-center rounded-full transition-colors hover:bg-muted md:hidden"
               >
                 <MenuIcon className="size-5" />
               </SheetTrigger>
-              <SheetContent side="right" className="w-full max-w-sm bg-background p-8">
-                <SheetTitle className="sr-only">תפריט</SheetTitle>
-                <SheetClose nativeButton={false} render={<Link href="/" aria-label="קלירבריק, לדף הבית" />} className="w-fit">
+              <SheetContent side="left" className="w-full max-w-sm bg-background p-8">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <SheetClose nativeButton={false} render={<Link href="/" aria-label="clearbrick home" />} className="w-fit">
                   <Logo />
                 </SheetClose>
                 <nav className="mt-10 flex flex-col divide-y divide-border border-y border-border">

@@ -12,7 +12,7 @@ export const PHONE = "972524835373"
 export function WhatsAppButton() {
   const pathname = usePathname()
   const product = pathname.startsWith("/products/") ? getProduct(pathname.split("/")[2]) : undefined
-  const text = product ? `היי, יש לי שאלה על ${product.name} 🙂` : "היי, אשמח לשמוע עוד על הרהיטים של clearbrick 🙂"
+  const text = product ? `Hi, I have a question about the ${product.name} 🙂` : "Hi, I'd love to hear more about clearbrick furniture 🙂"
   const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`
 
   function onClick() {
@@ -27,7 +27,7 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      aria-label="שלחו לנו הודעה בוואטסאפ"
+      aria-label="Message us on WhatsApp"
       className="fixed end-5 bottom-[calc(1.25rem+var(--sticky-bar,0px))] z-30 grid size-14 place-items-center rounded-full border border-white/50 bg-[#25D366]/75 bg-linear-to-b from-white/30 to-white/0 text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.6),0_12px_30px_-10px_rgb(18_140_75/0.6)] backdrop-blur-md transition-transform hover:scale-105 active:scale-95 md:end-8 md:bottom-[calc(2rem+var(--sticky-bar,0px))]"
     >
       <WhatsAppGlyph className="size-8 drop-shadow-sm" />

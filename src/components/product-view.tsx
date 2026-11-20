@@ -22,7 +22,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
   const [active, setActive] = useState(start.image)
   const [zoom, setZoom] = useState(false)
   const interact = useProductEngagement(product)
-  const [viewport, embla] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: start.image })
+  const [viewport, embla] = useEmblaCarousel({ loop: true, startIndex: start.image })
   const jump = useRef(false)
   const show = useCallback(
     (i: number) => {
@@ -84,7 +84,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
       <div className="flex flex-col gap-4 lg:sticky lg:top-32 lg:self-start">
         {/* Swipeable, endless loop (last ↔ first) */}
         <div className="relative">
-          <div ref={viewport} dir="rtl" className="overflow-hidden rounded-[2rem] bg-card">
+          <div ref={viewport} className="overflow-hidden rounded-[2rem] bg-card">
             <div className="flex touch-pan-y">
               {slides.map((img, i) => (
                 <div key={img.src} className="relative aspect-square min-w-0 shrink-0 grow-0 basis-full">
@@ -99,7 +99,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
               setZoom(true)
               interact("gallery", "zoom")
             }}
-            aria-label="הגדלת התמונה"
+            aria-label="Enlarge image"
             className="absolute top-4 end-4 flex size-11 items-center justify-center rounded-full bg-background/85 text-foreground shadow-md backdrop-blur lg:hidden"
           >
             <ZoomInIcon className="size-5" />
@@ -123,7 +123,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
                 show(i)
                 interact("gallery", String(i + 1))
               }}
-              aria-label={`תמונה ${i + 1}`}
+              aria-label={`Image ${i + 1}`}
               aria-current={i === active}
               className={cn(
                 "relative aspect-square overflow-hidden rounded-2xl border-2 bg-card transition",
@@ -144,21 +144,21 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           <div className="flex flex-wrap items-center gap-2">
             {product.compareAt && (
               <span className="rounded-full bg-foreground px-3 py-1 text-sm font-bold text-background">
-                {Math.round((1 - product.price / product.compareAt) * 100)}% הנחת השקה
+                {Math.round((1 - product.price / product.compareAt) * 100)}% off launch sale
               </span>
             )}
-            <span className="rounded-full bg-muted px-3 py-1 text-sm font-bold">אקריליק</span>
+            <span className="rounded-full bg-muted px-3 py-1 text-sm font-bold">Acrylic</span>
           </div>
           <div className="flex items-start justify-between gap-4">
             <h1 className="text-display-md">{product.name}</h1>
             <Price price={product.price} compareAt={product.compareAt} large />
           </div>
           <p className="text-xl leading-relaxed text-muted-foreground">{product.tagline}</p>
-          {/* Sizes right under the tagline: the first thing people check on furniture. */}
-          <ul aria-label="מידות" className="flex flex-wrap gap-2">
+          {/* Sizes right under the tagline: the first thing people check on furniture. Inches only here; cm is in the specs. */}
+          <ul aria-label="Dimensions" className="flex flex-wrap gap-2">
             {product.specs.map((s) => (
               <li key={s.label} className="rounded-full border border-border bg-background px-4 py-1.5 text-base">
-                <span className="text-muted-foreground">{s.label}</span> <span className="font-bold">{s.value}</span>
+                <span className="text-muted-foreground">{s.label}</span> <span className="font-bold">{s.value.split(" (")[0]}</span>
               </li>
             ))}
           </ul>
@@ -166,7 +166,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
 
         <fieldset className="flex flex-col gap-4">
           <legend className="mb-4 text-lg font-bold">
-            צבע: <span className="font-normal text-muted-foreground">{color.name}</span>
+            Color: <span className="font-normal text-muted-foreground">{color.name}</span>
           </legend>
           <div className="flex flex-wrap gap-3">
             {product.colors.map((c) => (
@@ -231,7 +231,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           </span>
         </div>
         <Button size="lg" onClick={() => buy("add_to_cart", "sticky")}>
-          <ShoppingBagIcon /> הוספה לסל
+          <ShoppingBagIcon /> Add to cart
         </Button>
       </div>
     </div>

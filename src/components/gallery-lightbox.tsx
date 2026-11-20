@@ -26,10 +26,10 @@ export function GalleryLightbox({
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Popup className="fixed inset-0 z-50 flex flex-col bg-background outline-none data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0">
-          <DialogPrimitive.Title className="sr-only">תמונות המוצר</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">Product images</DialogPrimitive.Title>
           {open && <Slides images={images} start={index} onIndexChange={onIndexChange} />}
           <DialogPrimitive.Close
-            aria-label="סגירה"
+            aria-label="Close"
             className="absolute top-4 end-4 flex size-11 items-center justify-center rounded-full bg-foreground text-background shadow-lg"
           >
             <XIcon className="size-5" />
@@ -42,7 +42,7 @@ export function GalleryLightbox({
 
 function Slides({ images, start, onIndexChange }: { images: Product["images"]; start: number; onIndexChange: (i: number) => void }) {
   const [zoomed, setZoomed] = useState(false)
-  const [viewport, embla] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: start, watchDrag: !zoomed })
+  const [viewport, embla] = useEmblaCarousel({ loop: true, startIndex: start, watchDrag: !zoomed })
   const [current, setCurrent] = useState(start)
   const scroller = useRef<HTMLDivElement>(null)
   const focus = useRef({ x: 0.5, y: 0.5 })
@@ -83,7 +83,7 @@ function Slides({ images, start, onIndexChange }: { images: Product["images"]; s
 
   return (
     <>
-      <div ref={viewport} dir="rtl" className="min-h-0 flex-1 overflow-hidden">
+      <div ref={viewport} className="min-h-0 flex-1 overflow-hidden">
         <div className="flex h-full touch-pan-y">
           {images.map((img, i) => {
             const z = zoomed && i === current
@@ -103,7 +103,7 @@ function Slides({ images, start, onIndexChange }: { images: Product["images"]; s
         </div>
       </div>
       <p className="flex justify-center gap-3 pb-8 pt-3 text-sm font-bold text-muted-foreground">
-        {zoomed ? "הקשה כפולה להקטנה" : "הקשה כפולה להגדלה"}
+        {zoomed ? "Double-tap to zoom out" : "Double-tap to zoom in"}
         <span className="tabular-nums" dir="ltr">
           {current + 1} / {images.length}
         </span>
