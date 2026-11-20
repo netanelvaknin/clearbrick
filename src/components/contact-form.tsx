@@ -42,10 +42,10 @@ export function ContactForm() {
         <span className="grid size-16 place-items-center rounded-full bg-primary text-primary-foreground">
           <CheckIcon className="size-8" />
         </span>
-        <h2 className="text-display-sm">ההודעה בדרך אלינו!</h2>
-        <p className="text-xl text-muted-foreground">תודה שכתבתם. נחזור אליכם ממש בקרוב.</p>
+        <h2 className="text-display-sm">Your message is on its way!</h2>
+        <p className="text-xl text-muted-foreground">Thanks for writing. We’ll get back to you very soon.</p>
         <Button variant="outline" onClick={() => setSent(false)}>
-          שליחת הודעה נוספת
+          Send another message
         </Button>
       </div>
     )
@@ -58,25 +58,25 @@ export function ContactForm() {
       className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-6 md:p-10"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <Field id="name" label="שם מלא" error={errors.name?.message}>
-          <Input id="name" autoComplete="name" placeholder="איך קוראים לכם?" aria-invalid={!!errors.name}
-            {...register("name", { required: "נשמח לדעת איך לפנות אליכם" })} />
+        <Field id="name" label="Full name" error={errors.name?.message}>
+          <Input id="name" autoComplete="name" placeholder="What's your name?" aria-invalid={!!errors.name}
+            {...register("name", { required: "Let us know what to call you" })} />
         </Field>
-        <Field id="phone" label="טלפון (לא חובה)" error={errors.phone?.message}>
+        <Field id="phone" label="Phone (optional)" error={errors.phone?.message}>
           <Input id="phone" type="tel" dir="ltr" autoComplete="tel" placeholder="050-0000000" className="text-start" aria-invalid={!!errors.phone}
-            {...register("phone", { pattern: { value: /^[0-9+\-\s]{9,15}$/, message: "מספר הטלפון לא נראה תקין" } })} />
+            {...register("phone", { pattern: { value: /^[0-9+\-\s]{9,15}$/, message: "That phone number doesn't look right" } })} />
         </Field>
       </div>
-      <Field id="email" label="אימייל" error={errors.email?.message}>
+      <Field id="email" label="Email" error={errors.email?.message}>
         <Input id="email" type="email" dir="ltr" autoComplete="email" placeholder="you@example.com" className="text-start" aria-invalid={!!errors.email}
           {...register("email", {
-            required: "צריך מייל כדי שנוכל לחזור אליכם",
-            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "המייל לא נראה תקין" },
+            required: "We need your email to get back to you",
+            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "That email doesn't look right" },
           })} />
       </Field>
-      <Field id="message" label="מה תרצו לספר לנו?" error={errors.message?.message}>
-        <Textarea id="message" placeholder="שאלה על מוצר, מידות, צבעים, כל דבר" aria-invalid={!!errors.message}
-          {...register("message", { required: "כתבו לנו כמה מילים", maxLength: { value: 2000, message: "עד 2000 תווים" } })} />
+      <Field id="message" label="What would you like to tell us?" error={errors.message?.message}>
+        <Textarea id="message" placeholder="A question about a product, sizes, colors, anything" aria-invalid={!!errors.message}
+          {...register("message", { required: "Write us a few words", maxLength: { value: 2000, message: "Up to 2,000 characters" } })} />
       </Field>
       <Controller
         name="marketingOptIn"
@@ -84,19 +84,19 @@ export function ContactForm() {
         render={({ field }) => (
           <Label className="cursor-pointer font-normal text-muted-foreground">
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-            אשמח לקבל עדכונים על מוצרים חדשים והנחות
+            Send me news about new products and deals
           </Label>
         )}
       />
-      {failed && <FieldError message="משהו השתבש בשליחה. נסו שוב בעוד רגע." />}
+      {failed && <FieldError message="Something went wrong sending. Please try again in a moment." />}
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         <Button type="submit" size="lg" disabled={isSubmitting} className="w-full md:w-fit">
-          {isSubmitting ? "שולחים..." : "שליחה"}
+          {isSubmitting ? "Sending..." : "Send"}
         </Button>
         <p className="text-sm text-muted-foreground">
-          בשליחה אתם מסכימים ל
+          By sending you agree to the 
           <Link href="/terms#privacy" className="underline underline-offset-4">
-            תנאי השימוש והפרטיות
+            terms & privacy policy
           </Link>
         </p>
       </div>

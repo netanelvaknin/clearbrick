@@ -5,12 +5,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { ChevronLeftIcon, LockIcon } from "lucide-react"
+import { ChevronRightIcon, LockIcon } from "lucide-react"
 import { track } from "@/lib/track"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
 import { formatPrice } from "@/lib/products"
-import { cn } from "@/lib/utils"
 import { cartSummary, cartTotals, resolveLines, useCart } from "@/components/cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,12 +19,11 @@ import { OutOfStockDialog } from "@/components/notify-dialog"
 import { PaymentMethods } from "@/components/trust-badges"
 import { PHONE, WhatsAppGlyph } from "@/components/whatsapp-button"
 
-// Fake-door checkout: email comes first. Once the visitor enters a valid email (or skips ahead to another
-// field / submits), we log it as proof of real buying intent, lock the rest and show the out-of-stock dialog.
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Fake-door checkout: the visitor fills in every shipping field and clicks "Continue to payment". That valid submit
+// is logged as proof of real buying intent (with the email) and opens the out-of-stock dialog.
 
 // Cache Components keeps page state across navigations, so a returning buyer would land on the old,
-// locked checkout. Keying on bfcacheId starts fresh on every buy click but still restores on browser back.
+// already-submitted checkout. Keying on bfcacheId starts fresh on every buy click but still restores on browser back.
 export function CheckoutForm() {
   const { bfcacheId } = useRouter()
   return <Checkout key={bfcacheId} />
@@ -45,9 +43,9 @@ function Checkout() {
 function EmptyCheckout() {
   return (
     <div className="flex flex-col items-center gap-4 rounded-[2rem] border border-border bg-card p-10 text-center">
-      <p className="text-xl font-bold">הסל שלכם ריק</p>
+      <p className="text-xl font-bold">Your cart is empty</p>
       <Button variant="outline" nativeButton={false} render={<Link href="/#collection" />}>
-        לקולקציה
+        Shop the collection
       </Button>
     </div>
   )
@@ -62,13 +60,10 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   // One item keeps its own color in events; several items are summarized into one line.
   const ctx = items.length === 1 && items[0].line.qty === 1 ? { product: items[0].product.name, color: items[0].color.name, price: items[0].product.price } : cartSummary(items)
 
-  const [locked, setLocked] = useState(false)
   const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState<string>()
-  // A ref, not state: email blur and the next field's focus fire in the same tick, before `locked` re-renders.
   const logged = useRef(false)
 
-  // Funnel step between the buy click and the email: did they actually land on checkout?
+  // Funnel step between the buy click and the form: did they actually land on checkout?
   const viewed = useRef(false)
   useEffect(() => {
     if (viewed.current) return
@@ -77,82 +72,73 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Logged once; later calls just reopen the dialog (with a newly typed email, if any).
-  function reveal(typed?: string) {
-    const valid = typed && EMAIL.test(typed) ? typed : undefined
-    if (valid) setEmail(valid)
+  // Runs only on a valid submit: the browser blocks "Continue to payment" until every required field is filled.
+  // Logged once; submitting again just reopens the dialog.
+  function reveal(form: HTMLFormElement) {
+    const typed = String(new FormData(form).get("email") ?? "").trim()
     if (!logged.current) {
       logged.current = true
-      track({ event: "checkout_details", ...ctx, email: valid, page: location.pathname, attribution: getAttribution() })
-      pixel("track", "AddPaymentInfo", { content_name: ctx.product, value: pay, num_items: totals.count, currency: "ILS" })
-      sendGTMEvent({ event: "add_shipping_info", product: ctx.product, value: pay, quantity: totals.count, currency: "ILS" })
-      setLocked(true)
+      track({ event: "checkout_details", ...ctx, email: typed, page: location.pathname, attribution: getAttribution() })
+      pixel("track", "AddPaymentInfo", { content_name: ctx.product, value: pay, num_items: totals.count, currency: "USD" })
+      sendGTMEvent({ event: "add_shipping_info", product: ctx.product, value: pay, quantity: totals.count, currency: "USD" })
     }
     setOpen(true)
   }
-
-  // Read-only, not disabled: a disabled field can't be tapped, so it could never reopen the dialog.
-  // onClick, not onFocus: closing the dialog returns focus to the last field, which would reopen it at once.
-  const lockedClass = locked ? "opacity-50" : undefined
-  const later = { readOnly: locked, onClick: () => reveal(), className: lockedClass }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          reveal(String(new FormData(e.currentTarget).get("email") ?? "").trim())
+          reveal(e.currentTarget)
         }}
         className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-6 md:p-10"
       >
-        <h2 className="text-2xl font-bold">פרטים למשלוח</h2>
+        <h2 className="text-2xl font-bold">Shipping details</h2>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label htmlFor="co-email">אימייל</Label>
-            <Input
-              id="co-email"
-              name="email"
-              type="email"
-              dir="ltr"
-              autoComplete="email"
-              className="text-start"
-              onBlur={(e) => EMAIL.test(e.target.value.trim()) && reveal(e.target.value.trim())}
-            />
+            <Label htmlFor="co-email">Email</Label>
+            <Input id="co-email" name="email" type="email" autoComplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" />
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label htmlFor="co-name">שם מלא</Label>
-            <Input id="co-name" name="name" autoComplete="shipping name" {...later} />
+            <Label htmlFor="co-name">Full name</Label>
+            <Input id="co-name" name="name" autoComplete="shipping name" required />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="co-phone">טלפון</Label>
-            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="shipping tel" {...later} className={cn("text-start", lockedClass)} />
+            <Label htmlFor="co-phone">Phone</Label>
+            <Input id="co-phone" name="phone" type="tel" inputMode="tel" autoComplete="shipping tel" required />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="co-city">עיר</Label>
-            <Input id="co-city" name="city" autoComplete="shipping address-level2" {...later} />
+            <Label htmlFor="co-street">Street address</Label>
+            <Input id="co-street" name="street" autoComplete="shipping address-line1" required />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="co-street">רחוב ומספר בית</Label>
-            <Input id="co-street" name="street" autoComplete="shipping address-line1" {...later} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="co-apt">דירה / קומה</Label>
-            <Input id="co-apt" name="apt" autoComplete="shipping address-line2" {...later} />
-          </div>
-          {/* Optional: Israeli couriers deliver by street address, and most people don't know their 7-digit mikud. Autofill fills it when saved. */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="co-zip">
-              מיקוד <span className="font-normal text-muted-foreground">(לא חובה)</span>
+            <Label htmlFor="co-apt">
+              Apt, suite <span className="font-normal text-muted-foreground">(optional)</span>
             </Label>
-            <Input id="co-zip" name="zip" inputMode="numeric" dir="ltr" maxLength={7} autoComplete="shipping postal-code" {...later} className={cn("text-start", lockedClass)} />
+            <Input id="co-apt" name="apt" autoComplete="shipping address-line2" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="co-city">City</Label>
+            <Input id="co-city" name="city" autoComplete="shipping address-level2" required />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="co-state">State</Label>
+              <Input id="co-state" name="state" autoComplete="shipping address-level1" required />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="co-zip">ZIP code</Label>
+              <Input id="co-zip" name="zip" inputMode="numeric" maxLength={10} autoComplete="shipping postal-code" required />
+            </div>
           </div>
         </div>
         <Button type="submit" size="lg">
-          <LockIcon /> להמשך לתשלום
+          <LockIcon /> Continue to payment
         </Button>
         <PaymentMethods />
         <a
-          href={`https://wa.me/${PHONE}?text=${encodeURIComponent("היי, יש לי שאלה לפני שאני מזמין/ה 🙂")}`}
+          href={`https://wa.me/${PHONE}?text=${encodeURIComponent("Hi, I have a question before I order 🙂")}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track({ event: "whatsapp", ...ctx, source: "checkout", page: location.pathname, attribution: getAttribution() })}
@@ -162,15 +148,15 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
             <WhatsAppGlyph className="size-6" />
           </span>
           <span className="flex flex-1 flex-col leading-tight">
-            שאלה לפני שמזמינים?
-            <span className="text-sm font-semibold text-[#128C4B]">דברו איתנו בוואטסאפ</span>
+            Questions before you order?
+            <span className="text-sm font-semibold text-[#128C4B]">Chat with us on WhatsApp</span>
           </span>
-          <ChevronLeftIcon className="size-5 text-[#128C4B] transition-transform group-hover:-translate-x-1" />
+          <ChevronRightIcon className="size-5 text-[#128C4B] transition-transform group-hover:translate-x-1" />
         </a>
       </form>
 
       <aside className="order-first flex flex-col gap-6 self-start lg:order-none rounded-[2rem] border border-border bg-card p-6 md:p-8 lg:sticky lg:top-32">
-        <h2 className="text-2xl font-bold">סיכום הזמנה</h2>
+        <h2 className="text-2xl font-bold">Order summary</h2>
         <ul className="flex flex-col gap-4">
           {items.map(({ line, product, color }) => (
             <li key={`${line.slug}-${line.colorId}`} className="flex items-center gap-4">
@@ -181,8 +167,8 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
               <div className="flex flex-1 flex-col gap-1">
                 <span className="text-lg font-bold">{product.name}</span>
                 <span className="text-muted-foreground">
-                  צבע: {color.name}
-                  {line.qty > 1 && ` · כמות: ${line.qty}`}
+                  Color: {color.name}
+                  {line.qty > 1 && ` · Qty: ${line.qty}`}
                 </span>
               </div>
               <span className="font-bold">{formatPrice(product.price * line.qty)}</span>
@@ -191,17 +177,17 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         </ul>
         <dl className="flex flex-col gap-3 border-t border-border pt-5 text-lg">
           <div className="flex justify-between">
-            <dt>משלוח</dt>
-            <dd className="font-bold">חינם</dd>
+            <dt>Shipping</dt>
+            <dd className="font-bold">Free</dd>
           </div>
           {coupon && (
             <div className="flex justify-between">
-              <dt>קופון {coupon}</dt>
+              <dt>Coupon {coupon}</dt>
               <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
             </div>
           )}
           <div className="flex items-center justify-between">
-            <dt className="font-bold">סה״כ</dt>
+            <dt className="font-bold">Total</dt>
             <dd>
               <Price price={pay} compareAt={pay < totals.original ? totals.original : undefined} />
             </dd>
@@ -219,7 +205,7 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         />
       </aside>
 
-      <OutOfStockDialog key={email} ctx={ctx} defaultEmail={email} open={open} onOpenChange={setOpen} />
+      <OutOfStockDialog ctx={ctx} open={open} onOpenChange={setOpen} />
     </div>
   )
 }
@@ -234,8 +220,8 @@ function CouponField({ applied, onApply, onRemove }: { applied?: string; onApply
   if (applied)
     return (
       <p className="flex items-center justify-between rounded-2xl bg-muted px-4 py-3 text-base">
-        <span className="font-bold">✓ קופון {applied} הופעל · 10% הנחה</span>
-        <button type="button" onClick={onRemove} className="text-muted-foreground underline">הסרה</button>
+        <span className="font-bold">✓ Coupon {applied} applied · 10% off</span>
+        <button type="button" onClick={onRemove} className="text-muted-foreground underline">Remove</button>
       </p>
     )
 
@@ -248,12 +234,12 @@ function CouponField({ applied, onApply, onRemove }: { applied?: string; onApply
       }}
       className="flex flex-col gap-2"
     >
-      <Label htmlFor="co-coupon" className="sr-only">קוד קופון</Label>
+      <Label htmlFor="co-coupon" className="sr-only">Coupon code</Label>
       <div className="flex gap-2">
-        <Input id="co-coupon" value={code} onChange={(e) => (setCode(e.target.value), setError(false))} autoComplete="off" placeholder="קוד קופון" aria-invalid={error} />
-        <Button type="submit" variant="outline" size="lg" className="shrink-0">החלה</Button>
+        <Input id="co-coupon" value={code} onChange={(e) => (setCode(e.target.value), setError(false))} autoComplete="off" placeholder="Coupon code" aria-invalid={error} />
+        <Button type="submit" variant="outline" size="lg" className="shrink-0">Apply</Button>
       </div>
-      {error && <p className="text-sm text-destructive">הקוד לא תקין</p>}
+      {error && <p className="text-sm text-destructive">Invalid code</p>}
     </form>
   )
 }

@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils"
 import { SectionHeading } from "@/components/section-heading"
 
 const BADGES = [
-  { icon: ShieldCheckIcon, title: "קנייה בטוחה" },
-  { icon: TruckIcon, title: "משלוח חינם" },
-  { icon: RotateCcwIcon, title: "החזרה תוך 14 יום" },
-  { icon: MessageCircleIcon, title: "שירות בוואטסאפ" },
+  { icon: ShieldCheckIcon, title: "Secure checkout" },
+  { icon: TruckIcon, title: "Free shipping" },
+  { icon: RotateCcwIcon, title: "Easy 14-day returns" },
+  { icon: MessageCircleIcon, title: "WhatsApp support" },
 ]
 
 export function TrustBadges({ className }: { className?: string }) {
@@ -27,18 +27,18 @@ export function TrustBadges({ className }: { className?: string }) {
 
 // Longer version of the badges for the product page. Only promises the site already makes elsewhere.
 const REASONS = [
-  { icon: TruckIcon, title: "משלוח חינם עד הבית", text: "בלי עלויות נסתרות. המחיר שאתם רואים הוא המחיר שאתם משלמים." },
-  { icon: RotateCcwIcon, title: "החזרה תוך 14 יום", text: "לא מתאים לחלל? מחזירים תוך 14 יום מקבלת המוצר." },
-  { icon: ShieldCheckIcon, title: "תשלום מאובטח", text: "כרטיס אשראי, Apple Pay, Google Pay או bit." },
-  { icon: MessageCircleIcon, title: "שירות אישי בוואטסאפ", text: "שאלה על מידות, צבע או משלוח? כתבו לנו ונחזור אליכם מהר." },
-  { icon: GemIcon, title: "אקריליק, לא זכוכית", text: "שקוף כמו זכוכית, אבל קל יותר ועמיד הרבה יותר בפני שבירה." },
-  { icon: DropletsIcon, title: "ניקוי בשנייה", text: "מטלית לחה וזהו. בלי חומרים מיוחדים." },
+  { icon: TruckIcon, title: "Free shipping", text: "To anywhere in the contiguous US. No hidden fees: the price you see is the price you pay." },
+  { icon: RotateCcwIcon, title: "Easy 14-day returns", text: "Doesn't work in your space? Send it back within 14 days of delivery." },
+  { icon: ShieldCheckIcon, title: "Secure payment", text: "Credit card, Apple Pay or Google Pay." },
+  { icon: MessageCircleIcon, title: "Real people on WhatsApp", text: "Questions about size, color or shipping? Text us and a real person gets back to you." },
+  { icon: GemIcon, title: "Acrylic, not glass", text: "Clear as glass, but lighter and far more shatter-resistant." },
+  { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp microfiber cloth and you're done. No special products." },
 ]
 
 export function TrustSection({ className }: { className?: string }) {
   return (
     <section className={cn("container-site flex flex-col gap-10 py-20", className)}>
-      <SectionHeading eyebrow="למה clearbrick" title="קונים בראש שקט." />
+      <SectionHeading eyebrow="Why clearbrick" title="Buy with confidence." />
       {/* Mobile: compact rows with the icon beside the text. Desktop: 3-column cards. */}
       <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {REASONS.map(({ icon: Icon, title, text }) => (
@@ -62,13 +62,12 @@ const PAYMENTS = [
   { src: "/payments/mastercard.svg", alt: "Mastercard" },
   { src: "/payments/applepay.svg", alt: "Apple Pay", size: "h-10" },
   { src: "/payments/googlepay.svg", alt: "Google Pay", size: "h-10" },
-  { src: "/payments/bit.svg", alt: "bit" },
 ]
 
 export function PaymentMethods({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col items-center gap-3", className)}>
-      <span className="text-base text-muted-foreground">תשלום מאובטח עם</span>
+      <span className="text-base text-muted-foreground">Secure payment with</span>
       <ul className="flex flex-wrap justify-center gap-1.5">
         {PAYMENTS.map((p) => (
           <li key={p.alt} className="grid h-11 w-[3.25rem] place-items-center overflow-hidden rounded-lg border border-border bg-background px-1.5">

@@ -53,6 +53,7 @@ export async function track(payload: TrackPayload): Promise<{ ok: boolean }> {
 
   const body = {
     ...payload,
+    market: "us", // US test (branch `us`); the Israeli site has no market field
     message: payload.message?.slice(0, 2000),
     userId: jar.get("cb_uid")?.value, // sticky visitor ID set by src/proxy.ts
     timestamp: new Date().toISOString(),
