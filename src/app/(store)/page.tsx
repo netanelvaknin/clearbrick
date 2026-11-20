@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowDownIcon, ArrowUpRightIcon, HeartHandshakeIcon, MessageCircleIcon, PackageIcon, SparklesIcon } from "lucide-react"
+import { ArrowUpRightIcon, HeartHandshakeIcon, MessageCircleIcon, PackageIcon, SparklesIcon } from "lucide-react"
 import { products, getProduct, formatPrice } from "@/lib/products"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -99,13 +99,6 @@ export default function Home() {
               <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
                 <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ variant: "glass", size: "lg" }), "flex-1 bg-white/25")}>
                   Shop the collection <ArrowUpRightIcon />
-                </Link>
-                <Link
-                  href="#collection"
-                  aria-label="Scroll to the collection"
-                  className="grid size-16 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 backdrop-blur-md"
-                >
-                  <ArrowDownIcon className="size-6 motion-safe:animate-bounce" />
                 </Link>
               </div>
             </div>

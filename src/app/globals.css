@@ -172,7 +172,8 @@
 }
 
 @keyframes marquee {
-  to { transform: translateX(50%); }
+  /* LTR: slide left by one half (the items are repeated, so the loop is seamless). */
+  to { transform: translateX(-50%); }
 }
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
