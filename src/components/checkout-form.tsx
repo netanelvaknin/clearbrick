@@ -11,7 +11,7 @@ import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
 import { formatPrice } from "@/lib/products"
 import { cartSummary, cartTotals, resolveLines, useCart } from "@/components/cart"
-import { CouponField, CouponTag } from "@/components/coupon-field"
+import { CouponField } from "@/components/coupon-field"
 import { couponDiscount, useCoupon } from "@/lib/coupon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -188,10 +188,8 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
           </div>
           {coupon && (
             <div className="flex justify-between">
-              <dt className="flex items-center gap-2">
-                        Discount <CouponTag code={coupon!} small />
-                      </dt>
-              <dd dir="ltr" className="font-bold text-emerald-700">-{formatPrice(discount)}</dd>
+              <dt>Coupon {coupon}</dt>
+              <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
             </div>
           )}
           <div className="flex items-center justify-between">

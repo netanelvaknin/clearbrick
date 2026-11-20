@@ -12,7 +12,7 @@ import { formatPrice, getProduct, type Product, type ProductColor } from "@/lib/
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { PaymentMethods } from "@/components/trust-badges"
-import { CouponField, CouponTag } from "@/components/coupon-field"
+import { CouponField } from "@/components/coupon-field"
 import { couponDiscount, useCoupon } from "@/lib/coupon"
 
 type Item = { slug: string; colorId: string }
@@ -210,10 +210,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between">
-                      <dt className="flex items-center gap-2">
-                        Discount <CouponTag code={coupon!} small />
-                      </dt>
-                      <dd dir="ltr" className="font-bold text-emerald-700">-{formatPrice(discount)}</dd>
+                      <dt>Coupon {coupon}</dt>
+                      <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
                     </div>
                   )}
                   <div className="flex justify-between">

@@ -9,7 +9,7 @@ export const AUTO_COUPON = "BLACKFRIDAY26"
 
 type Totals = { original: number; total: number }
 const COUPONS: Record<string, { label: string; discount: (t: Totals) => number }> = {
-  BLACKFRIDAY26: { label: "Black Friday", discount: (t) => t.original - t.total },
+  BLACKFRIDAY26: { label: "Black Friday price", discount: (t) => t.original - t.total },
   CB2026: { label: "10% off", discount: (t) => Math.round(t.original * 0.1) }, // waitlist coupon promised in the out-of-stock dialog
 }
 
