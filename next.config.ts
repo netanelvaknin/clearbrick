@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   experimental: {
     globalNotFound: true,
+    agentUpgrade: "security",
   },
   turbopack: {
     root: __dirname,
