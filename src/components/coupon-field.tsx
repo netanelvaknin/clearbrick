@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { TagIcon } from "lucide-react"
+import { TagIcon, XIcon } from "lucide-react"
 import { AUTO_COUPON, couponLabel, isCoupon, setCoupon, useCoupon } from "@/lib/coupon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,18 +15,10 @@ export function CouponField({ onEvent }: { onEvent?: (event: "coupon_applied" | 
 
   if (applied)
     return (
-      <p className="flex items-center justify-between gap-3 rounded-2xl bg-muted px-4 py-3 text-base">
-        <span className="flex items-center gap-2 font-bold">
-          <TagIcon className="size-4" /> {applied} applied · {couponLabel(applied)}
-        </span>
-        <button
-          type="button"
-          onClick={() => (setCoupon(null), onEvent?.("coupon_removed", applied))}
-          className="text-muted-foreground underline"
-        >
-          Remove
-        </button>
-      </p>
+      <div className="flex items-center justify-between gap-3">
+        <CouponTag code={applied} onRemove={() => (setCoupon(null), onEvent?.("coupon_removed", applied))} />
+        <span className="text-sm font-semibold text-emerald-700">{couponLabel(applied)}</span>
+      </div>
     )
 
   return (
@@ -56,5 +48,30 @@ export function CouponField({ onEvent }: { onEvent?: (event: "coupon_applied" | 
         <p className="text-sm text-muted-foreground">Black Friday code: {AUTO_COUPON}</p>
       )}
     </form>
+  )
+}
+
+// The applied code as a "tag" chip (dashed edge, tag icon, code in caps), with an optional remove button.
+export function CouponTag({ code, onRemove, small }: { code: string; onRemove?: () => void; small?: boolean }) {
+  return (
+    <span
+      className={
+        "inline-flex items-center gap-1.5 rounded-lg border border-dashed border-emerald-600/60 bg-emerald-50 font-mono font-bold tracking-wider text-emerald-800 uppercase " +
+        (small ? "px-2 py-0.5 text-xs" : "py-1.5 ps-2.5 pe-1.5 text-sm")
+      }
+    >
+      <TagIcon className={small ? "size-3" : "size-4"} />
+      {code}
+      {onRemove && (
+        <button
+          type="button"
+          onClick={onRemove}
+          aria-label={`Remove coupon ${code}`}
+          className="grid size-6 place-items-center rounded-md text-emerald-800/70 transition-colors hover:bg-emerald-100 hover:text-emerald-900"
+        >
+          <XIcon className="size-3.5" />
+        </button>
+      )}
+    </span>
   )
 }

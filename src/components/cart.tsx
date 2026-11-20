@@ -12,7 +12,7 @@ import { formatPrice, getProduct, type Product, type ProductColor } from "@/lib/
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { PaymentMethods } from "@/components/trust-badges"
-import { CouponField } from "@/components/coupon-field"
+import { CouponField, CouponTag } from "@/components/coupon-field"
 import { couponDiscount, useCoupon } from "@/lib/coupon"
 
 type Item = { slug: string; colorId: string }
@@ -192,7 +192,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                                 <MinusIcon className="size-4" />
                               </button>
                             </div>
-                            <span className="text-lg font-black">{formatPrice(product.price * line.qty)}</span>
+                            <span className="text-lg font-black">{formatPrice((product.compareAt ?? product.price) * line.qty)}</span>
                           </div>
                         </div>
                         <button onClick={() => remove(item)} aria-label={`Remove ${product.name} from cart`} className="grid size-9 shrink-0 place-items-center self-start rounded-full transition-colors hover:bg-muted">
@@ -210,8 +210,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between">
-                      <dt>Coupon {coupon}</dt>
-                      <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
+                      <dt className="flex items-center gap-2">
+                        Discount <CouponTag code={coupon!} small />
+                      </dt>
+                      <dd dir="ltr" className="font-bold text-emerald-700">-{formatPrice(discount)}</dd>
                     </div>
                   )}
                   <div className="flex justify-between">
