@@ -19,7 +19,7 @@ const IS_PROD = process.env.VERCEL_ENV === "production"
 const geist = Geist({ subsets: ["latin"], variable: "--font-app" })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.clearbrick.co.il"),
+  metadataBase: new URL("https://www.clearbrickhome.com"),
   title: { default: "clearbrick | Modern Acrylic Furniture", template: "%s | clearbrick" },
   description: "Clear and colored acrylic bookshelves, nightstands and desks. Modern, minimal and shatter-resistant, with free shipping.",
   openGraph: {
