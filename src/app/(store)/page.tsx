@@ -97,7 +97,7 @@ export default function Home() {
                 Acrylic furniture that makes small spaces feel big.
               </p>
               <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
-                <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ size: "lg" }), "flex-1")}>
+                <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ variant: "glass", size: "lg" }), "flex-1 bg-white/25")}>
                   Shop the collection <ArrowUpRightIcon />
                 </Link>
               </div>

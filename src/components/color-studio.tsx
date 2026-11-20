@@ -65,7 +65,7 @@ export function ColorStudio({ product }: { product: Product }) {
               )
             })}
           </div>
-          <Link href={`/products/${product.slug}?color=${color.id}`} className={cn(buttonVariants({ size: "lg" }), "w-full md:w-auto")}>
+          <Link href={`/products/${product.slug}?color=${color.id}`} className={cn(buttonVariants({ variant: "glass", size: "lg" }), "w-full md:w-auto")}>
             {product.name} in {color.name} <ArrowUpRightIcon />
           </Link>
         </div>
