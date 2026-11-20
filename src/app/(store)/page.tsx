@@ -46,7 +46,7 @@ export default function Home() {
       {/* Hero */}
       {/* Mobile: full-screen photo card with oversized type and glass controls. Desktop: split layout with shelf image. */}
       <section className="container-site pt-3 pb-10 md:grid md:grid-cols-[1.1fr_1fr] md:items-center md:gap-10 md:pt-16 md:pb-24">
-        <div className="relative h-[calc(100svh-6rem)] min-h-[34rem] overflow-hidden rounded-[2rem] md:order-last md:mx-auto md:h-auto md:min-h-0 md:w-full md:max-w-lg md:overflow-visible md:rounded-none">
+        <div className="relative h-[calc(100svh-8.25rem)] min-h-[34rem] overflow-hidden rounded-[2rem] md:order-last md:mx-auto md:h-auto md:min-h-0 md:w-full md:max-w-lg md:overflow-visible md:rounded-none">
           <div className="absolute inset-0 overflow-hidden bg-card md:relative md:aspect-[3/4] md:rounded-[2.5rem]">
             <Image
               src={heroImage.src}
@@ -157,7 +157,7 @@ export default function Home() {
       </div>
 
       {/* Collection */}
-      <section id="collection" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
+      <section id="collection" className="container-site flex scroll-mt-36 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="The collection" title="Three pieces. Zero visual clutter." />
         <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           {products.map((p, i) => (
@@ -172,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* Why acrylic */}
-      <section id="why" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
+      <section id="why" className="container-site flex scroll-mt-36 flex-col gap-12 py-20 md:py-28">
         <SectionHeading eyebrow="Why acrylic" title="Easy to love. Hard to break." />
         {/* Mobile: swipeable gallery (native scroll-snap, peeking next card). Desktop: 4-up grid. */}
         <ul className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
@@ -190,7 +190,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className="bg-card py-20 md:py-28 scroll-mt-28">
+      <section id="about" className="bg-card py-20 md:py-28 scroll-mt-36">
         <div className="container-site grid items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] md:order-last">
             <Image src="/about-plans.jpg" alt="Our worktable: sketches of the Luna bookshelf and colored acrylic samples" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />

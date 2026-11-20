@@ -44,6 +44,19 @@ export function SiteHeader() {
         </ul>
       </div>
 
+      {/* Black Friday strip: static and loud on purpose. Remove after Cyber Monday (sale ends Dec 1, 00:00 ET). */}
+      <Link
+        href="/#collection"
+        className="block bg-linear-to-r from-[#ff3b30] via-[#ff5a1f] to-[#ff8a00] text-white transition-[filter] hover:brightness-110"
+      >
+        <p className="container-site flex h-9 items-center justify-center gap-2 text-sm font-extrabold tracking-wide uppercase">
+          <span aria-hidden>🔥</span>
+          <span className="md:hidden">Black Friday · up to 30% off</span>
+          <span className="hidden md:inline">Black Friday Sale · Up to 30% off everything · Ends Cyber Monday</span>
+          <span className="rounded-full bg-white px-2 py-0.5 text-xs font-black tracking-normal text-[#e0301e] normal-case">Shop now</span>
+        </p>
+      </Link>
+
       <div className="border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="container-site flex h-16 items-center justify-between gap-6">
           <Link href="/" aria-label="clearbrick home">

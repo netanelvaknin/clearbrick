@@ -137,7 +137,7 @@ const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
 export default function TermsPage() {
   return (
     <div className="container-site grid gap-12 py-12 md:grid-cols-[18rem_1fr] md:gap-20 md:py-20">
-      <aside className="flex flex-col gap-6 md:sticky md:top-28 md:self-start">
+      <aside className="flex flex-col gap-6 md:sticky md:top-36 md:self-start">
         <span className="text-eyebrow text-muted-foreground">Last updated: {UPDATED}</span>
         <h1 className="text-display-md">Terms & privacy</h1>
         <nav aria-label="Contents" className="hidden flex-col gap-3 border-s-2 border-border ps-5 md:flex">
@@ -154,7 +154,7 @@ export default function TermsPage() {
           <section
             key={s.id}
             id={s.id}
-            className="flex scroll-mt-28 flex-col gap-4 rounded-[2rem] border border-border bg-card p-6 text-lg leading-relaxed text-muted-foreground md:p-10 [&_a]:font-semibold [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-4 [&_li]:ms-6 [&_li]:list-disc [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2"
+            className="flex scroll-mt-36 flex-col gap-4 rounded-[2rem] border border-border bg-card p-6 text-lg leading-relaxed text-muted-foreground md:p-10 [&_a]:font-semibold [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-4 [&_li]:ms-6 [&_li]:list-disc [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2"
           >
             <h2 className="flex items-baseline gap-3 text-2xl font-extrabold text-foreground md:text-3xl">
               <span className="text-muted-foreground/50">{String(i + 1).padStart(2, "0")}</span>

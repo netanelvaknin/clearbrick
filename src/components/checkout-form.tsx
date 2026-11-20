@@ -153,7 +153,7 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         </a>
       </form>
 
-      <aside className="order-first flex flex-col gap-6 self-start lg:order-none rounded-[2rem] border border-border bg-card p-6 md:p-8 lg:sticky lg:top-32">
+      <aside className="order-first flex flex-col gap-6 self-start lg:order-none rounded-[2rem] border border-border bg-card p-6 md:p-8 lg:sticky lg:top-40">
         <h2 className="text-2xl font-bold">Order summary</h2>
         <ul className="flex flex-col gap-4">
           {items.map(({ line, product, color }) => (

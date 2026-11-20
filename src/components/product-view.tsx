@@ -82,7 +82,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
   return (
     <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
       {/* Gallery */}
-      <div className="flex flex-col gap-4 lg:sticky lg:top-32 lg:self-start">
+      <div className="flex flex-col gap-4 lg:sticky lg:top-40 lg:self-start">
         {/* Swipeable, endless loop (last ↔ first) */}
         <div className="relative">
           <div ref={viewport} className="overflow-hidden rounded-[2rem] bg-card">
