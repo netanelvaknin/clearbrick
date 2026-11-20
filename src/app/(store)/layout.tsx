@@ -19,8 +19,8 @@ const heebo = Heebo({ subsets: ["latin"], weight: ["400", "500", "600", "700", "
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearbrick.co.il"),
-  title: { default: "clearbrick | Clear acrylic furniture", template: "%s | clearbrick" },
-  description: "Acrylic shelves, nightstands and desks with a clean, modern design. Clear, colorful, yours.",
+  title: { default: "clearbrick | Modern Acrylic Furniture", template: "%s | clearbrick" },
+  description: "Clear and colored acrylic bookshelves, nightstands and desks. Modern, minimal and shatter-resistant, with free shipping.",
   openGraph: {
     type: "website",
     locale: "en_US",

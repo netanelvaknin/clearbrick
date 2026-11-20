@@ -96,7 +96,7 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="questions" className="border-b border-border">
-            <AccordionTrigger className="text-xl">More questions</AccordionTrigger>
+            <AccordionTrigger className="text-xl">Still have questions?</AccordionTrigger>
             <AccordionContent className="text-lg">
               Have a question about this product? <Link href="/contact">Write to us</Link> and we’ll get back to you fast.
             </AccordionContent>

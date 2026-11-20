@@ -14,7 +14,7 @@ export default function ContactPage() {
         <span className="text-eyebrow text-muted-foreground">Contact</span>
         <h1 className="text-display-lg">Let’s talk.</h1>
         <p className="max-w-md text-xl leading-relaxed text-muted-foreground">
-          Question about sizes? Can’t pick a color? Write to us. We answer fast, and no bots.
+          Not sure about the size? Torn between two colors? Write to us. Real people answer, no bots.
         </p>
         <div className="flex flex-col gap-4">
           <a href="mailto:info@clearbrick.co.il" className="flex items-center gap-4 rounded-3xl border border-border bg-card p-5 transition hover:border-foreground">

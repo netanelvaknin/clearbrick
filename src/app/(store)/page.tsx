@@ -9,29 +9,29 @@ import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 import { ColorStudio } from "@/components/color-studio"
 
-const MARQUEE = ["Free shipping to your door", "Thick, durable acrylic", "Easy assembly", "Customer care on WhatsApp"]
+const MARQUEE = ["Free shipping, always", "Shatter-resistant acrylic", "Easy assembly", "Easy 14-day returns"]
 
 const WHY = [
-  { n: "01", title: "Clear = spacious", text: "Furniture that doesn't block the light or crowd the room. Even in a small apartment.", img: "/products/luna-bedroom-clear.jpg", alt: "The Luna bookshelf in clear, in the corner of a bedroom" },
-  { n: "02", title: "Seriously sturdy", text: "Thick acrylic that holds books, plants and whatever else you put on it.", img: "/why/strong-wide.jpg", alt: "Hands placing a stack of heavy art books on a smoke grey acrylic shelf" },
-  { n: "03", title: "Color only where you want it", text: "Pink, blue, amber or fully clear. The furniture becomes the room's pop of color.", img: "/why/color.jpg", alt: "The pink Luna bookshelf in a bright, clean living room" },
-  { n: "04", title: "Zero upkeep", text: "A damp cloth and you're done. No oils, no polishing, no hassle.", img: "/why/care.jpg", alt: "A hand wiping the amber nightstand with a cloth" },
+  { n: "01", title: "Rooms look bigger", text: "Light passes right through, so even a studio apartment feels open and bright.", img: "/products/luna-bedroom-clear.jpg", alt: "The Luna bookshelf in clear, in the corner of a bedroom" },
+  { n: "02", title: "Seriously sturdy", text: "Thick 5/16\" acrylic that holds your books, plants and everything else you love.", img: "/why/strong-wide.jpg", alt: "Hands placing a stack of heavy art books on a smoke gray acrylic shelf" },
+  { n: "03", title: "A pop of color, not a wall of it", text: "Pink, blue, amber or crystal clear. Let one piece be the statement.", img: "/why/color.jpg", alt: "The pink Luna bookshelf in a bright, clean living room" },
+  { n: "04", title: "Zero upkeep", text: "Wipe with a damp cloth. That's it. No polish, no oils, no fuss.", img: "/why/care.jpg", alt: "A hand wiping the amber nightstand with a cloth" },
 ]
 
 const VALUES = [
   { icon: PackageIcon, title: "Packed with care", text: "Every piece is checked and packed by hand, with protection on every corner, so it arrives perfect and scratch-free." },
-  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Question about size, color or shipping? Message us on WhatsApp and a human will answer." },
-  { icon: HeartHandshakeIcon, title: "We stand behind every piece", text: "14-day returns, because we're confident in what we ship." },
+  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Questions about size, color or shipping? Message us and a real person answers. No bots, no ticket numbers." },
+  { icon: HeartHandshakeIcon, title: "We stand behind every piece", text: "Easy 14-day returns, because we're confident in what we ship." },
 ]
 
 const FAQ = [
-  { q: "Is acrylic just plastic?", a: "Acrylic is as clear as glass, but much lighter and stronger, and it doesn't shatter. That's what makes it perfect for furniture, even in a home with kids." },
+  { q: "Is acrylic the same as Lucite?", a: "Same material. Lucite is a brand name for acrylic, the crystal-clear material behind iconic mid-century designer pieces. It's as clear as glass but much lighter and far more shatter-resistant, so it's a great fit for homes with kids and pets." },
   { q: "How do I clean it?", a: "A soft microfiber cloth with a little water or mild soap. Avoid abrasive cleaners and alcohol." },
-  { q: "How much weight do the shelves hold?", a: "Each Luna shelf comfortably holds books, plants and decor. Just spread the weight along the shelf." },
-  { q: "Is shipping really free?", a: "Yes. Free shipping to your door on every order, no minimum and no fine print." },
-  { q: "What if it's not right for me?", a: "You have 14 days from delivery. Not in love? Send us a message and we'll arrange a return." },
-  { q: "Is checkout secure?", a: "Yes. All payment details go over an encrypted SSL connection, and we never store your card details." },
-  { q: "Are more colors coming?", a: "Yes! We're working on new shades. Leave your email on a product page and be the first to know." },
+  { q: "How much weight do the shelves hold?", a: "Each Luna tier comfortably holds a full row of books, plants and decor. Just spread heavier items along the shelf." },
+  { q: "Is shipping really free?", a: "Yes. Free shipping on every order to anywhere in the contiguous US. No minimum, no fine print." },
+  { q: "What if it's not right for me?", a: "You have 14 days from delivery. Not in love? Send us a message and we'll set up your return." },
+  { q: "Is checkout secure?", a: "Yes. Checkout runs over an encrypted SSL connection, and we never store your card details." },
+  { q: "Are more colors coming?", a: "Yes! New shades are in the works. Leave your email on any product page and you'll be the first to know." },
 ]
 
 export default function Home() {
@@ -94,7 +94,7 @@ export default function Home() {
                 <span className="text-white/70">Yours.</span>
               </h1>
               <p className="motion-safe:animate-rise max-w-xs text-lg leading-snug text-white/85 [animation-delay:160ms]">
-                Acrylic furniture that lets your room breathe.
+                Acrylic furniture that makes small spaces feel big.
               </p>
               <div className="motion-safe:animate-rise flex gap-3 [animation-delay:240ms]">
                 <Link href="/products/arch-bookshelf" className={cn(buttonVariants({ variant: "glass", size: "lg" }), "flex-1 bg-white/25")}>
@@ -139,7 +139,7 @@ export default function Home() {
             <span className="text-muted-foreground">Yours.</span>
           </h1>
           <p className="max-w-md text-xl leading-relaxed text-muted-foreground">
-            Acrylic furniture that lets your room breathe. Minimal design, with color only where you want it.
+            See-through acrylic furniture that makes any room feel bigger and brighter. Minimal design, with color only where you want it.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="/products/arch-bookshelf" className={buttonVariants({ size: "lg" })}>
@@ -165,7 +165,7 @@ export default function Home() {
 
       {/* Collection */}
       <section id="collection" className="container-site flex scroll-mt-28 flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="The collection" title="Three pieces. Endless style." />
+        <SectionHeading eyebrow="The collection" title="Three pieces. Zero visual clutter." />
         <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           {products.map((p, i) => (
             <ProductCard key={p.slug} product={p} priority={i === 0} />
@@ -204,7 +204,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-10">
             <SectionHeading eyebrow="Our story" title="It started with a room that needed more light.">
-              clearbrick started in a small apartment where no furniture fit. Every shelf felt heavy, every nightstand blocked the light. So we designed furniture that does the job without taking up visual space: clear, clean, with color only where you want it.
+              clearbrick started in a small apartment where nothing fit. Every bookshelf felt bulky, every nightstand blocked the light. So we designed furniture that does the job without hogging the room: clear, clean, with color only where you want it.
             </SectionHeading>
             <ul className="flex flex-col gap-6">
               {VALUES.map(({ icon: Icon, title, text }) => (
@@ -225,10 +225,10 @@ export default function Home() {
 
       {/* Lifestyle bento */}
       <section className="container-site flex flex-col gap-12 py-20 md:py-28">
-        <SectionHeading eyebrow="In your home" title="Looks good in every corner." />
+        <SectionHeading eyebrow="Real rooms" title="Looks good wherever it lands." />
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr_1fr] md:grid-rows-2">
           <Tile src="/products/luna-detail-pink.jpg" alt="Close-up of the top two shelves of the pink Luna bookshelf" label="Pink in the living room" href="/products/arch-bookshelf?color=pink" className="aspect-[4/5] md:row-span-2 md:aspect-auto" />
-          <Tile src={smokeImage.src} alt={smokeImage.alt} label="Smoke grey in the bedroom" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
+          <Tile src={smokeImage.src} alt={smokeImage.alt} label="Smoke gray in the bedroom" href="/products/arch-bookshelf?color=smoke" className="aspect-square md:col-span-2 md:aspect-[2/1]" />
           <Tile src="/lifestyle-blue-kidsroom.jpg" alt="The blue Luna bookshelf in a kids' room, with children's books, a stuffed bunny, wooden blocks and a straw basket" label="Blue in the kids' room" href="/products/arch-bookshelf?color=blue" className="aspect-square" />
           <Tile src="/products/bedside-detail.jpg" alt="A hand setting a glass of water on the nightstand by the bed" label="The Laila nightstand by the bed" href="/products/bedside-table" className="aspect-square" />
         </div>

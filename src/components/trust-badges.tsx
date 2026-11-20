@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils"
 import { SectionHeading } from "@/components/section-heading"
 
 const BADGES = [
-  { icon: ShieldCheckIcon, title: "Safe shopping" },
+  { icon: ShieldCheckIcon, title: "Secure checkout" },
   { icon: TruckIcon, title: "Free shipping" },
-  { icon: RotateCcwIcon, title: "14-day returns" },
+  { icon: RotateCcwIcon, title: "Easy 14-day returns" },
   { icon: MessageCircleIcon, title: "WhatsApp support" },
 ]
 
@@ -27,18 +27,18 @@ export function TrustBadges({ className }: { className?: string }) {
 
 // Longer version of the badges for the product page. Only promises the site already makes elsewhere.
 const REASONS = [
-  { icon: TruckIcon, title: "Free shipping to your door", text: "No hidden costs. The price you see is the price you pay." },
-  { icon: RotateCcwIcon, title: "14-day returns", text: "Doesn't fit your space? Return it within 14 days of delivery." },
+  { icon: TruckIcon, title: "Free shipping", text: "To anywhere in the contiguous US. No hidden fees: the price you see is the price you pay." },
+  { icon: RotateCcwIcon, title: "Easy 14-day returns", text: "Doesn't work in your space? Send it back within 14 days of delivery." },
   { icon: ShieldCheckIcon, title: "Secure payment", text: "Credit card, Apple Pay or Google Pay." },
-  { icon: MessageCircleIcon, title: "Personal support on WhatsApp", text: "Question about size, color or shipping? Message us and we'll get back to you fast." },
-  { icon: GemIcon, title: "Acrylic, not glass", text: "Clear as glass, but lighter and far more resistant to breaking." },
-  { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp cloth and you're done. No special products." },
+  { icon: MessageCircleIcon, title: "Real people on WhatsApp", text: "Questions about size, color or shipping? Text us and a real person gets back to you." },
+  { icon: GemIcon, title: "Acrylic, not glass", text: "Clear as glass, but lighter and far more shatter-resistant." },
+  { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp microfiber cloth and you're done. No special products." },
 ]
 
 export function TrustSection({ className }: { className?: string }) {
   return (
     <section className={cn("container-site flex flex-col gap-10 py-20", className)}>
-      <SectionHeading eyebrow="Why clearbrick" title="Shop with peace of mind." />
+      <SectionHeading eyebrow="Why clearbrick" title="Buy with confidence." />
       {/* Mobile: compact rows with the icon beside the text. Desktop: 3-column cards. */}
       <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {REASONS.map(({ icon: Icon, title, text }) => (

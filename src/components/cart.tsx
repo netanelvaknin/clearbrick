@@ -44,7 +44,7 @@ export function cartTotals(items: CartLine[]) {
   return { count, total, original, saved: original - total }
 }
 
-// One summary for events about the whole cart, e.g. "Luna Bookshelf (Smoke grey) ×2 + Laila Nightstand (Amber)".
+// One summary for events about the whole cart, e.g. "Luna Bookshelf (Smoke gray) ×2 + Laila Nightstand (Amber)".
 export function cartSummary(items: CartLine[]) {
   const { count, total } = cartTotals(items)
   const product = items.map((i) => `${i.product.name} (${i.color.name})${i.line.qty > 1 ? ` ×${i.line.qty}` : ""}`).join(" + ")
@@ -156,7 +156,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           {/* Free shipping strip: already unlocked, so the bar is full */}
           <div className="flex flex-col gap-2 bg-muted px-6 py-4">
             <span className="flex items-center gap-2 text-base font-bold">
-              <TruckIcon className="size-5" /> Shipping’s on us! Free delivery to your door
+              <TruckIcon className="size-5" /> Free shipping on every order
             </span>
             <span className="h-2 overflow-hidden rounded-full bg-background">
               <span className="block h-full w-full rounded-full bg-foreground" />

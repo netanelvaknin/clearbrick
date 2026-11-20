@@ -92,7 +92,7 @@ export function OutOfStockDialog({ ctx, defaultEmail, open, onOpenChange }: { ct
             <>
               <div className="flex flex-col gap-3 text-start">
                 <span className="text-eyebrow w-fit rounded-full bg-muted px-3 py-1">Sold out</span>
-                <DialogTitle className="text-display-sm font-extrabold">Oops, it sold out fast</DialogTitle>
+                <DialogTitle className="text-display-sm font-extrabold">Oops, this one sold out fast</DialogTitle>
                 <DialogDescription className="text-lg leading-relaxed">
                   This item is currently sold out. Leave your email and we’ll send you a discount coupon the moment it’s back.
                 </DialogDescription>
