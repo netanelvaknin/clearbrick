@@ -63,7 +63,7 @@ export function ContactForm() {
             {...register("name", { required: "Let us know what to call you" })} />
         </Field>
         <Field id="phone" label="Phone (optional)" error={errors.phone?.message}>
-          <Input id="phone" type="tel" dir="ltr" autoComplete="tel" placeholder="050-0000000" className="text-start" aria-invalid={!!errors.phone}
+          <Input id="phone" type="tel" dir="ltr" autoComplete="tel" placeholder="(555) 555-0123" className="text-start" aria-invalid={!!errors.phone}
             {...register("phone", { pattern: { value: /^[0-9+\-\s]{9,15}$/, message: "That phone number doesn't look right" } })} />
         </Field>
       </div>

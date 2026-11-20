@@ -17,7 +17,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/products/[slug]">): Promise<Metadata> {
   const product = getProduct((await params).slug)
   if (!product) return {}
-  // openGraph here replaces the layout's, so repeat siteName/locale. Share images are 1200×630 for WhatsApp/Instagram/Facebook previews.
+  // openGraph here replaces the layout's, so repeat siteName/locale. Share images are 1200×630 for iMessage/Instagram/Facebook previews.
   const title = `${product.name} · $${product.price}`
   return {
     title: product.name,

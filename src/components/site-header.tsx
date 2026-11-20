@@ -18,7 +18,7 @@ const NAV = [
 const PERKS = [
   { icon: PercentIcon, text: "Black Friday: up to 30% off, auto-applied" },
   { icon: TruckIcon, text: "Free shipping, always" },
-  { icon: MessageCircleIcon, text: "Questions? Text us on WhatsApp" },
+  { icon: MessageCircleIcon, text: "Questions? Real people reply within a day" },
 ]
 
 export function SiteHeader() {

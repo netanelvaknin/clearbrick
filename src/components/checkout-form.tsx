@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { sendGTMEvent } from "@next/third-parties/google"
-import { ChevronRightIcon, LockIcon } from "lucide-react"
+import { ChevronRightIcon, LockIcon, MailIcon } from "lucide-react"
 import { track } from "@/lib/track"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
@@ -19,7 +19,6 @@ import { Label } from "@/components/ui/label"
 import { Price } from "@/components/price"
 import { OutOfStockDialog } from "@/components/notify-dialog"
 import { PaymentMethods } from "@/components/trust-badges"
-import { PHONE, WhatsAppGlyph } from "@/components/whatsapp-button"
 
 // Fake-door checkout: the visitor fills in every shipping field and clicks "Continue to payment". That valid submit
 // is logged as proof of real buying intent (with the email) and opens the out-of-stock dialog.
@@ -140,20 +139,17 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         </Button>
         <PaymentMethods />
         <a
-          href={`https://wa.me/${PHONE}?text=${encodeURIComponent("Hi, I have a question before I order 🙂")}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => track({ event: "whatsapp", ...ctx, source: "checkout", page: location.pathname, attribution: getAttribution() })}
-          className="group flex items-center gap-3 rounded-full border border-[#25D366]/40 bg-[#25D366]/12 bg-linear-to-b from-white/60 to-white/0 p-2 pe-5 text-base font-bold shadow-[inset_0_1px_0_rgb(255_255_255/0.8),0_10px_24px_-14px_rgb(18_140_75/0.6)] backdrop-blur-md transition hover:border-[#25D366]/70 hover:bg-[#25D366]/20 active:scale-[0.98]"
+          href="mailto:info@clearbrick.co.il?subject=Question%20before%20I%20order"
+          className="group flex items-center gap-3 rounded-full border border-border bg-background p-2 pe-5 text-base font-bold transition hover:border-foreground active:scale-[0.98]"
         >
-          <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#25D366] text-white shadow-sm">
-            <WhatsAppGlyph className="size-6" />
+          <span className="grid size-11 shrink-0 place-items-center rounded-full bg-muted">
+            <MailIcon className="size-5" />
           </span>
           <span className="flex flex-1 flex-col leading-tight">
             Questions before you order?
-            <span className="text-sm font-semibold text-[#128C4B]">Chat with us on WhatsApp</span>
+            <span className="text-sm font-semibold text-muted-foreground">Email us, a real person replies</span>
           </span>
-          <ChevronRightIcon className="size-5 text-[#128C4B] transition-transform group-hover:translate-x-1" />
+          <ChevronRightIcon className="size-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
         </a>
       </form>
 

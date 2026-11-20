@@ -5,7 +5,6 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { AttributionCapture } from "@/components/attribution-capture"
 import { SmoothScroll } from "@/components/smooth-scroll"
-import { WhatsAppButton } from "@/components/whatsapp-button"
 import { VercelAnalytics } from "@/components/vercel-analytics"
 import { CartProvider } from "@/components/cart"
 import { Tags } from "@/components/tags"
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </CartProvider>
         {/* GTM (Meta pixel, Clarity) loads client-side so friends marked with ?internal=1 can be skipped */}
         {IS_PROD && <Tags />}
-        <WhatsAppButton />
         <VercelAnalytics />
         <SpeedInsights />
       </body>

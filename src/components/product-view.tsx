@@ -71,7 +71,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
     io.observe(el)
     return () => io.disconnect()
   }, [])
-  // Lift the WhatsApp button above the bar while it's showing.
+  // Expose the sticky bar height (--sticky-bar) so floating elements can sit above it.
   useEffect(() => {
     document.documentElement.style.setProperty("--sticky-bar", sticky ? "5.5rem" : "0px")
     return () => {

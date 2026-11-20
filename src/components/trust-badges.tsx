@@ -7,7 +7,7 @@ const BADGES = [
   { icon: ShieldCheckIcon, title: "Secure checkout" },
   { icon: TruckIcon, title: "Free shipping" },
   { icon: RotateCcwIcon, title: "Easy 14-day returns" },
-  { icon: MessageCircleIcon, title: "WhatsApp support" },
+  { icon: MessageCircleIcon, title: "Real human support" },
 ]
 
 export function TrustBadges({ className }: { className?: string }) {
@@ -30,7 +30,7 @@ const REASONS = [
   { icon: TruckIcon, title: "Free shipping", text: "To anywhere in the contiguous US. No hidden fees: the price you see is the price you pay." },
   { icon: RotateCcwIcon, title: "Easy 14-day returns", text: "Doesn't work in your space? Send it back within 14 days of delivery." },
   { icon: ShieldCheckIcon, title: "Secure payment", text: "Credit card, Apple Pay or Google Pay." },
-  { icon: MessageCircleIcon, title: "Real people on WhatsApp", text: "Questions about size, color or shipping? Text us and a real person gets back to you." },
+  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Questions about size, color or shipping? Email us and a real person replies within one business day." },
   { icon: GemIcon, title: "Acrylic, not glass", text: "Clear as glass, but lighter and far more shatter-resistant." },
   { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp microfiber cloth and you're done. No special products." },
 ]
