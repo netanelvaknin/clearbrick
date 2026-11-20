@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
@@ -48,14 +48,15 @@ export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: 
   )
 }
 
-export function OutOfStockDialog({ ctx, defaultEmail, open, onOpenChange }: { ctx: Ctx; defaultEmail?: string; open: boolean; onOpenChange: (open: boolean) => void }) {
+export function OutOfStockDialog({ ctx, open, onOpenChange }: { ctx: Ctx; open: boolean; onOpenChange: (open: boolean) => void }) {
   const [sent, setSent] = useState(false)
   const [failed, setFailed] = useState(false)
+  const popup = useRef<HTMLDivElement>(null)
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<{ email: string }>({ defaultValues: { email: defaultEmail ?? "" } })
+  } = useForm<{ email: string }>({ defaultValues: { email: "" } })
 
   async function onSubmit({ email }: { email: string }) {
     setFailed(false)
@@ -74,7 +75,8 @@ export function OutOfStockDialog({ ctx, defaultEmail, open, onOpenChange }: { ct
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="gap-6 rounded-3xl p-8 sm:max-w-lg">
+        {/* Focus the dialog itself, not the email field: no keyboard popping up, the visitor reads first. */}
+        <DialogContent ref={popup} initialFocus={popup} className="gap-6 rounded-3xl p-8 sm:max-w-lg">
           {sent ? (
             <div className="flex flex-col items-center gap-5 py-4 text-center">
               <span className="grid size-16 place-items-center rounded-full bg-primary text-primary-foreground">

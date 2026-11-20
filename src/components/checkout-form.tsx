@@ -61,7 +61,6 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   const ctx = items.length === 1 && items[0].line.qty === 1 ? { product: items[0].product.name, color: items[0].color.name, price: items[0].product.price } : cartSummary(items)
 
   const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState<string>()
   const logged = useRef(false)
 
   // Funnel step between the buy click and the form: did they actually land on checkout?
@@ -74,10 +73,9 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   }, [])
 
   // Runs only on a valid submit: the browser blocks "Continue to payment" until every required field is filled.
-  // Logged once; submitting again just reopens the dialog with the current email.
+  // Logged once; submitting again just reopens the dialog.
   function reveal(form: HTMLFormElement) {
     const typed = String(new FormData(form).get("email") ?? "").trim()
-    setEmail(typed)
     if (!logged.current) {
       logged.current = true
       track({ event: "checkout_details", ...ctx, email: typed, page: location.pathname, attribution: getAttribution() })
@@ -207,7 +205,7 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         />
       </aside>
 
-      <OutOfStockDialog key={email} ctx={ctx} defaultEmail={email} open={open} onOpenChange={setOpen} />
+      <OutOfStockDialog ctx={ctx} open={open} onOpenChange={setOpen} />
     </div>
   )
 }
