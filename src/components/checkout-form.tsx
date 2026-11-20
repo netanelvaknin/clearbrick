@@ -10,7 +10,6 @@ import { track } from "@/lib/track"
 import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
 import { formatPrice } from "@/lib/products"
-import { cn } from "@/lib/utils"
 import { cartSummary, cartTotals, resolveLines, useCart } from "@/components/cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,12 +19,11 @@ import { OutOfStockDialog } from "@/components/notify-dialog"
 import { PaymentMethods } from "@/components/trust-badges"
 import { PHONE, WhatsAppGlyph } from "@/components/whatsapp-button"
 
-// Fake-door checkout: email comes first. Once the visitor enters a valid email (or skips ahead to another
-// field / submits), we log it as proof of real buying intent, lock the rest and show the out-of-stock dialog.
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// Fake-door checkout: the visitor fills in every shipping field and clicks "Continue to payment". That valid submit
+// is logged as proof of real buying intent (with the email) and opens the out-of-stock dialog.
 
 // Cache Components keeps page state across navigations, so a returning buyer would land on the old,
-// locked checkout. Keying on bfcacheId starts fresh on every buy click but still restores on browser back.
+// already-submitted checkout. Keying on bfcacheId starts fresh on every buy click but still restores on browser back.
 export function CheckoutForm() {
   const { bfcacheId } = useRouter()
   return <Checkout key={bfcacheId} />
@@ -62,13 +60,11 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   // One item keeps its own color in events; several items are summarized into one line.
   const ctx = items.length === 1 && items[0].line.qty === 1 ? { product: items[0].product.name, color: items[0].color.name, price: items[0].product.price } : cartSummary(items)
 
-  const [locked, setLocked] = useState(false)
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState<string>()
-  // A ref, not state: email blur and the next field's focus fire in the same tick, before `locked` re-renders.
   const logged = useRef(false)
 
-  // Funnel step between the buy click and the email: did they actually land on checkout?
+  // Funnel step between the buy click and the form: did they actually land on checkout?
   const viewed = useRef(false)
   useEffect(() => {
     if (viewed.current) return
@@ -77,31 +73,26 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Logged once; later calls just reopen the dialog (with a newly typed email, if any).
-  function reveal(typed?: string) {
-    const valid = typed && EMAIL.test(typed) ? typed : undefined
-    if (valid) setEmail(valid)
+  // Runs only on a valid submit: the browser blocks "Continue to payment" until every required field is filled.
+  // Logged once; submitting again just reopens the dialog with the current email.
+  function reveal(form: HTMLFormElement) {
+    const typed = String(new FormData(form).get("email") ?? "").trim()
+    setEmail(typed)
     if (!logged.current) {
       logged.current = true
-      track({ event: "checkout_details", ...ctx, email: valid, page: location.pathname, attribution: getAttribution() })
+      track({ event: "checkout_details", ...ctx, email: typed, page: location.pathname, attribution: getAttribution() })
       pixel("track", "AddPaymentInfo", { content_name: ctx.product, value: pay, num_items: totals.count, currency: "USD" })
       sendGTMEvent({ event: "add_shipping_info", product: ctx.product, value: pay, quantity: totals.count, currency: "USD" })
-      setLocked(true)
     }
     setOpen(true)
   }
-
-  // Read-only, not disabled: a disabled field can't be tapped, so it could never reopen the dialog.
-  // onClick, not onFocus: closing the dialog returns focus to the last field, which would reopen it at once.
-  const lockedClass = locked ? "opacity-50" : undefined
-  const later = { readOnly: locked, onClick: () => reveal(), className: lockedClass }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          reveal(String(new FormData(e.currentTarget).get("email") ?? "").trim())
+          reveal(e.currentTarget)
         }}
         className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card p-6 md:p-10"
       >
@@ -109,46 +100,38 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2 sm:col-span-2">
             <Label htmlFor="co-email">Email</Label>
-            <Input
-              id="co-email"
-              name="email"
-              type="email"
-              dir="ltr"
-              autoComplete="email"
-              className="text-start"
-              onBlur={(e) => EMAIL.test(e.target.value.trim()) && reveal(e.target.value.trim())}
-            />
+            <Input id="co-email" name="email" type="email" autoComplete="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" />
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
             <Label htmlFor="co-name">Full name</Label>
-            <Input id="co-name" name="name" autoComplete="shipping name" {...later} />
+            <Input id="co-name" name="name" autoComplete="shipping name" required />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-phone">Phone</Label>
-            <Input id="co-phone" name="phone" type="tel" inputMode="tel" dir="ltr" autoComplete="shipping tel" {...later} className={cn("text-start", lockedClass)} />
+            <Input id="co-phone" name="phone" type="tel" inputMode="tel" autoComplete="shipping tel" required />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-street">Street address</Label>
-            <Input id="co-street" name="street" autoComplete="shipping address-line1" {...later} />
+            <Input id="co-street" name="street" autoComplete="shipping address-line1" required />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-apt">
               Apt, suite <span className="font-normal text-muted-foreground">(optional)</span>
             </Label>
-            <Input id="co-apt" name="apt" autoComplete="shipping address-line2" {...later} />
+            <Input id="co-apt" name="apt" autoComplete="shipping address-line2" />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="co-city">City</Label>
-            <Input id="co-city" name="city" autoComplete="shipping address-level2" {...later} />
+            <Input id="co-city" name="city" autoComplete="shipping address-level2" required />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-2">
               <Label htmlFor="co-state">State</Label>
-              <Input id="co-state" name="state" autoComplete="shipping address-level1" {...later} />
+              <Input id="co-state" name="state" autoComplete="shipping address-level1" required />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="co-zip">ZIP code</Label>
-              <Input id="co-zip" name="zip" inputMode="numeric" maxLength={10} autoComplete="shipping postal-code" {...later} />
+              <Input id="co-zip" name="zip" inputMode="numeric" maxLength={10} autoComplete="shipping postal-code" required />
             </div>
           </div>
         </div>
