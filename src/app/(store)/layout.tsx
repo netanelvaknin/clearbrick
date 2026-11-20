@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Heebo } from "next/font/google"
+import { Geist } from "next/font/google"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -15,7 +15,8 @@ const GTM_ID = "GTM-MCQ9SFVR"
 // Tags (Meta pixel, Clarity) load only on the live site, so local and preview visits never reach Meta.
 const IS_PROD = process.env.VERCEL_ENV === "production"
 
-const heebo = Heebo({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] })
+// Geist (Vercel), variable font: every weight from 100 to 900 in one file. Exposed as --font-app for globals.css.
+const geist = Geist({ subsets: ["latin"], variable: "--font-app" })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clearbrick.co.il"),
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" dir="ltr" className={`${heebo.className} h-full antialiased`}>
+    <html lang="en" dir="ltr" className={`${geist.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         {IS_PROD && (
           <noscript>
