@@ -2,133 +2,133 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "תנאי שימוש ופרטיות",
-  description: "תנאי השימוש ומדיניות הפרטיות של אתר clearbrick.",
+  title: "Terms & privacy",
+  description: "Terms of use and privacy policy for the clearbrick website.",
 }
 
-const UPDATED = "25 באוקטובר 2026"
+const UPDATED = "November 20, 2026"
 
 const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
   {
     id: "general",
-    title: "כללי",
+    title: "General",
     body: (
-      <>
-        <p>
-          ברוכים הבאים לאתר clearbrick.co.il (״האתר״). השימוש באתר, בכל אמצעי, מהווה הסכמה לתנאים אלה. אם אינכם מסכימים
-          להם, אנא אל תשתמשו באתר.
-        </p>
-        <p>התנאים כתובים בלשון רבים מטעמי נוחות ומתייחסים לכל המגדרים.</p>
-      </>
+      <p>
+        Welcome to the clearbrick website (&ldquo;the site&rdquo;). By using the site in any way, you agree to these terms. If you
+        don&rsquo;t agree, please don&rsquo;t use the site.
+      </p>
     ),
   },
   {
     id: "pre-launch",
-    title: "מלאי, הזמנות ורשימת המתנה",
+    title: "Stock, orders and waitlist",
     body: (
       <>
         <p>
-          המוצרים המוצגים באתר אינם זמינים כרגע במלאי. לחיצה על ״הוספה לסל״ או ״לקנייה מהירה״ אינה יוצרת הזמנה, לא נגבה
-          תשלום ולא נוצרת התחייבות מצד מי מהצדדים.
+          The products shown on the site are not currently in stock. Clicking &ldquo;Add to cart&rdquo; or &ldquo;Buy now&rdquo; does not
+          create an order, no payment is taken, and neither side makes any commitment.
         </p>
         <p>
-          השארת כתובת מייל מצרפת אתכם לרשימת המתנה, כדי שנעדכן אתכם כשהמוצר יחזור למלאי. אין בכך התחייבות שלנו למועד,
-          למחיר או לזמינות.
+          Leaving your email adds you to a waitlist so we can let you know when the product is back in stock. This is not a
+          commitment on our part to any date, price or availability.
         </p>
       </>
     ),
   },
   {
     id: "prices",
-    title: "מחירים ותיאור מוצרים",
+    title: "Prices and product descriptions",
     body: (
       <>
         <p>
-          המחירים באתר נקובים בשקלים חדשים וכוללים מע״מ. המחירים, המבצעים וההנחות עשויים להשתנות עד לפתיחת המכירה בפועל.
+          Prices on the site are in US dollars and don&rsquo;t include sales tax, where applicable. Prices, promotions and discounts may
+          change until sales actually open.
         </p>
         <p>
-          התמונות באתר נועדו להמחשה. חלקן הופקו בעזרת כלים דיגיטליים, וייתכנו הבדלים קלים בגוון, בתאורה ובעיצוב החדר
-          לעומת המוצר בפועל. המידות המפורטות הן המידות הקובעות.
+          Photos on the site are for illustration. Some were produced with digital tools, and there may be slight differences in
+          color, lighting and room styling compared with the actual product. The listed dimensions are what count.
         </p>
       </>
     ),
   },
   {
     id: "privacy",
-    title: "פרטיות ואיסוף מידע",
+    title: "Privacy and data collection",
     body: (
       <>
-        <p>אנחנו אוספים רק את המידע שאתם מוסרים לנו ומידע בסיסי על השימוש באתר:</p>
+        <p>We only collect the information you give us and basic information about how the site is used:</p>
         <ul>
-          <li>כתובת מייל שהשארתם ברשימת ההמתנה.</li>
-          <li>שם, מייל, טלפון ותוכן הפנייה שמילאתם בטופס יצירת הקשר.</li>
+          <li>The email address you left on the waitlist.</li>
+          <li>The name, email, phone and message you entered in the contact form.</li>
           <li>
-            פעולות באתר (כמו לחיצה על ״הוספה לסל״), המוצר והצבע שבחרתם, הדף שבו הייתם, סוג הדפדפן ומקור ההגעה לאתר
-            (למשל קמפיין בפייסבוק או בטיקטוק).
+            Actions on the site (like clicking &ldquo;Add to cart&rdquo;), the product and color you picked, the page you were on, your
+            browser type, and how you got to the site (for example, a Facebook or TikTok campaign).
           </li>
         </ul>
         <p>
-          המידע משמש אותנו כדי לעדכן אתכם על חזרת מוצרים למלאי, לחזור לפניות, ולהבין אילו מוצרים מעניינים את הגולשים.
-          לא תחויבו למסור מידע, אך בלעדיו לא נוכל לעדכן אתכם או לחזור אליכם.
+          We use this information to let you know when products are back in stock, to reply to your messages, and to understand
+          which products interest visitors. You don&rsquo;t have to give us any information, but without it we can&rsquo;t update you
+          or get back to you.
         </p>
         <p>
-          המידע מועבר ונשמר אצל ספקי שירות חיצוניים שמסייעים לנו בתפעול (כגון שירותי אוטומציה ואחסון), שחלקם פועלים מחוץ
-          לישראל. איננו מוכרים את המידע לאף אחד.
+          The information is sent to and stored with third-party service providers that help us run the site (such as automation
+          and hosting services), some of which operate outside the United States. We never sell your information.
         </p>
         <p>
-          לפי חוק הגנת הפרטיות, התשמ״א-1981, אתם רשאים לבקש לעיין במידע שנשמר עליכם, לתקן אותו או למחוק אותו. פנו אלינו
-          במייל <a href="mailto:info@clearbrick.co.il">info@clearbrick.co.il</a>.
+          You can ask to see the information we hold about you, correct it or delete it. Email us at{" "}
+          <a href="mailto:info@clearbrick.co.il">info@clearbrick.co.il</a>.
         </p>
       </>
     ),
   },
   {
     id: "marketing",
-    title: "דיוור ועדכונים",
+    title: "Emails and updates",
     body: (
       <p>
-        נשלח לכם הודעות שיווקיות רק אם אישרתם זאת במפורש, למשל בסימון התיבה בטופס יצירת הקשר. עדכון על חזרת מוצר למלאי
-        נשלח רק למי שביקש אותו. בכל הודעה תוכלו להסיר את עצמכם מרשימת התפוצה, או לבקש זאת במייל.
+        We only send marketing emails if you explicitly agreed, for example by checking the box in the contact form. Back-in-stock
+        updates go only to people who asked for them. You can unsubscribe from any email, or ask us to remove you by email.
       </p>
     ),
   },
   {
     id: "ip",
-    title: "קניין רוחני",
+    title: "Intellectual property",
     body: (
       <p>
-        כל התכנים באתר, כולל עיצוב, טקסטים, תמונות, לוגו וסימני מסחר, שייכים ל-clearbrick או לבעלי הזכויות בהם. אין להעתיק,
-        להפיץ או לעשות בהם שימוש מסחרי ללא אישור מראש ובכתב.
+        All content on the site, including design, text, images, logo and trademarks, belongs to clearbrick or its respective
+        owners. It may not be copied, distributed or used commercially without prior written permission.
       </p>
     ),
   },
   {
     id: "liability",
-    title: "אחריות",
+    title: "Liability",
     body: (
       <p>
-        האתר והתכנים בו מוצגים כפי שהם (AS IS). אנו עושים מאמץ שהמידע יהיה מדויק ועדכני, אך ייתכנו טעויות או תקלות. לא
-        נהיה אחראים לנזק שנגרם משימוש באתר או מהסתמכות על המידע בו, במידה המותרת לפי דין.
+        The site and its content are provided &ldquo;as is.&rdquo; We work to keep the information accurate and up to date, but errors or
+        outages may happen. To the extent permitted by law, we are not liable for damage caused by using the site or relying on its
+        information.
       </p>
     ),
   },
   {
     id: "changes",
-    title: "שינויים בתנאים",
-    body: <p>אנו רשאים לעדכן את התנאים מעת לעת. הנוסח המחייב הוא הנוסח המפורסם באתר, ותאריך העדכון האחרון מופיע בראש העמוד.</p>,
+    title: "Changes to these terms",
+    body: <p>We may update these terms from time to time. The version published on the site is the binding one, and the date of the last update appears at the top of the page.</p>,
   },
   {
     id: "law",
-    title: "דין וסמכות שיפוט",
-    body: <p>על תנאים אלה יחולו דיני מדינת ישראל בלבד. סמכות השיפוט הבלעדית נתונה לבתי המשפט המוסמכים בישראל.</p>,
+    title: "Governing law",
+    body: <p>These terms are governed by the laws of the State of Israel, and the competent courts in Israel have exclusive jurisdiction.</p>,
   },
   {
     id: "contact",
-    title: "יצירת קשר",
+    title: "Contact",
     body: (
       <p>
-        שאלות על התנאים או על הפרטיות? כתבו לנו ל-<a href="mailto:info@clearbrick.co.il">info@clearbrick.co.il</a> או דרך{" "}
-        <Link href="/contact">טופס יצירת הקשר</Link>.
+        Questions about these terms or your privacy? Write to us at <a href="mailto:info@clearbrick.co.il">info@clearbrick.co.il</a> or
+        through the <Link href="/contact">contact form</Link>.
       </p>
     ),
   },
@@ -138,9 +138,9 @@ export default function TermsPage() {
   return (
     <div className="container-site grid gap-12 py-12 md:grid-cols-[18rem_1fr] md:gap-20 md:py-20">
       <aside className="flex flex-col gap-6 md:sticky md:top-28 md:self-start">
-        <span className="text-eyebrow text-muted-foreground">עודכן לאחרונה: {UPDATED}</span>
-        <h1 className="text-display-md">תנאי שימוש ופרטיות</h1>
-        <nav aria-label="תוכן העניינים" className="hidden flex-col gap-3 border-s-2 border-border ps-5 md:flex">
+        <span className="text-eyebrow text-muted-foreground">Last updated: {UPDATED}</span>
+        <h1 className="text-display-md">Terms & privacy</h1>
+        <nav aria-label="Contents" className="hidden flex-col gap-3 border-s-2 border-border ps-5 md:flex">
           {SECTIONS.map((s, i) => (
             <a key={s.id} href={`#${s.id}`} className="text-base text-muted-foreground transition-colors hover:text-foreground">
               {i + 1}. {s.title}

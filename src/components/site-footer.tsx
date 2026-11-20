@@ -9,25 +9,25 @@ export function SiteFooter() {
         <div className="flex flex-col gap-5">
           <Logo className="self-start" />
           <p className="max-w-sm text-lg text-muted-foreground">
-            רהיטי אקריליק שקופים לבית שאוהב אור.
+            Clear acrylic furniture for homes that love light.
           </p>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-bold">חנות</h2>
+          <h2 className="text-lg font-bold">Shop</h2>
           <Link href="/products/arch-bookshelf" className="text-lg text-muted-foreground hover:text-foreground">
-            ספריית לונה
+            Luna Bookshelf
           </Link>
           <Link href="/products/bedside-table" className="text-lg text-muted-foreground hover:text-foreground">
-            שידת הלילה
+            Laila Nightstand
           </Link>
           <Link href="/products/acrylic-desk" className="text-lg text-muted-foreground hover:text-foreground">
-            שולחן אור
+            Ora Desk
           </Link>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-bold">דברו איתנו</h2>
+          <h2 className="text-lg font-bold">Talk to us</h2>
           <Link href="/contact" className="text-lg text-muted-foreground hover:text-foreground">
-            צרו קשר
+            Contact
           </Link>
           <a href="mailto:info@clearbrick.co.il" dir="ltr" className="w-fit text-lg text-muted-foreground hover:text-foreground">
             info@clearbrick.co.il
@@ -36,12 +36,12 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-border">
         <div className="container-site flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-muted-foreground">
-          <p>© 2026 clearbrick. כל הזכויות שמורות.</p>
+          <p>© 2026 clearbrick. All rights reserved.</p>
           <p className="flex items-center gap-2">
-            <LockIcon className="size-4" /> אתר מאובטח · תשלום מוצפן SSL
+            <LockIcon className="size-4" /> Secure site · SSL-encrypted checkout
           </p>
           <Link href="/terms" className="hover:text-foreground">
-            תנאי שימוש ופרטיות
+            Terms & privacy
           </Link>
         </div>
       </div>

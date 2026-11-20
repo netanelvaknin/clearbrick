@@ -44,7 +44,7 @@ export function cartTotals(items: CartLine[]) {
   return { count, total, original, saved: original - total }
 }
 
-// One summary for events about the whole cart, e.g. "ספריית לונה (אפור מעושן) ×2 + שידת הלילה (ענבר)".
+// One summary for events about the whole cart, e.g. "Luna Bookshelf (Smoke gray) ×2 + Laila Nightstand (Amber)".
 export function cartSummary(items: CartLine[]) {
   const { count, total } = cartTotals(items)
   const product = items.map((i) => `${i.product.name} (${i.color.name})${i.line.qty > 1 ? ` ×${i.line.qty}` : ""}`).join(" + ")
@@ -88,7 +88,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   function openWith(source: "add" | "header", ctx: Partial<TrackPayload>) {
     log("cart_open", { ...ctx, source })
-    sendGTMEvent({ event: "view_cart", source, product: ctx.product, value: ctx.price, currency: "ILS" })
+    sendGTMEvent({ event: "view_cart", source, product: ctx.product, value: ctx.price, currency: "USD" })
     leaving.current = false
     setOpen(true)
   }
@@ -115,7 +115,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   function remove(item: CartLine) {
     log("cart_remove", lineCtx(item))
-    sendGTMEvent({ event: "remove_from_cart", product: item.product.name, value: item.product.price * item.line.qty, currency: "ILS" })
+    sendGTMEvent({ event: "remove_from_cart", product: item.product.name, value: item.product.price * item.line.qty, currency: "USD" })
     save(lines.filter((l) => !same(l, item.line)))
   }
 
@@ -123,7 +123,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!items.length) return
     const summary = cartSummary(items)
     log("cart_checkout", summary)
-    sendGTMEvent({ event: "begin_checkout", product: summary.product, value: summary.price, quantity: summary.quantity, currency: "ILS" })
+    sendGTMEvent({ event: "begin_checkout", product: summary.product, value: summary.price, quantity: summary.quantity, currency: "USD" })
     leaving.current = true
     setOpen(false)
     router.push("/checkout")
@@ -147,16 +147,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     <CartContext.Provider value={cart}>
       {children}
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="left" className="gap-0 overflow-x-hidden bg-background p-0 data-[side=left]:w-full data-[side=left]:sm:max-w-md">
+        <SheetContent side="right" className="gap-0 overflow-x-hidden bg-background p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-md">
           <div className="flex items-center gap-3 border-b border-border px-6 py-5">
             <ShoppingBagIcon className="size-5" />
-            <SheetTitle className="text-xl font-bold">הסל שלך {totals.count ? `(${totals.count})` : ""}</SheetTitle>
+            <SheetTitle className="text-xl font-bold">Your cart {totals.count ? `(${totals.count})` : ""}</SheetTitle>
           </div>
 
           {/* Free shipping strip: already unlocked, so the bar is full */}
           <div className="flex flex-col gap-2 bg-muted px-6 py-4">
             <span className="flex items-center gap-2 text-base font-bold">
-              <TruckIcon className="size-5" /> המשלוח עלינו! משלוח חינם עד הבית
+              <TruckIcon className="size-5" /> Free shipping on every order
             </span>
             <span className="h-2 overflow-hidden rounded-full bg-background">
               <span className="block h-full w-full rounded-full bg-foreground" />
@@ -177,21 +177,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                         </div>
                         <div className="flex flex-1 flex-col gap-1">
                           <span className="text-lg leading-tight font-bold">{product.name}</span>
-                          <span className="text-muted-foreground">צבע: {color.name}</span>
+                          <span className="text-muted-foreground">Color: {color.name}</span>
                           <div className="mt-auto flex items-center justify-between gap-2">
                             <div className="flex items-center rounded-full border border-border">
-                              <button onClick={() => setQty(item, line.qty + 1)} disabled={line.qty >= MAX_QTY} aria-label="הוספת יחידה" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
+                              <button onClick={() => setQty(item, line.qty + 1)} disabled={line.qty >= MAX_QTY} aria-label="Add one" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
                                 <PlusIcon className="size-4" />
                               </button>
                               <span className="w-6 text-center font-bold" aria-live="polite">{line.qty}</span>
-                              <button onClick={() => setQty(item, line.qty - 1)} disabled={line.qty <= 1} aria-label="הורדת יחידה" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
+                              <button onClick={() => setQty(item, line.qty - 1)} disabled={line.qty <= 1} aria-label="Remove one" className="grid size-9 place-items-center rounded-full disabled:opacity-30">
                                 <MinusIcon className="size-4" />
                               </button>
                             </div>
                             <span className="text-lg font-black">{formatPrice(product.price * line.qty)}</span>
                           </div>
                         </div>
-                        <button onClick={() => remove(item)} aria-label={`הסרת ${product.name} מהסל`} className="grid size-9 shrink-0 place-items-center self-start rounded-full transition-colors hover:bg-muted">
+                        <button onClick={() => remove(item)} aria-label={`Remove ${product.name} from cart`} className="grid size-9 shrink-0 place-items-center self-start rounded-full transition-colors hover:bg-muted">
                           <Trash2Icon className="size-4" />
                         </button>
                       </li>
@@ -203,36 +203,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   {totals.saved > 0 && (
                     <>
                       <div className="flex justify-between">
-                        <dt className="text-muted-foreground">מחיר מקורי</dt>
+                        <dt className="text-muted-foreground">Original price</dt>
                         <dd className="text-muted-foreground line-through">{formatPrice(totals.original)}</dd>
                       </div>
                       <div className="flex justify-between">
-                        <dt>הנחת השקה</dt>
+                        <dt>Launch discount</dt>
                         <dd dir="ltr" className="font-bold">-{formatPrice(totals.saved)}</dd>
                       </div>
                     </>
                   )}
                   <div className="flex justify-between">
-                    <dt>משלוח</dt>
-                    <dd className="font-bold">חינם</dd>
+                    <dt>Shipping</dt>
+                    <dd className="font-bold">Free</dd>
                   </div>
                   <div className="flex justify-between border-t border-border pt-3 text-xl">
-                    <dt className="font-bold">סה״כ</dt>
+                    <dt className="font-bold">Total</dt>
                     <dd className="font-black">{formatPrice(totals.total)}</dd>
                   </div>
-                  {totals.saved > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">חסכתם {formatPrice(totals.saved)} בהזמנה הזו</p>}
+                  {totals.saved > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">You’re saving {formatPrice(totals.saved)} on this order</p>}
                 </dl>
               </div>
 
               <div className="flex flex-col gap-3 border-t border-border px-6 py-5">
                 <Button size="lg" className="w-full" onClick={checkout}>
-                  <LockIcon /> למעבר לתשלום
+                  <LockIcon /> Checkout
                 </Button>
                 <Button size="lg" variant="outline" className="w-full" onClick={continueShopping}>
-                  להמשיך בקניות
+                  Keep shopping
                 </Button>
                 <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                  <RotateCcwIcon className="size-4" /> החזרה תוך 14 יום · תשלום מאובטח
+                  <RotateCcwIcon className="size-4" /> 14-day returns · Secure checkout
                 </p>
                 <PaymentMethods className="[&>span]:hidden" />
               </div>
@@ -240,7 +240,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           ) : (
             <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
               <ShoppingBagIcon className="size-10 text-muted-foreground" />
-              <p className="text-lg font-bold">הסל שלכם ריק</p>
+              <p className="text-lg font-bold">Your cart is empty</p>
               <Button
                 variant="outline"
                 onClick={() => {
@@ -248,7 +248,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   router.push("/#collection")
                 }}
               >
-                לקולקציה
+                Shop the collection
               </Button>
             </div>
           )}
@@ -263,7 +263,7 @@ export function CartButton() {
   const { lines, show } = useCart()
   const count = lines.reduce((n, l) => n + l.qty, 0)
   return (
-    <button onClick={show} aria-label="סל קניות" className="relative grid size-11 place-items-center rounded-full transition-colors hover:bg-muted">
+    <button onClick={show} aria-label="Shopping cart" className="relative grid size-11 place-items-center rounded-full transition-colors hover:bg-muted">
       <ShoppingBagIcon className="size-5" />
       <span className="absolute -top-0.5 -end-0.5 grid size-5 place-items-center rounded-full bg-foreground text-xs font-bold text-background">
         {count}
