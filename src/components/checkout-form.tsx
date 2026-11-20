@@ -11,6 +11,8 @@ import { getAttribution } from "@/lib/attribution"
 import { pixel } from "@/lib/pixel"
 import { formatPrice } from "@/lib/products"
 import { cartSummary, cartTotals, resolveLines, useCart } from "@/components/cart"
+import { CouponField } from "@/components/coupon-field"
+import { couponDiscount, useCoupon } from "@/lib/coupon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -53,10 +55,10 @@ function EmptyCheckout() {
 
 function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
   const totals = cartTotals(items)
-  // Only one coupon exists: CB2026, 10% off the order total.
-  const [coupon, setCoupon] = useState<string>()
-  const discount = coupon ? Math.round(totals.total * COUPON_OFF) : 0
-  const pay = totals.total - discount
+  // Prices start from the "was" prices; BLACKFRIDAY26 (auto-applied, see lib/coupon) brings them to the product page price.
+  const coupon = useCoupon()
+  const discount = couponDiscount(coupon, totals)
+  const pay = totals.original - discount
   // One item keeps its own color in events; several items are summarized into one line.
   const ctx = items.length === 1 && items[0].line.qty === 1 ? { product: items[0].product.name, color: items[0].color.name, price: items[0].product.price } : cartSummary(items)
 
@@ -171,11 +173,15 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
                   {line.qty > 1 && ` · Qty: ${line.qty}`}
                 </span>
               </div>
-              <span className="font-bold">{formatPrice(product.price * line.qty)}</span>
+              <span className="font-bold">{formatPrice((product.compareAt ?? product.price) * line.qty)}</span>
             </li>
           ))}
         </ul>
         <dl className="flex flex-col gap-3 border-t border-border pt-5 text-lg">
+          <div className="flex justify-between">
+            <dt>Subtotal</dt>
+            <dd className="font-bold">{formatPrice(totals.original)}</dd>
+          </div>
           <div className="flex justify-between">
             <dt>Shipping</dt>
             <dd className="font-bold">Free</dd>
@@ -193,53 +199,10 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
             </dd>
           </div>
         </dl>
-        <CouponField
-          applied={coupon}
-          onApply={(code) => {
-            const valid = code === COUPON
-            track({ event: valid ? "coupon_applied" : "coupon_invalid", ...ctx, offer: code, page: location.pathname, attribution: getAttribution() })
-            if (valid) setCoupon(code)
-            return valid
-          }}
-          onRemove={() => setCoupon(undefined)}
-        />
+        <CouponField onEvent={(event, code) => track({ event, ...ctx, offer: code, page: location.pathname, attribution: getAttribution() })} />
       </aside>
 
       <OutOfStockDialog ctx={ctx} open={open} onOpenChange={setOpen} />
     </div>
-  )
-}
-
-const COUPON = "CB2026"
-const COUPON_OFF = 0.1
-
-function CouponField({ applied, onApply, onRemove }: { applied?: string; onApply: (code: string) => boolean; onRemove: () => void }) {
-  const [code, setCode] = useState("")
-  const [error, setError] = useState(false)
-
-  if (applied)
-    return (
-      <p className="flex items-center justify-between rounded-2xl bg-muted px-4 py-3 text-base">
-        <span className="font-bold">✓ Coupon {applied} applied · 10% off</span>
-        <button type="button" onClick={onRemove} className="text-muted-foreground underline">Remove</button>
-      </p>
-    )
-
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        const clean = code.trim().toUpperCase()
-        if (clean) setError(!onApply(clean))
-      }}
-      className="flex flex-col gap-2"
-    >
-      <Label htmlFor="co-coupon" className="sr-only">Coupon code</Label>
-      <div className="flex gap-2">
-        <Input id="co-coupon" value={code} onChange={(e) => (setCode(e.target.value), setError(false))} autoComplete="off" placeholder="Coupon code" aria-invalid={error} />
-        <Button type="submit" variant="outline" size="lg" className="shrink-0">Apply</Button>
-      </div>
-      {error && <p className="text-sm text-destructive">Invalid code</p>}
-    </form>
   )
 }

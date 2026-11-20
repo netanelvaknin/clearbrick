@@ -9,7 +9,7 @@ import { ProductCard } from "@/components/product-card"
 import { SectionHeading } from "@/components/section-heading"
 import { ColorStudio } from "@/components/color-studio"
 
-const MARQUEE = ["Free shipping, always", "Shatter-resistant acrylic", "Easy assembly", "Easy 14-day returns"]
+const MARQUEE = ["Black Friday: up to 30% off", "Free shipping, always", "Shatter-resistant acrylic", "Easy assembly", "Easy 14-day returns"]
 
 const WHY = [
   { n: "01", title: "Rooms look bigger", text: "Light passes right through, so even a studio apartment feels open and bright.", img: "/products/luna-bedroom-clear.jpg", alt: "The Luna bookshelf in clear, in the corner of a bedroom" },
@@ -63,7 +63,7 @@ export default function Home() {
           <div className="relative z-10 flex h-full flex-col justify-between p-5 text-white md:hidden">
             <div className="flex items-start justify-between gap-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-sm font-semibold whitespace-nowrap backdrop-blur-md">
-                <SparklesIcon className="size-4" /> New collection
+                <SparklesIcon className="size-4" /> Black Friday sale
               </span>
               <Link
                 href="/products/arch-bookshelf"
@@ -122,7 +122,7 @@ export default function Home() {
 
         <div className="hidden flex-col gap-8 md:flex">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-eyebrow">
-            <SparklesIcon className="size-4" /> New acrylic collection
+            <SparklesIcon className="size-4" /> Black Friday · up to 30% off
           </span>
           <h1 className="text-display-xl">
             Clear.

@@ -19,6 +19,11 @@ export function ProductCard({ product, priority }: { product: Product; priority?
         <span className="absolute top-5 start-5 rounded-full border border-white/60 bg-white/40 px-4 py-2 text-sm font-bold shadow-[inset_0_1px_0_rgb(255_255_255/0.8)] backdrop-blur-md">
           {product.colors.length > 1 ? `${product.colors.length} colors` : product.colors[0].name}
         </span>
+        {product.compareAt && (
+          <span className="absolute top-5 end-5 rounded-full bg-foreground px-3 py-1.5 text-sm font-bold text-background">
+            Black Friday −{Math.round((1 - product.price / product.compareAt) * 100)}%
+          </span>
+        )}
         <span className="absolute bottom-5 end-5 grid size-14 place-items-center rounded-full border border-white/25 bg-foreground/70 text-background shadow-[inset_0_1px_0_rgb(255_255_255/0.3)] backdrop-blur-md transition-transform group-hover:-translate-y-1">
           <ArrowUpRightIcon className="size-6" />
         </span>

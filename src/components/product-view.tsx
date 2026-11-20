@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
-import { CheckIcon, ShoppingBagIcon, ZoomInIcon } from "lucide-react"
+import { CheckIcon, ShoppingBagIcon, TagIcon, ZoomInIcon } from "lucide-react"
+import { AUTO_COUPON } from "@/lib/coupon"
 import { GalleryLightbox } from "@/components/gallery-lightbox"
 import { formatPrice, type Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
@@ -144,7 +145,7 @@ export function ProductView({ product, initialColor }: { product: Product; initi
           <div className="flex flex-wrap items-center gap-2">
             {product.compareAt && (
               <span className="rounded-full bg-foreground px-3 py-1 text-sm font-bold text-background">
-                {Math.round((1 - product.price / product.compareAt) * 100)}% off launch sale
+                {Math.round((1 - product.price / product.compareAt) * 100)}% off · Black Friday
               </span>
             )}
             <span className="rounded-full bg-muted px-3 py-1 text-sm font-bold">Acrylic</span>
@@ -153,6 +154,11 @@ export function ProductView({ product, initialColor }: { product: Product; initi
             <h1 className="text-display-md">{product.name}</h1>
             <Price price={product.price} compareAt={product.compareAt} large />
           </div>
+          {product.compareAt && (
+            <p className="flex items-center gap-2 text-base font-semibold">
+              <TagIcon className="size-4 shrink-0" /> Code {AUTO_COUPON} auto-applied at checkout
+            </p>
+          )}
           <p className="text-xl leading-relaxed text-muted-foreground">{product.tagline}</p>
           {/* Sizes right under the tagline: the first thing people check on furniture. Inches only here; cm is in the specs. */}
           <ul aria-label="Dimensions" className="flex flex-wrap gap-2">

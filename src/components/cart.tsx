@@ -12,6 +12,8 @@ import { formatPrice, getProduct, type Product, type ProductColor } from "@/lib/
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { PaymentMethods } from "@/components/trust-badges"
+import { CouponField } from "@/components/coupon-field"
+import { couponDiscount, useCoupon } from "@/lib/coupon"
 
 type Item = { slug: string; colorId: string }
 export type Line = Item & { qty: number }
@@ -74,6 +76,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const items = resolveLines(lines)
   const totals = cartTotals(items)
+  const coupon = useCoupon()
+  const discount = couponDiscount(coupon, totals)
 
   function save(next: Line[]) {
     setLines(next)
@@ -200,17 +204,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 </ul>
 
                 <dl className="flex flex-col gap-3 border-t border-border pt-5 text-base">
-                  {totals.saved > 0 && (
-                    <>
-                      <div className="flex justify-between">
-                        <dt className="text-muted-foreground">Original price</dt>
-                        <dd className="text-muted-foreground line-through">{formatPrice(totals.original)}</dd>
-                      </div>
-                      <div className="flex justify-between">
-                        <dt>Launch discount</dt>
-                        <dd dir="ltr" className="font-bold">-{formatPrice(totals.saved)}</dd>
-                      </div>
-                    </>
+                  <div className="flex justify-between">
+                    <dt className="text-muted-foreground">Subtotal</dt>
+                    <dd className="text-muted-foreground">{formatPrice(totals.original)}</dd>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between">
+                      <dt>Coupon {coupon}</dt>
+                      <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
+                    </div>
                   )}
                   <div className="flex justify-between">
                     <dt>Shipping</dt>
@@ -218,10 +220,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="flex justify-between border-t border-border pt-3 text-xl">
                     <dt className="font-bold">Total</dt>
-                    <dd className="font-black">{formatPrice(totals.total)}</dd>
+                    <dd className="font-black">{formatPrice(totals.original - discount)}</dd>
                   </div>
-                  {totals.saved > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">You’re saving {formatPrice(totals.saved)} on this order</p>}
+                  {discount > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">You’re saving {formatPrice(discount)} this Black Friday</p>}
                 </dl>
+                <div className="mt-4">
+                  <CouponField onEvent={(event, code) => track({ event, ...cartSummary(items), offer: code, page: location.pathname, attribution: getAttribution() })} />
+                </div>
               </div>
 
               <div className="flex flex-col gap-3 border-t border-border px-6 py-5">
