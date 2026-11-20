@@ -45,7 +45,7 @@ function EmptyCheckout() {
   return (
     <div className="flex flex-col items-center gap-4 rounded-[2rem] border border-border bg-card p-10 text-center">
       <p className="text-xl font-bold">Your cart is empty</p>
-      <Button variant="outline" nativeButton={false} render={<Link href="/#collection" />}>
+      <Button variant="outline" nativeButton={false} render={<Link href="/shop" />}>
         Shop the collection
       </Button>
     </div>

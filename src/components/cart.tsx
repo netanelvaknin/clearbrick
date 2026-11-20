@@ -250,7 +250,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                 variant="outline"
                 onClick={() => {
                   onOpenChange(false)
-                  router.push("/#collection")
+                  router.push("/shop")
                 }}
               >
                 Shop the collection

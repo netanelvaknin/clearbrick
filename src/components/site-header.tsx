@@ -7,6 +7,7 @@ import { CartButton } from "@/components/cart"
 import { cn } from "@/lib/utils"
 
 const NAV = [
+  { href: "/shop", label: "Shop all", mobileOnly: true }, // desktop has the Shop button instead
   { href: "/products/arch-bookshelf", label: "Luna Bookshelf" },
   { href: "/products/bedside-table", label: "Laila Nightstand" },
   { href: "/products/acrylic-desk", label: "Ora Desk", badge: "New" },
@@ -46,7 +47,7 @@ export function SiteHeader() {
 
       {/* Black Friday strip: static and loud on purpose. Remove after Cyber Monday (sale ends Dec 1, 00:00 ET). */}
       <Link
-        href="/#collection"
+        href="/shop"
         className="block bg-linear-to-r from-[#ff3b30] via-[#ff5a1f] to-[#ff8a00] text-white transition-[filter] hover:brightness-110"
       >
         <p className="container-site flex h-9 items-center justify-center gap-2 text-sm font-extrabold tracking-wide uppercase">
@@ -63,9 +64,9 @@ export function SiteHeader() {
             <Logo />
           </Link>
 
-          <nav className="hidden items-center divide-x divide-border text-[15px] font-medium md:flex">
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="flex items-center gap-2 px-5 leading-5 transition-opacity hover:opacity-60">
+          <nav className="hidden items-center divide-x divide-border text-[15px] font-medium lg:flex">
+            {NAV.filter((n) => !n.mobileOnly).map((n) => (
+              <Link key={n.href} href={n.href} className="flex items-center gap-2 px-3 leading-5 whitespace-nowrap transition-opacity hover:opacity-60 xl:px-5">
                 {n.label}
                 {n.badge && (
                   <span className="rounded-full bg-foreground px-2 py-0.5 text-[11px] font-bold leading-none text-background">{n.badge}</span>
@@ -75,14 +76,14 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link href="/#collection" className={cn(buttonVariants({ size: "sm" }), "hidden md:inline-flex")}>
+            <Link href="/shop" className={cn(buttonVariants({ size: "sm" }), "hidden md:inline-flex")}>
               Shop <ArrowUpRightIcon />
             </Link>
             <CartButton />
             <Sheet>
               <SheetTrigger
                 aria-label="Menu"
-                className="grid size-11 place-items-center rounded-full transition-colors hover:bg-muted md:hidden"
+                className="grid size-11 place-items-center rounded-full transition-colors hover:bg-muted lg:hidden"
               >
                 <MenuIcon className="size-5" />
               </SheetTrigger>

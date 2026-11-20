@@ -57,7 +57,7 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-base text-muted-foreground">
             <Link href="/" className="hover:text-foreground">Home</Link>
             <span>/</span>
-            <Link href="/#collection" className="hover:text-foreground">Collection</Link>
+            <Link href="/shop" className="hover:text-foreground">Shop all</Link>
             <span>/</span>
             <span className="font-semibold text-foreground">{product.name}</span>
           </nav>

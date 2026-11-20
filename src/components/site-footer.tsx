@@ -14,6 +14,9 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-bold">Shop</h2>
+          <Link href="/shop" className="text-lg text-muted-foreground hover:text-foreground">
+            Shop all
+          </Link>
           <Link href="/products/arch-bookshelf" className="text-lg text-muted-foreground hover:text-foreground">
             Luna Bookshelf
           </Link>
