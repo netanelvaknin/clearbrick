@@ -24,15 +24,15 @@ export function LaunchCountdown({ product }: { product: Product }) {
   const left = useSecondsLeft()
   if (!product.compareAt || left === 0) return null
   const off = Math.round((1 - product.price / product.compareAt) * 100)
-  // Days while more than a day is left, then hours/minutes/seconds.
-  const days = left !== null && left >= 86400
-  const labels = days ? ["days", "hrs", "min"] : ["hrs", "min", "sec"]
+  // Days / hours / minutes / seconds; the days slot drops away in the last 24 hours.
+  const days = left === null || left >= 86400
+  const labels = ["days", "hrs", "min", "sec"].slice(days ? 0 : 1)
   const units =
     left === null
-      ? ["--", "--", "--"]
-      : days
-        ? [pad(Math.floor(left / 86400)), pad(Math.floor((left % 86400) / 3600)), pad(Math.floor((left % 3600) / 60))]
-        : [pad(Math.floor(left / 3600)), pad(Math.floor((left % 3600) / 60)), pad(left % 60)]
+      ? labels.map(() => "--")
+      : [Math.floor(left / 86400), Math.floor((left % 86400) / 3600), Math.floor((left % 3600) / 60), left % 60]
+          .slice(days ? 0 : 1)
+          .map(pad)
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-[1.75rem] bg-foreground bg-linear-to-r from-white/10 to-white/0 px-5 py-4 text-background shadow-[inset_0_1px_0_rgb(255_255_255/0.15)] md:px-7">
@@ -47,7 +47,7 @@ export function LaunchCountdown({ product }: { product: Product }) {
           {units.map((v, i) => (
             <span key={i} className="flex items-start gap-1">
               {i > 0 && <span className="pt-0.5 text-lg font-bold text-white/50">:</span>}
-              <span className="flex w-8 flex-col items-center">
+              <span className="flex w-7 flex-col items-center md:w-8">
                 <span className="text-xl leading-tight font-black tabular-nums">{v}</span>
                 <span className="text-[10px] font-semibold text-white/60">{labels[i]}</span>
               </span>

@@ -27,12 +27,12 @@ export function TrustBadges({ className }: { className?: string }) {
 
 // Longer version of the badges for the product page. Only promises the site already makes elsewhere.
 const REASONS = [
-  { icon: TruckIcon, title: "Free shipping", text: "To anywhere in the contiguous US. No hidden fees: the price you see is the price you pay." },
-  { icon: RotateCcwIcon, title: "Easy 14-day returns", text: "Doesn't work in your space? Send it back within 14 days of delivery." },
-  { icon: ShieldCheckIcon, title: "Secure payment", text: "Credit card, Apple Pay or Google Pay." },
-  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Questions about size, color or shipping? Email us and a real person replies within one business day." },
+  { icon: TruckIcon, title: "Free shipping", text: "To anywhere in the contiguous US. No hidden fees, ever." },
+  { icon: RotateCcwIcon, title: "Easy 14-day returns", text: "Doesn't work in your space? Send it back within 14 days." },
+  { icon: ShieldCheckIcon, title: "Secure payment", text: "Encrypted checkout with credit card, Apple Pay or Google Pay." },
+  { icon: MessageCircleIcon, title: "Real people, real answers", text: "Questions? Email us and a real person replies within a day." },
   { icon: GemIcon, title: "Acrylic, not glass", text: "Clear as glass, but lighter and far more shatter-resistant." },
-  { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp microfiber cloth and you're done. No special products." },
+  { icon: DropletsIcon, title: "Cleans in seconds", text: "A damp microfiber cloth and you're done." },
 ]
 
 export function TrustSection({ className }: { className?: string }) {
@@ -40,9 +40,9 @@ export function TrustSection({ className }: { className?: string }) {
     <section className={cn("container-site flex flex-col gap-10 py-20", className)}>
       <SectionHeading eyebrow="Why clearbrick" title="Buy with confidence." />
       {/* Mobile: compact rows with the icon beside the text. Desktop: 3-column cards. */}
-      <ul className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+      <ul className="grid auto-rows-fr gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {REASONS.map(({ icon: Icon, title, text }) => (
-          <li key={title} className="flex gap-4 rounded-3xl border border-border bg-card p-5 sm:flex-col sm:gap-3 sm:rounded-[2rem] md:p-8">
+          <li key={title} className="flex items-center gap-4 rounded-3xl border border-border bg-card p-5 sm:flex-col sm:items-start sm:gap-3 sm:rounded-[2rem] md:p-8">
             <span className="grid size-12 shrink-0 place-items-center rounded-full bg-muted">
               <Icon className="size-6" />
             </span>

@@ -225,18 +225,35 @@ export function ProductView({ product, initialColor }: { product: Product; initi
       <div
         inert={!sticky}
         className={cn(
-          "fixed inset-x-0 bottom-0 z-40 flex items-center gap-4 border-t border-border bg-card/95 px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur transition-transform duration-300 lg:hidden",
+          "fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-white/80 bg-card/75 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-lg backdrop-saturate-150 transition-transform duration-300 lg:hidden",
           sticky ? "translate-y-0" : "translate-y-full"
         )}
       >
+        {/* Selected color: mini photo + swatch, so it's clear what goes in the cart. */}
+        <span className="relative size-12 shrink-0">
+          <span className="absolute inset-0 overflow-hidden rounded-xl border-2 border-white shadow-md">
+            <Image src={product.images[color.image].src} alt="" fill sizes="48px" className="object-cover" />
+          </span>
+          <span
+            title={color.name}
+            className="absolute -end-1 -bottom-1 size-4 rounded-full border-2 border-white shadow-sm"
+            style={{ background: color.swatch }}
+          />
+        </span>
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-base font-bold">{product.shortName}</span>
-          <span className="flex items-baseline gap-2">
+          <span className="truncate text-base font-bold">
+            {product.shortName}
+          </span>
+          <span className="flex items-center gap-1.5 whitespace-nowrap">
             <span className="text-xl font-black">{formatPrice(product.price)}</span>
-            {product.compareAt && <span className="text-muted-foreground line-through">{formatPrice(product.compareAt)}</span>}
+            {product.compareAt && (
+              <span className="rounded-full bg-linear-to-r from-[#ff3b30] to-[#ff8a00] px-1.5 py-0.5 text-[11px] font-black text-white">
+                −{Math.round((1 - product.price / product.compareAt) * 100)}%
+              </span>
+            )}
           </span>
         </div>
-        <Button size="lg" onClick={() => buy("add_to_cart", "sticky")}>
+        <Button size="lg" variant="sale" className="px-5" onClick={() => buy("add_to_cart", "sticky")}>
           <ShoppingBagIcon /> Add to cart
         </Button>
       </div>

@@ -166,11 +166,6 @@
     padding-inline: 2.5rem;
   }
 }
-@utility bg-dots {
-  background-image: radial-gradient(oklch(0.17 0 0 / 0.14) 1.2px, transparent 1.2px);
-  background-size: 28px 28px;
-}
-
 @keyframes marquee {
   /* LTR: slide left by one half (the items are repeated, so the loop is seamless). */
   to { transform: translateX(-50%); }

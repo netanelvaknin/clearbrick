@@ -12,6 +12,9 @@ const buttonVariants = cva(
           "border-white/15 bg-primary/85 bg-linear-to-b from-white/20 to-white/0 text-primary-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.25),0_10px_30px_-12px_rgb(0_0_0/0.45)] backdrop-blur-md hover:bg-primary/75",
         outline:
           "border-white/70 bg-white/45 bg-linear-to-b from-white/50 to-white/0 text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.9),0_10px_30px_-14px_rgb(0_0_0/0.3)] ring-1 ring-foreground/10 backdrop-blur-md hover:bg-white/65 aria-expanded:bg-white/65",
+        // Black Friday orange (same red→orange as the sale strip), glossy. Buying path: Add to cart, Checkout, Continue to payment.
+        // Switch those back to `default` after Cyber Monday.
+        sale: "border-white/20 bg-linear-to-r from-[#ff3b30] via-[#ff5a1f] to-[#ff8a00] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_10px_26px_-12px_rgb(255_70_20/0.6)] hover:brightness-110",
         // Same as the mobile hero chip; for use over photos.
         glass: "border-white/25 bg-white/15 text-white backdrop-blur-md hover:bg-white/25",
         secondary:

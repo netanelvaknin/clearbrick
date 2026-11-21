@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps<"/products/[slug]">
 
 export default function ProductPage(props: PageProps<"/products/[slug]">) {
   return (
-    <Suspense fallback={<div className="bg-dots min-h-screen" />}>
+    <Suspense fallback={<div className="min-h-screen" />}>
       <ProductContent {...props} />
     </Suspense>
   )
@@ -50,14 +50,14 @@ async function ProductContent({ params, searchParams }: PageProps<"/products/[sl
 
   return (
     <>
-      <div className="bg-dots">
+      <div>
         <div className="container-site flex flex-col gap-6 pt-4 pb-8 md:gap-8 md:py-10">
           <LaunchCountdown product={product} />
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-base text-muted-foreground">
             <Link href="/" className="hover:text-foreground">Home</Link>
             <span>/</span>
-            <Link href="/shop" className="hover:text-foreground">Shop all</Link>
+            <Link href="/shop" className="hover:text-foreground">Collection</Link>
             <span>/</span>
             <span className="font-semibold text-foreground">{product.name}</span>
           </nav>
@@ -127,5 +127,7 @@ async function ProductViewWithColor({
   searchParams: PageProps<"/products/[slug]">["searchParams"]
 }) {
   const { color } = await searchParams
-  return <ProductView product={product} initialColor={typeof color === "string" ? color : undefined} />
+  const initialColor = typeof color === "string" ? color : undefined
+  // key: client navigation reuses this component, so without it a second visit keeps the first visit's color.
+  return <ProductView key={initialColor} product={product} initialColor={initialColor} />
 }

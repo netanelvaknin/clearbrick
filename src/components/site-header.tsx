@@ -7,7 +7,7 @@ import { CartButton } from "@/components/cart"
 import { cn } from "@/lib/utils"
 
 const NAV = [
-  { href: "/shop", label: "Shop all", mobileOnly: true }, // desktop has the Shop button instead
+  { href: "/shop", label: "Collection", mobileOnly: true }, // desktop has the Shop button instead
   { href: "/products/arch-bookshelf", label: "Luna Bookshelf" },
   { href: "/products/bedside-table", label: "Laila Nightstand" },
   { href: "/products/acrylic-desk", label: "Ora Desk", badge: "New" },
@@ -17,7 +17,7 @@ const NAV = [
 ]
 
 const PERKS = [
-  { icon: PercentIcon, text: "Black Friday: up to 30% off, auto-applied" },
+  { icon: PercentIcon, text: "Black Friday: up to 30 percent off, auto-applied" },
   { icon: TruckIcon, text: "Free shipping, always" },
   { icon: MessageCircleIcon, text: "Questions? Real people reply within a day" },
 ]
@@ -50,7 +50,7 @@ export function SiteHeader() {
         href="/shop"
         className="block bg-linear-to-r from-[#ff3b30] via-[#ff5a1f] to-[#ff8a00] text-white transition-[filter] hover:brightness-110"
       >
-        <p className="container-site flex h-9 items-center justify-center gap-2 text-sm font-extrabold tracking-wide uppercase">
+        <p className="container-site flex h-9 items-center justify-center gap-2 text-xs font-extrabold tracking-wide whitespace-nowrap uppercase sm:text-sm">
           <span aria-hidden>🔥</span>
           <span className="md:hidden">Black Friday · up to 30% off</span>
           <span className="hidden md:inline">Black Friday Sale · Up to 30% off everything · Ends Cyber Monday</span>

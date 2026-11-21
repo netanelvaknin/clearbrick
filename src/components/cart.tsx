@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { PaymentMethods } from "@/components/trust-badges"
 import { CouponField } from "@/components/coupon-field"
-import { couponDiscount, useCoupon } from "@/lib/coupon"
+import { couponDiscount, isSaleCoupon, useCoupon } from "@/lib/coupon"
 
 type Item = { slug: string; colorId: string }
 export type Line = Item & { qty: number }
@@ -209,7 +209,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     <dd className="text-muted-foreground">{formatPrice(totals.original)}</dd>
                   </div>
                   {discount > 0 && (
-                    <div className="flex justify-between">
+                    <div className={`flex justify-between ${isSaleCoupon(coupon) ? "font-semibold text-[#e0301e]" : ""}`}>
                       <dt>Coupon {coupon}</dt>
                       <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
                     </div>
@@ -222,7 +222,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                     <dt className="font-bold">Total</dt>
                     <dd className="font-black">{formatPrice(totals.original - discount)}</dd>
                   </div>
-                  {discount > 0 && <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">You’re saving {formatPrice(discount)} this Black Friday</p>}
+                  {discount > 0 &&
+                    (isSaleCoupon(coupon) ? (
+                      <p className="rounded-xl bg-linear-to-r from-[#ff3b30] via-[#ff5a1f] to-[#ff8a00] px-3 py-2 text-center text-sm font-bold whitespace-nowrap text-white sm:text-base">
+                        🔥 You’re saving {formatPrice(discount)} this Black Friday
+                      </p>
+                    ) : (
+                      <p className="rounded-xl bg-muted px-4 py-2 text-center font-bold">You’re saving {formatPrice(discount)}</p>
+                    ))}
                 </dl>
                 <div className="mt-4">
                   <CouponField onEvent={(event, code) => track({ event, ...cartSummary(items), offer: code, page: location.pathname, attribution: getAttribution() })} />
@@ -230,7 +237,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="flex flex-col gap-3 border-t border-border px-6 py-5">
-                <Button size="lg" className="w-full" onClick={checkout}>
+                <Button size="lg" variant="sale" className="w-full" onClick={checkout}>
                   <LockIcon /> Checkout
                 </Button>
                 <Button size="lg" variant="outline" className="w-full" onClick={continueShopping}>

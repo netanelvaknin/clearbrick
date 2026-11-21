@@ -14,6 +14,8 @@ const COUPONS: Record<string, { label: string; discount: (t: Totals) => number }
 }
 
 export const isCoupon = (code: string) => code in COUPONS
+// Black Friday code → shown in the sale orange (same red→orange as the header strip) wherever it appears.
+export const isSaleCoupon = (code: string | null) => code === AUTO_COUPON
 export const couponLabel = (code: string) => COUPONS[code]?.label ?? ""
 export const couponDiscount = (code: string | null, t: Totals) => (code && COUPONS[code] ? COUPONS[code].discount(t) : 0)
 

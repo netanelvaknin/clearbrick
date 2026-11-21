@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { SESSION_COOKIE, verifySession } from "@/lib/admin-session"
+import { heroKeyFor } from "@/lib/heroes"
 
 const UID = "cb_uid"
 
@@ -10,7 +11,10 @@ export function proxy(request: NextRequest) {
 
   // Gives every visitor a stable anonymous ID, sent with each funnel event so Make rows can be joined per user.
   // Set by the server (not JS) so Safari's 7-day cap on script-set cookies doesn't reset it.
-  const response = NextResponse.next()
+  // Homepage from an ad: serve the pre-built page whose hero matches the ad (see lib/heroes.ts). A rewrite, not a
+  // redirect, so the URL and its UTMs stay as they are and there's no flash of the default hero.
+  const hero = pathname === "/" ? heroKeyFor(request.nextUrl.searchParams) : "default"
+  const response = hero === "default" ? NextResponse.next() : NextResponse.rewrite(new URL(`/h/${hero}`, request.url))
   if (!request.cookies.has(UID)) {
     response.cookies.set(UID, crypto.randomUUID(), {
       httpOnly: true,

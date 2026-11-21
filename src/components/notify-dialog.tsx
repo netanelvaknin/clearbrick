@@ -38,7 +38,7 @@ export function BuyButtons({ ctx, slug, colorId, className }: { ctx: Ctx; slug: 
 
   return (
     <div className={className}>
-      <Button size="lg" className="w-full" onClick={() => start("add_to_cart")}>
+      <Button size="lg" variant="sale" className="w-full" onClick={() => start("add_to_cart")}>
         <ShoppingBagIcon /> Add to cart
       </Button>
       <Button size="lg" variant="outline" className="w-full" onClick={() => start("checkout_initiated")}>
@@ -86,7 +86,7 @@ export function OutOfStockDialog({ ctx, open, onOpenChange }: { ctx: Ctx; open: 
               <DialogDescription className="text-lg">
                 As soon as it’s back in stock, we’ll email you a 10% off coupon.
               </DialogDescription>
-              <Button className="w-full" onClick={() => setOpen(false)}>
+              <Button variant="sale" className="w-full" onClick={() => setOpen(false)}>
                 Close
               </Button>
             </div>
@@ -124,11 +124,11 @@ export function OutOfStockDialog({ ctx, open, onOpenChange }: { ctx: Ctx; open: 
                   <FieldError message={errors.email?.message} />
                 </div>
                 {failed && <FieldError message="Something went wrong. Please try again in a moment." />}
-                <Button type="submit" size="lg" disabled={isSubmitting}>
+                <Button type="submit" size="lg" variant="sale" disabled={isSubmitting}>
                   {isSubmitting ? "Sending..." : "Send me the coupon"}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
-                  By signing up you agree to the 
+                  By signing up you agree to the{" "}
                   <Link href="/terms#privacy" className="underline underline-offset-4" onClick={() => setOpen(false)}>
                     terms & privacy policy
                   </Link>

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { TagIcon } from "lucide-react"
-import { couponLabel, isCoupon, setCoupon, useCoupon } from "@/lib/coupon"
+import { couponLabel, isCoupon, isSaleCoupon, setCoupon, useCoupon } from "@/lib/coupon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,14 +15,20 @@ export function CouponField({ onEvent }: { onEvent?: (event: "coupon_applied" | 
 
   if (applied)
     return (
-      <p className="flex items-center justify-between gap-3 rounded-2xl bg-muted px-4 py-3 text-base">
+      <p
+        className={
+          isSaleCoupon(applied)
+            ? "flex items-center justify-between gap-3 rounded-2xl border border-[#ff5a1f]/30 bg-[#ff5a1f]/10 px-4 py-3 text-base text-[#c2410c]"
+            : "flex items-center justify-between gap-3 rounded-2xl bg-muted px-4 py-3 text-base"
+        }
+      >
         <span className="flex items-center gap-2 font-bold">
-          <TagIcon className="size-4" /> {applied} applied · {couponLabel(applied)}
+          <TagIcon className="size-4 shrink-0" /> {applied} applied{isSaleCoupon(applied) ? "" : ` · ${couponLabel(applied)}`}
         </span>
         <button
           type="button"
           onClick={() => (setCoupon(null), onEvent?.("coupon_removed", applied))}
-          className="text-muted-foreground underline"
+          className={isSaleCoupon(applied) ? "underline opacity-80" : "text-muted-foreground underline"}
         >
           Remove
         </button>

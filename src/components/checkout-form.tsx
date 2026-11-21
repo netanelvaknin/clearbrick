@@ -12,7 +12,7 @@ import { pixel } from "@/lib/pixel"
 import { formatPrice } from "@/lib/products"
 import { cartSummary, cartTotals, resolveLines, useCart } from "@/components/cart"
 import { CouponField } from "@/components/coupon-field"
-import { couponDiscount, useCoupon } from "@/lib/coupon"
+import { couponDiscount, isSaleCoupon, useCoupon } from "@/lib/coupon"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -134,7 +134,7 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
             </div>
           </div>
         </div>
-        <Button type="submit" size="lg">
+        <Button type="submit" size="lg" variant="sale">
           <LockIcon /> Continue to payment
         </Button>
         <PaymentMethods />
@@ -183,7 +183,7 @@ function CheckoutBody({ items }: { items: ReturnType<typeof resolveLines> }) {
             <dd className="font-bold">Free</dd>
           </div>
           {coupon && (
-            <div className="flex justify-between">
+            <div className={`flex justify-between ${isSaleCoupon(coupon) ? "font-semibold text-[#e0301e]" : ""}`}>
               <dt>Coupon {coupon}</dt>
               <dd dir="ltr" className="font-bold">-{formatPrice(discount)}</dd>
             </div>

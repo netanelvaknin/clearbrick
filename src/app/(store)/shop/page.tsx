@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/product-card"
 import { TrustSection } from "@/components/trust-badges"
 
 export const metadata: Metadata = {
-  title: "Shop all",
+  title: "Collection",
   description: "Clear and colored acrylic bookshelves, nightstands and desks. Black Friday: up to 30% off, free shipping.",
 }
 
@@ -17,7 +17,7 @@ export default function ShopPage() {
     <>
       <section className="container-site flex flex-col gap-10 py-12 md:py-20">
         <div className="flex flex-col gap-4">
-          <span className="text-eyebrow text-muted-foreground">Shop all</span>
+          <span className="text-eyebrow text-muted-foreground">Collection</span>
           <h1 className="text-display-lg text-balance">The whole collection.</h1>
           <p className="max-w-2xl text-xl leading-relaxed text-muted-foreground">
             Three acrylic pieces that make any room feel bigger. Free shipping on every order.
